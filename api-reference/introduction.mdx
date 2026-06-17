@@ -1,0 +1,55 @@
+---
+title: "API Reference"
+description: "The four core tools that power every AgentKey workflow."
+---
+
+AgentKey exposes a small, stable set of tools rather than ~1,800 individual
+endpoints. You discover the underlying tool you need, describe it to learn its
+parameters and cost, then execute it.
+
+<CardGroup cols={2}>
+  <Card title="find_tools" icon="magnifying-glass" href="/api-reference/find-tools">
+    Discover tools by natural-language intent.
+  </Card>
+  <Card title="describe_tool" icon="list" href="/api-reference/describe-tool">
+    Get a tool's parameters, cost, and run template.
+  </Card>
+  <Card title="execute_tool" icon="play" href="/api-reference/execute-tool">
+    Run a tool by its `Provider/Operation` name.
+  </Card>
+  <Card title="account" icon="wallet" href="/api-reference/account">
+    Check credits and upstream health — free.
+  </Card>
+</CardGroup>
+
+## Authentication
+
+All calls authenticate with your master key. You don't pass it by hand on each
+call — the [installer or skill setup](/connect/install) configures it once. See
+[Authentication](/authentication).
+
+## The standard workflow
+
+<Steps>
+  <Step title="Discover">
+    `find_tools` (semantic) or `list_tools` (browse) → returns `Provider/Operation`
+    names.
+  </Step>
+  <Step title="Describe">
+    `describe_tool` → params, per-call cost, and an `execute_as` template.
+  </Step>
+  <Step title="Execute">
+    `execute_tool` → runs the tool and returns the result.
+  </Step>
+</Steps>
+
+<Warning>
+  Make one `execute_tool` call per turn and await the result before the next —
+  don't batch. Never guess a tool name or its parameters; always describe first.
+</Warning>
+
+<Note>
+  This reference describes the tool contracts as exposed through the MCP server.
+  Exact REST paths and request envelopes are confirmed in the
+  [console](https://console.agentkey.app).
+</Note>

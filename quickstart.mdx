@@ -1,0 +1,121 @@
+---
+title: "Quickstart"
+description: "Install AgentKey, connect your key, and make your first tool call in minutes."
+---
+
+This guide takes you from nothing to your agent's first live tool call.
+
+## 1. Install AgentKey
+
+Pick whichever fits how you work — both take about a minute.
+
+<Tabs>
+  <Tab title="One-line install">
+    Run the installer for your OS:
+
+    <CodeGroup>
+    ```bash macOS / Linux
+    curl -fsSL https://agentkey.app/install.sh | bash
+    ```
+
+    ```powershell Windows (PowerShell)
+    irm https://agentkey.app/install.ps1 | iex
+    ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="Let your agent install it">
+    Paste this prompt into your coding agent (Claude Code, Cursor, Windsurf, …):
+
+    ```text
+    Install the skill chainbase/agentkey from ClawHub: https://clawhub.ai/chainbase/agentkey
+    Scope the work to this skill only. After install, read the skill's metadata and
+    help me finish setup based only on what you can verify from that page — don't
+    invent missing requirements. Ask before making any broader environment changes.
+    ```
+  </Tab>
+</Tabs>
+
+<Card title="Full installation guide" icon="download" href="/connect/install">
+  All install methods in detail — including Claude Desktop — plus how to review
+  the install script first.
+</Card>
+
+<Note>
+  AgentKey supports **22 agents**. The
+  [console get-started flow](https://console.agentkey.app/get-started) matches your
+  agent and gives you the exact command; see
+  [Supported Agents](/connect/supported-agents) for the full list.
+</Note>
+
+## 2. Get your key and add credits
+
+<Steps>
+  <Step title="Create a key">
+    Sign in to the [console](https://console.agentkey.app) and create a master key
+    (`ak_...`). Treat it like a password — it authenticates every request and
+    is tied to your credit balance.
+
+    <Warning>
+      Never commit your key to source control or paste it into a chat. Store it as
+      instructed by the setup flow.
+    </Warning>
+  </Step>
+  <Step title="Add credits">
+    AgentKey is **pay-as-you-go**. Top up your balance once from the console — no
+    subscriptions, minimums, or per-provider signups. The same balance is shared
+    across every service.
+  </Step>
+  <Step title="Provide the key">
+    Follow the prompts from the installer (or the skill's setup steps) to supply
+    your key. See [Authentication](/authentication).
+  </Step>
+</Steps>
+
+<Card title="How billing works" icon="wallet" href="/concepts/pay-as-you-go">
+  Learn how credits and per-call costs work.
+</Card>
+
+## 3. Make your first call
+
+Every AgentKey workflow follows the same pattern: **discover → describe → execute**.
+
+<Steps>
+  <Step title="Discover">
+    Ask AgentKey which tool fits your task. Pass your full intent in natural
+    language — e.g. *"search the web for the latest Claude news"*. You get back
+    ranked `Provider/Operation` tool names.
+  </Step>
+  <Step title="Describe">
+    Look up the chosen tool to get its exact parameters, per-call cost, and a
+    ready-to-run template.
+  </Step>
+  <Step title="Execute">
+    Run the tool with your parameters and use the result.
+  </Step>
+</Steps>
+
+<Tip>
+  In practice you just ask your agent in plain language. Try:
+  *"Search X/Twitter for what people are saying about AgentKey today."*
+</Tip>
+
+<Card title="Understand the model" icon="route" href="/concepts/discover-describe-execute">
+  Why AgentKey uses discover → describe → execute, and how to use it well.
+</Card>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/connect/install">
+    The two install methods in detail.
+  </Card>
+  <Card title="Browse capabilities" icon="layers" href="/capabilities/overview">
+    See everything your agent can reach.
+  </Card>
+  <Card title="API reference" icon="code" href="/api-reference/introduction">
+    The four core tools, in detail.
+  </Card>
+  <Card title="FAQ" icon="circle-question" href="/faq">
+    Common questions about cost, platforms, and setup.
+  </Card>
+</CardGroup>

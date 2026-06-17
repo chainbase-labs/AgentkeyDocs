@@ -1,0 +1,39 @@
+---
+title: "Crypto"
+description: "Market data, on-chain analytics, NFTs, DEX, wallets, and prediction markets."
+---
+
+The **Crypto** category gives agents real-time and on-chain blockchain data —
+prices, wallets, tokens, NFTs, DEX pools, news, and more.
+
+<Tip>
+  Discover the right type with `find_tools`, or use the crypto catalog
+  (`agentkey_crypto_catalog`) to browse by sub-type.
+</Tip>
+
+## Sub-categories
+
+| Group | What it covers |
+| --- | --- |
+| **Market Data** | Live quotes, market caps, listings, trending coins, gainers/losers, ETF flows, fear-greed index, TGE schedules |
+| **CEX & Derivatives** | Klines, depth, perpetual funding rates, long/short ratios, liquidation maps |
+| **DEX Pools** | Spot pairs, pair quotes, and trades across major DEXs |
+| **Token Analytics** | Metadata, on-chain price, holders, transfers, tokenomics, holder/transfer insights |
+| **NFTs** | Collections, metadata, floor prices, owners, transfer history, price trails |
+| **Wallets** | Balance, holdings, NFTs, transactions, portfolios, net-worth, protocol exposure, address labels |
+| **Chain Primitives** | Latest block, tx lookup, SQL warehouse, gas price, bridge & yield rankings, raw RPC |
+| **Naming Services** | ENS and Space ID resolve / reverse lookup |
+| **Crypto News** | Breaking articles, daily reads, columns, AI coverage, full-text search |
+| **Industry Events** | Conferences, hackathons, summits, discussion topics |
+| **Social Intelligence** | Trending narratives, mindshare scores, sentiment, smart followers |
+| **Prediction Markets** | Polymarket & Kalshi events, prices, orderbooks, leaderboards, OHLCV |
+| **Projects & Funds** | DeFi protocol metrics, fund portfolios and rankings |
+| **Crypto Search** | Cross-cutting search over web, news, projects, wallets, posts, airdrops |
+
+## Example
+
+```text
+find_tools("on-chain balance for wallet 0xabc... on Ethereum")
+describe_tool("Chainbase/GetAccountBalance")
+execute_tool("Chainbase/GetAccountBalance", { address: "0xabc...", chain: "ethereum" })
+```

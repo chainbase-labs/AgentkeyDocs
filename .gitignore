@@ -1,0 +1,15 @@
+# Mintlify
+.mintlify/
+.mint/
+
+# Dependencies
+node_modules/
+
+# Tooling artifacts
+.playwright-mcp/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

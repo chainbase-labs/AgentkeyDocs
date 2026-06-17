@@ -1,0 +1,124 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "AgentKey",
+  "description": "One key that connects your AI agent to web search, scraping, social media, crypto/on-chain, finance, e-commerce and business data — pay-as-you-go, zero setup.",
+  "colors": {
+    "primary": "#5B5BD6",
+    "light": "#8B8BF0",
+    "dark": "#3D3DAE"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://agentkey.app"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "fonts": {
+    "family": "Inter"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "background": {
+    "decoration": "gradient"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Homepage",
+        "href": "https://agentkey.app"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Console",
+      "href": "https://console.agentkey.app"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Installation",
+            "pages": [
+              "connect/install",
+              "connect/supported-agents"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/unified-key",
+              "concepts/discover-describe-execute",
+              "concepts/pay-as-you-go",
+              "concepts/auto-failover"
+            ]
+          },
+          {
+            "group": "Capabilities",
+            "pages": [
+              "capabilities/overview",
+              "capabilities/search",
+              "capabilities/scrape",
+              "capabilities/social",
+              "capabilities/crypto",
+              "capabilities/finance",
+              "capabilities/business",
+              "capabilities/ecommerce"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "faq",
+              "support"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/introduction",
+              "api-reference/errors"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "api-reference/find-tools",
+              "api-reference/describe-tool",
+              "api-reference/execute-tool",
+              "api-reference/account"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/agentkey_app",
+      "github": "https://github.com/chainbase-labs/AgentKey",
+      "telegram": "https://t.me/AgentKey_Official",
+      "website": "https://agentkey.app"
+    }
+  }
+}

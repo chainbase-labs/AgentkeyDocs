@@ -1,0 +1,40 @@
+---
+title: "One Unified Key"
+description: "A single master key for every provider."
+---
+
+Traditionally, connecting an agent to the outside world means signing up for many
+separate APIs — each with its own account, auth flow, rate limits, and invoice.
+AgentKey replaces all of that with **one master key**.
+
+## What the key handles
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock">
+    One credential authorizes every category. No per-provider OAuth or API-key
+    juggling.
+  </Card>
+  <Card title="Routing" icon="route">
+    AgentKey routes each call to the right upstream provider — and to a backup if
+    one is down.
+  </Card>
+  <Card title="Billing" icon="receipt">
+    All usage draws from one shared credit balance and one invoice.
+  </Card>
+  <Card title="Management" icon="sliders">
+    Create, rotate, and monitor keys from a single dashboard.
+  </Card>
+</CardGroup>
+
+## The "before and after"
+
+**Before AgentKey** — your agent is smart but can't reach anything: no live
+Twitter data, only surface-web search, no crypto context.
+
+**After AgentKey** — one key, and the agent gets real-time social data, deep web
+scraping, market feeds, and more, with automatic failover when a provider goes
+down.
+
+<Card title="Auto Failover" icon="shuffle" href="/concepts/auto-failover">
+  How AgentKey keeps your agent running when a provider goes offline.
+</Card>

@@ -1,0 +1,29 @@
+---
+title: "E-commerce"
+description: "Product search, details, and best-seller rankings."
+---
+
+The **E-commerce** category lets agents query product catalogs — search items,
+fetch details, and pull ranked lists.
+
+## Common operations
+
+| Operation | What it returns |
+| --- | --- |
+| `search-item-list_v1` | Product search results |
+| `get-item-detail_v1` / `get-product-detail_v1` | Full product details |
+| `get-best-sellers_v1` | Best-seller rankings |
+| `get-category-products_v1` | Products within a category |
+
+## Example
+
+```text
+find_tools("search products for wireless earbuds")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { query: "wireless earbuds" })
+```
+
+<Note>
+  Available marketplaces and fields depend on the provider. Check `describe_tool`
+  for the exact parameters and per-call cost.
+</Note>

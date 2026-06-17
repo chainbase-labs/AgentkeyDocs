@@ -1,0 +1,29 @@
+---
+title: "Business"
+description: "Company, acquisition, and entity intelligence."
+---
+
+The **Business** category provides structured business intelligence — companies,
+acquisitions, people, and related entities.
+
+## What's inside
+
+- **Entity lookups** — companies, acquisitions, addresses, and more, keyed by
+  identifier (e.g. `getAcquisition`, `getAddress`).
+- **Autocomplete** — suggest matching entities for a query
+  (`autocompletes`, scoped by entity definition IDs).
+- **Predictions & cards** — supporting detail such as acquisition predictions and
+  single-card lookups (`getAcquisitionPrediction`, `getAcquisitionCard`).
+
+<Tip>
+  Use `autocompletes` to resolve a name into an entity identifier first, then
+  fetch the detailed record.
+</Tip>
+
+## Example
+
+```text
+find_tools("look up an acquisition by company")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```

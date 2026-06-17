@@ -1,0 +1,52 @@
+---
+title: "describe_tool"
+description: "Get a tool's parameters, per-call cost, and a ready-to-run template."
+---
+
+Returns the full contract for a tool: parameter definitions (types, required
+fields, enums, examples), the per-call cost, and an `execute_as` template you can
+copy into [`execute_tool`](/api-reference/execute-tool).
+
+<Warning>
+  Call `describe_tool` before every `execute_tool`. Never guess parameters.
+</Warning>
+
+<ParamField path="name" type="string" required>
+  A canonical `Provider/Operation` tool name (e.g. `Firecrawl/scrape`,
+  `Brave/getWebSearch`), a browse path (e.g. `crypto/market/...`), or
+  `agentkey_account`. On a typo, returns fuzzy-match suggestions — read them and
+  correct rather than retrying blindly.
+</ParamField>
+
+### Returns
+
+- **params** — JSON Schema of parameters with types, `required`, enums, examples
+- **cost** — `{ credits_per_call, usd_per_call, cost_by_provider }`
+- **execute_as** — a ready-to-run template for `execute_tool`
+- **health** — upstream availability for the tool
+
+## Cost guidance
+
+Multiply `cost.credits_per_call` by your planned call count **before** executing a
+batch. For bulk work (≥3 calls or a meaningful credit estimate), check your
+balance first with [`account`](/api-reference/account).
+
+## Example
+
+```text
+describe_tool("Firecrawl/scrape")
+```
+
+```json
+{
+  "name": "Firecrawl/scrape",
+  "cost": { "credits_per_call": 0.2, "usd_per_call": 0.004 },
+  "execute_as": { "name": "Firecrawl/scrape", "params": { "url": "<The URL to scrape.>" } },
+  "params": { "type": "object", "required": ["url"], "properties": { "url": { "type": "string", "format": "uri" } } }
+}
+```
+
+## Next step
+
+Copy `execute_as`, fill in the values, and pass it to
+[`execute_tool`](/api-reference/execute-tool).

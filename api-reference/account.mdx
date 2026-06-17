@@ -1,0 +1,38 @@
+---
+title: "account"
+description: "Check remaining credits and upstream health — always free."
+---
+
+Returns your remaining credit balance and the health of upstream providers in one
+call. This tool is **free** — calling it never deducts credits.
+
+<Info>
+  Run `account` before any bulk or expensive work to confirm you have enough
+  balance.
+</Info>
+
+### Parameters
+
+None.
+
+### Returns
+
+- **credits** — your remaining credit balance
+- **health** — upstream provider / skill health status
+
+## Example
+
+```text
+execute_tool("agentkey_account")
+```
+
+```json
+{
+  "credits": { "remaining": 1240.5 },
+  "health": { "search": "healthy", "scrape": "healthy", "social": "degraded" }
+}
+```
+
+<Card title="Pay-as-you-go" icon="wallet" href="/concepts/pay-as-you-go">
+  How credits and per-call costs work.
+</Card>

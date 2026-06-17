@@ -1,0 +1,50 @@
+---
+title: "find_tools"
+description: "Discover the right tool from natural-language intent."
+---
+
+Semantic search across all of AgentKey's tools. Pass the user's full,
+natural-language intent — the router uses embeddings plus platform-alias and
+intent-keyword boosting to rank matches.
+
+<ParamField path="q" type="string" required>
+  The user's original phrasing — not a single extracted keyword. Works in
+  English, Chinese, or mixed. Examples: `"search the latest OpenAI news"`,
+  `"find trending posts on X about GPT"`, `"scrape the article at https://example.com"`.
+</ParamField>
+
+### Returns
+
+A ranked list of tools, each with:
+
+- **name** — the canonical `Provider/Operation` identifier
+- **summary** — what the tool does
+- **cost** — per-call price in credits
+
+<Tip>
+  Don't pre-extract a keyword. Passing the full intent lets both the action verb
+  ("search", "scrape", "trending") and any platform mention reach the router.
+</Tip>
+
+## Example
+
+```text
+find_tools("what people are saying about Claude on X today")
+```
+
+```json
+[
+  { "name": "Twitter/searchTweets", "summary": "Search recent public tweets", "cost": { "credits_per_call": 0.5 } }
+]
+```
+
+## Next step
+
+Pass the chosen `name` to [`describe_tool`](/api-reference/describe-tool) to get
+its parameters and a ready-to-run template.
+
+<Note>
+  To browse instead of search, use `list_tools(prefix)` — it walks the category
+  tree (`search`, `scrape`, `social`, `crypto`, `finance`, `business`,
+  `ecommerce`).
+</Note>

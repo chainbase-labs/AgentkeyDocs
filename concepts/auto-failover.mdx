@@ -1,0 +1,31 @@
+---
+title: "Auto Failover"
+description: "When a provider goes down, your agent keeps running."
+---
+
+Individual API providers have outages. AgentKey insulates your agent from them:
+when a provider becomes unavailable, AgentKey **automatically routes to a backup**
+that serves the same capability — with no interruption and nothing for you to do.
+
+## How routing works
+
+```
+AGENTKEY ROUTER
+  ├─ Tavily      ✓ Active     → routing here
+  ├─ Brave       ✕ Down       → skipped
+  └─ Perplexity  ◦ Standby    → ready to take over
+```
+
+Within a capability (for example, web search), AgentKey keeps multiple providers
+behind the same interface. If the active one fails, the next healthy provider
+takes over transparently.
+
+## What this means for you
+
+- **No code changes** — failover happens at the routing layer.
+- **One stable interface** — you call a capability, not a specific vendor.
+- **Higher uptime** — a single provider's outage no longer breaks your agent.
+
+<Card title="Check upstream health" icon="heart-pulse" href="/api-reference/account">
+  The free `account` tool reports remaining credits and upstream provider health.
+</Card>

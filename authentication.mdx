@@ -1,0 +1,49 @@
+---
+title: "Authentication"
+description: "How AgentKey authenticates usage with your master key."
+---
+
+AgentKey authenticates with a single **master key**. The same key authorizes all
+categories — search, scrape, social, crypto, and more — and is tied to your
+shared credit balance.
+
+## Your master key
+
+Keys look like `ak_...`. Create and manage them from the
+[console](https://console.agentkey.app).
+
+<Warning>
+  Your master key is a secret. Anyone with it can spend your credits. Never commit
+  it to source control, embed it in client-side code, or paste it into a chat.
+</Warning>
+
+## Providing your key
+
+You don't wire the key in by hand. After you [install AgentKey](/connect/install),
+the installer (or the skill's setup steps) prompts you to supply your key and
+stores it for you. Provide the key exactly as the setup flow instructs.
+
+<Steps>
+  <Step title="Create a key">
+    Generate a key in the [console](https://console.agentkey.app).
+  </Step>
+  <Step title="Add credits">
+    Top up your balance — see [Pay-as-you-go](/concepts/pay-as-you-go).
+  </Step>
+  <Step title="Complete setup">
+    Follow the post-install prompts to provide the key. Confirm any remaining
+    setup details from the skill's metadata or the console.
+  </Step>
+</Steps>
+
+## Storing keys safely
+
+- Let the setup flow store the key; don't hard-code it into projects.
+- Use separate keys per environment (development, staging, production) so you can
+  rotate one without disrupting the others.
+- Rotate immediately from the console if a key is ever exposed.
+
+<Note>
+  Exact key-provisioning steps are confirmed during install and in the
+  [console](https://console.agentkey.app). This page describes the general model.
+</Note>

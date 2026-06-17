@@ -1,0 +1,37 @@
+---
+title: "Scrape"
+description: "Turn any URL into clean, LLM-ready content — and bypass anti-bot pages."
+---
+
+The **Scrape** category fetches web pages and returns clean content your agent can
+actually use. Discover a tool with `find_tools`, then call it with `type` + params.
+
+## Providers
+
+| Provider | Operation | Best for |
+| --- | --- | --- |
+| **Firecrawl** | `scrape` | Any URL → clean markdown, with caching and proxy options |
+| **Jina Reader** | `readUrlGet` / `readUrlPost` | Fast URL → markdown via a simple request |
+| **BrightData** | `unlock` | Last-resort fallback for Cloudflare / challenge-gated pages (raw HTML) |
+
+## Choosing a tool
+
+- Start with **Firecrawl** for most pages — it returns structured markdown and
+  handles PDFs.
+- Use **Jina Reader** for lightweight, fast reads.
+- Fall back to **BrightData Web Unlocker** only when a page is protected by
+  anti-bot challenges; it returns raw HTML, not markdown.
+
+## Example
+
+```text
+find_tools("scrape https://example.com main content")
+describe_tool("Firecrawl/scrape")
+execute_tool("Firecrawl/scrape", { url: "https://example.com", formats: ["markdown"] })
+```
+
+<Tip>
+  Firecrawl supports caching (`maxAge`) and `onlyMainContent` to strip nav,
+  footers, and boilerplate. Check `describe_tool` for the full parameter set and
+  per-call cost.
+</Tip>

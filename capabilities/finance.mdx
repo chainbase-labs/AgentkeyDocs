@@ -1,0 +1,28 @@
+---
+title: "Finance"
+description: "Technical indicators, commodities, and traditional market data."
+---
+
+The **Finance** category exposes traditional-market data — a large library of
+technical indicators plus commodities and pricing data.
+
+## What's inside
+
+- **Technical indicators** — a broad set including ADX, ADXR, Chaikin A/D Line
+  (`getAd`) and Oscillator (`getAdosc`), and many more momentum, trend, volume,
+  and volatility studies.
+- **Commodities** — pricing for metals and other commodities (e.g. `getAluminum`).
+- **Market data** — quotes and related series for traditional assets.
+
+<Tip>
+  This category has hundreds of indicator endpoints. Discover the exact one with
+  `find_tools("<indicator name> for <symbol>")` rather than browsing all of them.
+</Tip>
+
+## Example
+
+```text
+find_tools("ADX indicator for AAPL daily")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { symbol: "AAPL", interval: "1day" })
+```

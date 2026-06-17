@@ -1,0 +1,45 @@
+---
+title: "Search"
+description: "Web, news, image, and LLM-context search across multiple providers."
+---
+
+The **Search** category gives your agent fresh, real-time web results — the live
+data a base model can't reach. Discover a tool with `find_tools`, then call it
+with `type` + params.
+
+## Providers
+
+| Provider | Best for |
+| --- | --- |
+| **Tavily** | AI-optimized search with semantic understanding |
+| **Brave Search** | Privacy-focused, independent index, no tracking |
+| **Perplexity** | Answer engine with verified, cited sources |
+| **Serper** | Fast, reliable access to Google's index at scale |
+| **Exa** | Neural/semantic search for research workflows |
+| **Parallel** | High-throughput search |
+
+## Common operations
+
+- Web search
+- News search (`getNewsSearch`)
+- Image search (`getImageSearch`)
+- LLM context (`getLlmContext`)
+- Local POIs and descriptions (`getLocalPois`, `getLocalDescriptions`)
+
+## Example
+
+<Steps>
+  <Step title="Discover">
+    `find_tools("search the web for the latest Claude news")`
+  </Step>
+  <Step title="Describe">
+    `describe_tool("Brave/getWebSearch")` → params + per-call cost
+  </Step>
+  <Step title="Execute">
+    `execute_tool("Brave/getWebSearch", { query: "Claude news" })`
+  </Step>
+</Steps>
+
+<Card title="The calling model" icon="route" href="/concepts/discover-describe-execute">
+  Discover → describe → execute, explained.
+</Card>

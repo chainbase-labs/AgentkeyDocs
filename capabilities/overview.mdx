@@ -1,0 +1,53 @@
+---
+title: "Capabilities Overview"
+description: "Everything your agent can reach through AgentKey."
+---
+
+AgentKey groups its ~1,800 tools into eight categories. Each tool is named
+`Provider/Operation` and is reached through the same
+[discover → describe → execute](/concepts/discover-describe-execute) flow.
+
+<CardGroup cols={2}>
+  <Card title="Search" icon="magnifying-glass" href="/capabilities/search">
+    Web, news, image, and LLM-context search across six providers.
+  </Card>
+  <Card title="Scrape" icon="file-code" href="/capabilities/scrape">
+    Turn any URL into clean markdown; bypass anti-bot pages.
+  </Card>
+  <Card title="Social" icon="share-nodes" href="/capabilities/social">
+    19 platforms of real-time social data.
+  </Card>
+  <Card title="Crypto" icon="bitcoin" href="/capabilities/crypto">
+    Market data, on-chain, NFTs, DEX, wallets, prediction markets.
+  </Card>
+  <Card title="Finance" icon="chart-line" href="/capabilities/finance">
+    Technical indicators, commodities, and market data.
+  </Card>
+  <Card title="Business" icon="building" href="/capabilities/business">
+    Company, acquisition, and entity intelligence.
+  </Card>
+  <Card title="E-commerce" icon="cart-shopping" href="/capabilities/ecommerce">
+    Product search, details, and best-seller rankings.
+  </Card>
+  <Card title="Account" icon="wallet" href="/api-reference/account">
+    Credits and upstream health — always free.
+  </Card>
+</CardGroup>
+
+## At a glance
+
+| Category | Tools | Discover with |
+| --- | --- | --- |
+| Search | ~33 | `find_tools("search ...")` or `list_tools("search")` |
+| Scrape | ~4 | `find_tools("scrape <url>")` or `list_tools("scrape")` |
+| Social | ~1,169 | `find_tools("<platform> ...")` or `list_tools("social")` |
+| Crypto | ~179 | `find_tools("<token/chain> ...")` or `list_tools("crypto")` |
+| Finance | ~347 | `find_tools("<indicator/asset> ...")` or `list_tools("finance")` |
+| Business | ~96 | `find_tools("company ...")` or `list_tools("business")` |
+| E-commerce | ~34 | `find_tools("product ...")` or `list_tools("ecommerce")` |
+| Account | 1 | `account` (free) |
+
+<Tip>
+  Tool counts grow over time as providers are added. Always discover with
+  `find_tools` rather than hard-coding a tool name.
+</Tip>

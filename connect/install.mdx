@@ -1,0 +1,145 @@
+---
+title: "Installation"
+description: "Install AgentKey into any of 22 supported agents — by one-line command, a prompt, or desktop config."
+---
+
+AgentKey supports **22 agents**. How you install depends on your agent type:
+
+- **One-line command** — CLI and IDE clients (Claude Code, Cursor, Windsurf, …)
+- **Prompt install** — chat agents (OpenClaw, Trae, Qoder, …)
+- **Desktop config** — Claude Desktop
+
+<Tip>
+  The fastest path is the [console get-started flow](https://console.agentkey.app/get-started):
+  pick your agent and it gives you the exact command for your OS. The full list of
+  agents is on [Supported Agents](/connect/supported-agents).
+</Tip>
+
+## One-line install (CLI & IDE)
+
+Run the installer for your operating system. It **detects your agent, registers
+the MCP server, and writes your API key** automatically.
+
+<CodeGroup>
+```bash macOS / Linux
+curl -fsSL https://agentkey.app/install.sh | bash
+```
+
+```powershell Windows (PowerShell)
+irm https://agentkey.app/install.ps1 | iex
+```
+</CodeGroup>
+
+Works for: **Claude Code, Cursor, Windsurf, Gemini CLI, OpenCode, Codex, Cursor
+CLI, Warp, Kimi CLI, Qwen Code, Kiro CLI, Amp, Crush, iFlow CLI**.
+
+<Warning>
+  These commands download a script and run it immediately. To review it first,
+  download and read it before executing:
+
+  ```bash
+  curl -fsSL https://agentkey.app/install.sh -o install.sh
+  less install.sh    # review, then:
+  bash install.sh
+  ```
+</Warning>
+
+## Prompt install (chat agents)
+
+For chat-based agents, paste this prompt and let the agent install the skill from
+[ClawHub](https://clawhub.ai/chainbase/agentkey) and finish setup:
+
+```text
+Install the skill chainbase/agentkey from ClawHub: https://clawhub.ai/chainbase/agentkey
+Scope the work to this skill only. After install, read the skill's metadata and
+help me finish setup based only on what you can verify from that page — don't
+invent missing requirements. Ask before making any broader environment changes.
+```
+
+Works for: **OpenClaw, Hermes, Antigravity, Trae, Qoder, WorkBuddy, Cowork**.
+
+<Card title="chainbase/agentkey on ClawHub" icon="puzzle" href="https://clawhub.ai/chainbase/agentkey">
+  The AgentKey skill page — source for install and setup details.
+</Card>
+
+<Note>
+  The prompt deliberately scopes the agent to the AgentKey skill only and tells it
+  to rely on the skill's own metadata rather than guessing — so it won't make
+  broader changes to your environment without asking.
+</Note>
+
+## Claude Desktop (desktop config)
+
+Claude Desktop needs two pieces: the MCP server configured, then the skill file
+imported.
+
+<Steps>
+  <Step title="Configure the MCP server">
+    Run the one-line installer to register the MCP server:
+
+    <CodeGroup>
+    ```bash macOS / Linux
+    curl -fsSL https://agentkey.app/install.sh | bash
+    ```
+
+    ```powershell Windows (PowerShell)
+    irm https://agentkey.app/install.ps1 | iex
+    ```
+    </CodeGroup>
+  </Step>
+  <Step title="Download the AgentKey skill">
+    Download [`agentkey.skill`](https://github.com/chainbase-labs/Agentkey/releases/latest/download/agentkey.skill).
+    The `/latest/` URL always points to the newest version — no version number to
+    track.
+  </Step>
+  <Step title="Import the skill into Claude Desktop">
+    Drag the `.skill` file into the Claude Desktop chat box (or double-click it
+    while Claude Desktop is running). Claude confirms with **“Skill imported”**.
+  </Step>
+</Steps>
+
+## Finish setup
+
+After installing, connect your **master key** so AgentKey can authenticate and
+bill usage. With the one-line installer, this happens automatically; otherwise
+follow the setup prompts.
+
+<Steps>
+  <Step title="Create a key">
+    Sign in to the [console](https://console.agentkey.app) and create a key
+    (`ak_...`).
+  </Step>
+  <Step title="Add credits">
+    Top up your balance once — credits are shared across every service.
+  </Step>
+  <Step title="Provide the key">
+    The installer writes the key for you. For prompt/desktop installs, follow the
+    setup steps to supply it. Never paste it into a chat.
+  </Step>
+</Steps>
+
+<Warning>
+  Your master key is a secret tied to your credit balance. Never commit it to
+  source control. See [Authentication](/authentication).
+</Warning>
+
+## Verify it works
+
+Ask your agent to do something it couldn't before — for example:
+
+> *Search X/Twitter for what people are saying about AgentKey today.*
+
+It should discover the right tool, look up its parameters, and run it. See
+[Discover → Describe → Execute](/concepts/discover-describe-execute) for how that
+flow works.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Supported agents" icon="grid-2x2" href="/connect/supported-agents">
+    All 22 agents and how each one installs.
+  </Card>
+  <Card title="Browse capabilities" icon="layers" href="/capabilities/overview">
+    See everything your agent can reach.
+  </Card>
+</CardGroup>

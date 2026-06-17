@@ -1,0 +1,41 @@
+---
+title: "Social"
+description: "Real-time data across 19 social platforms."
+---
+
+The **Social** category is AgentKey's largest — over **1,100 tools** spanning 19
+platforms. It lets agents monitor trends, sentiment, conversations, and creator
+data in real time.
+
+<Tip>
+  Social has many endpoints per platform. Discover with `find_tools` using the
+  platform name and your intent, e.g. `find_tools("trending posts on X about GPT")`,
+  or browse with `list_tools("social")`.
+</Tip>
+
+## Platforms
+
+| Region | Platforms |
+| --- | --- |
+| Global | X/Twitter, Reddit, YouTube, LinkedIn, TikTok, Instagram, Threads, Lemon8 |
+| China | Douyin (抖音), Zhihu (知乎), Bilibili, Weibo (微博), Xiaohongshu / Red Book (小红书), WeChat (微信), Kuaishou (快手), Pipixia (皮皮虾) |
+
+## Typical uses
+
+- **Brand & competitor monitoring** — track mentions and sentiment on X, Reddit, Weibo.
+- **Trend discovery** — trending topics, hashtags, and viral content on TikTok, Douyin, Bilibili.
+- **Content extraction** — YouTube transcripts, post text, and creator/channel data.
+- **Research** — community discussion from Reddit, Zhihu, and Xiaohongshu.
+
+## Example
+
+```text
+find_tools("what people are saying about AgentKey on X today")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+<Note>
+  Endpoints, params, and per-call costs differ widely across platforms. Always
+  `describe_tool` before executing.
+</Note>
