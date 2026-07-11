@@ -3,8 +3,8 @@ title: "account"
 description: "Check remaining credits and upstream health — always free."
 ---
 
-Returns your remaining credit balance and the health of upstream providers in one
-call. This tool is **free** — calling it never deducts credits.
+Returns your remaining monthly credit allowance and the health of upstream
+providers in one call. This tool is **free** — calling it never deducts credits.
 
 <Info>
   Run `account` before any bulk or expensive work to confirm you have enough
@@ -17,7 +17,7 @@ None.
 
 ### Returns
 
-- **credits** — your remaining credit balance
+- **credits** — credits remaining in your plan's monthly allowance
 - **health** — upstream provider / skill health status
 
 ## Example
@@ -33,6 +33,6 @@ execute_tool("agentkey_account")
 }
 ```
 
-<Card title="Pay-as-you-go" icon="wallet" href="/concepts/pay-as-you-go">
-  How credits and per-call costs work.
+<Card title="Subscription & Billing" icon="wallet" href="/concepts/subscription">
+  How plans, monthly credits, and per-call costs work.
 </Card>

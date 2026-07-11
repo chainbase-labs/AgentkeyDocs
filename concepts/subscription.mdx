@@ -1,0 +1,53 @@
+---
+title: "Subscription & Billing"
+description: "A monthly plan with included credits, plus usage-based overage."
+---
+
+AgentKey bills through a **subscription**. Each plan includes a monthly **credit
+allowance** shared across every service your agent uses. If you use up your
+allowance before the month ends, additional usage is billed as **overage** at
+per-credit rates — your agent keeps working without interruption.
+
+## How it works
+
+<CardGroup cols={3}>
+  <Card title="One plan" icon="wallet">
+    A single subscription covers every service — no per-provider signups or
+    invoices.
+  </Card>
+  <Card title="Monthly credits" icon="coins">
+    Your plan includes a credit allowance that resets each billing cycle.
+  </Card>
+  <Card title="Overage beyond it" icon="trending-up">
+    Past your allowance, usage is billed per credit — no hard cutoff, no
+    interruption.
+  </Card>
+</CardGroup>
+
+Each tool has a known per-call cost in credits, surfaced when you describe it.
+Calls draw down your monthly allowance first, then bill as overage.
+
+## See the cost before you spend
+
+Every `find_tools` and `describe_tool` result includes the per-call cost in
+credits. Before any bulk work, multiply that cost by your planned call count, and
+check your remaining allowance with the free
+[`account`](/api-reference/account) tool.
+
+<Tip>
+  For work involving several calls or a meaningful credit estimate, confirm the
+  plan and cost with the user before proceeding.
+</Tip>
+
+## Managing your plan
+
+Choose or change your plan, set overage limits, and review usage from the
+[console](https://console.agentkey.app). The `account` tool returns your
+remaining credits and upstream health at any time — and never costs credits to
+call.
+
+<Note>
+  Plan tiers, included allowances, and overage rates are shown in the
+  [console](https://console.agentkey.app); each tool's per-call cost appears in
+  its describe output.
+</Note>

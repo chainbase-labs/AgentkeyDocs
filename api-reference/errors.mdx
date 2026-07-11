@@ -6,7 +6,7 @@ description: "Common error responses and how to resolve them."
 | Symptom | Cause | Resolution |
 | --- | --- | --- |
 | `401` / unauthorized | Missing, revoked, or misconfigured master key | Re-create your `ak_...` key in the [console](https://console.agentkey.app) and re-run setup — see [Authentication](/authentication) |
-| Out-of-credits error | Balance exhausted | Top up in the console — see [Pay-as-you-go](/concepts/pay-as-you-go) |
+| Out-of-credits error | Monthly allowance exhausted and overage unavailable (e.g. overage disabled or its limit reached) | Upgrade your plan or adjust overage settings in the console — see [Subscription & Billing](/concepts/subscription) |
 | Unknown tool / fuzzy suggestions | Tool name typo or guessed name | Re-run [`find_tools`](/api-reference/find-tools) or read the suggestions from `describe_tool` |
 | Missing / invalid params | Skipped the describe step | Always [`describe_tool`](/api-reference/describe-tool) before executing |
 | Provider unavailable | Upstream outage | AgentKey auto-fails-over where possible; otherwise retry — see [Auto Failover](/concepts/auto-failover) |
