@@ -5,45 +5,88 @@ description: "Common questions about AgentKey."
 
 <AccordionGroup>
   <Accordion title="What can my agent do with AgentKey?">
-    Things it can't do on its own: search X/Twitter, read any webpage, pull Reddit
-    threads, monitor competitors, fetch live crypto and market data, and more —
-    all through one key, with no per-source signups.
+    Things it can't do on its own: search X/Twitter or Xiaohongshu, read any
+    webpage, pull Reddit threads, look up products on Amazon or Taobao, fetch
+    live crypto and market data, read SEC filings, check the weather or find a
+    hotel — all through one key, with no per-source signups.
   </Accordion>
   <Accordion title="How do I install AgentKey?">
-    Two ways, both about a minute: run the one-line installer
-    (`curl -fsSL https://agentkey.app/install.sh | bash` on macOS/Linux, or
-    `irm https://agentkey.app/install.ps1 | iex` on Windows), or paste a prompt and
-    let your agent install the skill from ClawHub. See
+    One line, about a minute: `curl -fsSL https://agentkey.app/install.sh | bash`
+    on macOS/Linux, or `irm https://agentkey.app/install.ps1 | iex` on Windows.
+    It detects the agents on your machine, installs the AgentKey skill into
+    each one and opens a browser tab to sign in. Other methods — plugin
+    marketplaces, npx, a prompt your chat agent runs, desktop config — are on
     [Installation](/connect/install).
   </Accordion>
   <Accordion title="Do I need to write any code?">
     No. Install with one command — or let your coding agent install and set it up
     for you. After that you just ask your agent in plain language.
+
+    If you *want* to write code, use the [Scenario Methods](/api-reference/scenario/overview)
+    REST API instead: fixed schemas, fixed prices, no MCP client needed.
+  </Accordion>
+  <Accordion title="Can I use AgentKey without MCP?">
+    Yes. `POST https://api.agentkey.app/v2/ops/{method}` with your key as a
+    bearer token. The catalog, every method's schema and the OpenAPI document are
+    public, so you can evaluate the contract before signing up. See the
+    [Scenario Quickstart](/api-reference/scenario/quickstart).
+  </Accordion>
+  <Accordion title="Which platforms are covered?">
+    Social: X/Twitter, Reddit, YouTube, Instagram, TikTok, LinkedIn,
+    Xiaohongshu, Douyin, Kuaishou, Bilibili, Weibo, Zhihu, WeChat Official
+    Accounts and WeChat Channels. E-commerce: Amazon, AliExpress, Shopee,
+    TikTok Shop, Temu, Taobao, JD.com, 1688, Xianyu, Douyin Shop and
+    Xiaohongshu Shop. The raw catalog reaches further still — browse it with
+    `find_tools(prefix="social")`. See [Capabilities](/capabilities/overview).
   </Accordion>
   <Accordion title="How much does it cost?">
     AgentKey is subscription-based. Each plan includes a monthly credit allowance
-    covering everything your agent uses; beyond the allowance, usage bills as
-    overage. Each tool's per-call cost is shown when you describe it. See
-    [Subscription & Billing](/concepts/subscription).
+    covering everything your agent uses. When it runs out, buy extra credits on
+    a paid plan or upgrade; the Free plan never converts on its own. Every Scenario Method has one fixed price shown in the catalog;
+    every catalog tool's per-call cost is shown when you describe it. Plans and
+    prices are on the [pricing page](https://agentkey.app/pricing.html); see
+    [Subscription & Billing](/concepts/subscription) for how credits work.
   </Accordion>
   <Accordion title="Which agents does it work with?">
-    22 agents today — including Claude Code, Cursor, Windsurf, Gemini CLI, Codex,
+    Many agents — including Claude Code, Cursor, Windsurf, Gemini CLI, Codex,
     Warp, OpenClaw, Claude Desktop, and more — plus any MCP- or Skills-compatible
     client. See [Supported Agents](/connect/supported-agents) for the full list.
   </Accordion>
   <Accordion title="Why not just sign up for each API myself?">
     You can — but Twitter's developer access alone is ~$100/month plus OAuth
     setup, then repeat for search, scraping, Reddit, and more. AgentKey gives your
-    agent all of it through one account, and auto-fails-over when a provider goes
-    down.
+    agent all of it through one account, and Scenario Methods fail over to a
+    second provider for you when one goes down.
+  </Accordion>
+  <Accordion title="What happens when a provider is down?">
+    Scenario Methods try the next eligible provider automatically, refund the
+    failed attempt and tell you what happened in `attempts`. Catalog tools run
+    the exact tool you name, so there your agent picks an alternative — most
+    capabilities exist on more than one provider. See
+    [Provider Failover](/concepts/auto-failover).
   </Accordion>
   <Accordion title="How does my agent know which tool to call?">
-    It discovers tools at runtime. See
+    It discovers tools at runtime with `find_tools`. See
     [Discover → Describe → Execute](/concepts/discover-describe-execute).
   </Accordion>
+  <Accordion title="How do I update or uninstall?">
+    The skill checks for a new version on the first call of a session and offers
+    to upgrade; `npx skills update agentkey` forces it. To remove everything,
+    run `curl -fsSL https://agentkey.app/uninstall.sh | bash` (macOS/Linux) or
+    `irm https://agentkey.app/uninstall.ps1 | iex` (Windows). Details on
+    [Installation](/connect/install#update-and-uninstall).
+  </Accordion>
   <Accordion title="Is my key safe to share with my agent?">
-    Your agent uses the key to authenticate, but you should never paste it into a
-    chat or commit it to source control. Store it as an environment variable. See
-    [Authentication](/authentication).
+    Most agents never see a key: they sign in to AgentKey through the browser.
+    Where you do use a key — a client without MCP OAuth, or the REST API —
+    never paste it into a chat or commit it to source control; store it as an
+    environment variable. See [Authentication](/authentication).
+  </Accordion>
+  <Accordion title="What does AgentKey collect?">
+    The hosted service never sees your local files, credentials or
+    conversations. The skill sends anonymous usage telemetry — which agent it
+    runs in, its version, upgrade outcomes — never queries or responses. Opt out
+    with `touch ~/.config/agentkey/telemetry-disabled`, or install with
+    `--no-telemetry`.
   </Accordion>
 </AccordionGroup>

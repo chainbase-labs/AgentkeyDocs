@@ -1,34 +1,36 @@
 ---
 title: "Discover → Describe → Execute"
-description: "The three-step model every AgentKey call follows."
+description: "The three-step model agents use to reach the tool catalog through MCP."
 ---
 
-AgentKey exposes **~1,800 tools**. Loading all of them into an agent's context at
-once would be overwhelming and expensive. Instead, AgentKey gives your agent a
-small set of meta-tools that follow one consistent pattern:
+The tool catalog holds thousands of tools from dozens of providers. Loading all of them
+into an agent's context would be slow and expensive, so the MCP server exposes a
+small set of meta tools that follow one pattern:
 
 <Steps>
-  <Step title="Discover" icon="magnifying-glass">
-    Find the right tool for the task. Use **`find_tools`** with the user's full,
-    natural-language intent, or **`list_tools`** to browse the category tree.
-    Both return canonical `Provider/Operation` tool names.
+  <Step title="Discover" icon="search">
+    Find the right tool for the task with **`find_tools`**. Pass the user's full,
+    natural-language intent as `q` to search, or a `prefix` such as
+    `social/twitter` to browse the category tree. Results are canonical
+    `Provider/Operation` names with a summary and the per-call cost.
 
     <Tip>
       Pass the user's original phrasing — don't pre-extract a single keyword.
       Intent verbs ("search", "scrape", "trending") and platform names both help
-      the router pick the right tool.
+      the ranker pick the right tool.
     </Tip>
   </Step>
   <Step title="Describe" icon="list">
     Call **`describe_tool`** with the chosen name to get its exact parameters
-    (types, required fields, enums), the per-call **cost**, and a ready-to-run
-    `execute_as` template. Always describe before executing — never guess
-    parameters.
+    (types, required fields, enums), the per-call **cost**, live health and a
+    ready-to-run `execute_as` template. Always describe before executing — never
+    guess parameters.
   </Step>
   <Step title="Execute" icon="play">
     Call **`execute_tool`** with the tool name and your parameters. The simplest
     correct call is to copy the `execute_as` template from the describe step and
-    fill in the values.
+    fill in the values. The result is the provider's payload inside a small
+    envelope that reports the provider, latency and `credits_charged`.
   </Step>
 </Steps>
 
@@ -39,13 +41,39 @@ small set of meta-tools that follow one consistent pattern:
 - **Stable interface** — new providers appear through the same three tools, so
   your integration never changes.
 
+<Note>
+  Writing code rather than an agent prompt? [Scenario Methods](/api-reference/scenario/overview)
+  give you the same providers behind fixed REST contracts with automatic
+  failover. See [Two Ways to Call](/concepts/two-ways-to-call).
+</Note>
+
 ## Naming convention
 
-Every tool is named `Provider/Operation`, for example:
+Every tool is named `Provider/Operation`, taken from the provider's own API, for
+example:
 
 - `Brave/getWebSearch`
 - `Firecrawl/scrape`
 - `Chainbase/GetAccountBalance`
+- `Sorsa/post_search_tweets`
+
+Because the operation part comes from the provider, it can be long or
+machine-generated. Discover names with `find_tools`; don't hard-code them.
+
+## Browsing instead of searching
+
+`find_tools(prefix="…")` walks the tree one level at a time. With no arguments
+it returns the eleven top-level categories: `search`, `scrape`, `social`,
+`crypto`, `finance`, `ecommerce`, `business`, `weather`, `travel`, `jobs`,
+`academic`. The second level is a platform for social and e-commerce
+(`social/twitter`, `ecommerce/taobao`), a capability for crypto
+(`crypto/market`) and the provider elsewhere (`search/serper`). Pass both `q`
+and `prefix` to search inside one subtree.
+
+<Warning>
+  `list_tools` is deprecated. It did the same tree walk and still answers, but
+  it will be removed; use `find_tools(prefix=…)` instead.
+</Warning>
 
 ## Pacing and cost
 
@@ -56,9 +84,9 @@ Every tool is named `Provider/Operation`, for example:
   work.
 </Warning>
 
-For bulk or expensive work (≥3 calls or a meaningful credit estimate), check your
-balance first with the free **`account`** tool, then confirm the plan and cost
-before proceeding.
+For bulk or expensive work (three or more calls, or a meaningful credit
+estimate), check your balance first with the free **`agentkey_account`** tool,
+then confirm the plan and cost before proceeding.
 
 <Card title="Account & balance" icon="wallet" href="/api-reference/account">
   Check remaining credits and upstream health — always free.

@@ -1,38 +1,55 @@
 ---
 title: "Subscription & Billing"
-description: "A monthly plan with included credits, plus usage-based overage."
+description: "A monthly plan with included credits — and extra credits when you need more."
 ---
 
 AgentKey bills through a **subscription**. Each plan includes a monthly **credit
-allowance** shared across every service your agent uses. If you use up your
-allowance before the month ends, additional usage is billed as **overage** at
-per-credit rates — your agent keeps working without interruption.
+allowance** shared across every service, every surface and every agent you use.
+Nothing is billed automatically beyond your plan: when the allowance runs out you
+buy extra credits or move up a plan.
 
-## How it works
+## Plans
 
-<CardGroup cols={3}>
-  <Card title="One plan" icon="wallet">
-    A single subscription covers every service — no per-provider signups or
-    invoices.
-  </Card>
-  <Card title="Monthly credits" icon="coins">
-    Your plan includes a credit allowance that resets each billing cycle.
-  </Card>
-  <Card title="Overage beyond it" icon="trending-up">
-    Past your allowance, usage is billed per credit — no hard cutoff, no
-    interruption.
-  </Card>
-</CardGroup>
+| Plan | Who it is for |
+| --- | --- |
+| **Free** | Trying AgentKey. No card needed, and it never converts to a paid plan on its own. |
+| **Lite** | Regular, hands-on use. |
+| **Pro** | Daily, serious work. Priority support and higher concurrency limits. |
+| **Max** | Heavy, production workloads. Dedicated support, highest concurrency and an SLA. |
 
-Each tool has a known per-call cost in credits, surfaced when you describe it.
-Calls draw down your monthly allowance first, then bill as overage.
+Included credits, prices and the annual discount are on the
+[pricing page](https://agentkey.app/pricing.html). You can upgrade, downgrade or
+cancel anytime from the [console](https://console.agentkey.app).
+
+## Credits
+
+A credit is the unit AgentKey uses to measure usage. Different tools consume
+different amounts depending on the provider, the data source and the request:
+
+- **Catalog tools** show their per-call cost in `find_tools` and `describe_tool`.
+  Metered tools (for example page scraping) quote a minimum; the execute result
+  reports the actual `credits_charged`.
+- **Scenario Methods** have one fixed price each, shown in the catalog and in
+  describe, charged once per successful call whichever provider served it.
+
+Calls draw down the monthly allowance first, then any extra credits.
+
+## When credits run out
+
+- Monthly credits reset each billing cycle.
+- On a paid plan you can buy **extra credits** — one-time add-ons that outlast
+  the monthly allowance — or upgrade to a bigger plan.
+- On the Free plan, extra credits are not available; upgrade to keep going.
+- Once both the allowance and extra credits are used up, calls return
+  `402 insufficient_credits` with a link to the console. Nothing is charged for
+  those calls, and your agent is told how to continue.
 
 ## See the cost before you spend
 
 Every `find_tools` and `describe_tool` result includes the per-call cost in
-credits. Before any bulk work, multiply that cost by your planned call count, and
-check your remaining allowance with the free
-[`account`](/api-reference/account) tool.
+credits, and every Scenario Method lists its fixed price. Before any bulk work,
+multiply the cost by your planned call count and check your remaining credits
+with the free [`agentkey_account`](/api-reference/account) tool.
 
 <Tip>
   For work involving several calls or a meaningful credit estimate, confirm the
@@ -41,13 +58,7 @@ check your remaining allowance with the free
 
 ## Managing your plan
 
-Choose or change your plan, set overage limits, and review usage from the
-[console](https://console.agentkey.app). The `account` tool returns your
-remaining credits and upstream health at any time — and never costs credits to
-call.
-
-<Note>
-  Plan tiers, included allowances, and overage rates are shown in the
-  [console](https://console.agentkey.app); each tool's per-call cost appears in
-  its describe output.
-</Note>
+Choose or change your plan, buy extra credits and review usage from the
+[console](https://console.agentkey.app). The `agentkey_account` tool returns
+your plan, remaining allowance, extra credits and upstream health at any time —
+and never costs credits to call.

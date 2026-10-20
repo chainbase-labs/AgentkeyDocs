@@ -1,31 +1,65 @@
 ---
-title: "Auto Failover"
-description: "When a provider goes down, your agent keeps running."
+title: "Provider Failover"
+description: "Scenario Methods fail over to a second provider automatically. Catalog tools run the tool you name."
 ---
 
-Individual API providers have outages. AgentKey insulates your agent from them:
-when a provider becomes unavailable, AgentKey **automatically routes to a backup**
-that serves the same capability — with no interruption and nothing for you to do.
+Upstream providers have outages, rate limits and the occasional broken
+response. How AgentKey handles that depends on which surface you call.
 
-## How routing works
+## Scenario Methods: automatic
+
+Every [Scenario Method](/api-reference/scenario/overview) is backed by one or
+more providers in a curated order. When the first provider fails in a way that
+is its fault — a transport error, a 5xx, a rate limit, an error hidden inside a
+200, a body that is no longer the expected shape — the server refunds that
+attempt and tries the next eligible provider. At most two attempts are made,
+inside the method's time budget.
 
 ```
-AGENTKEY ROUTER
-  ├─ Tavily      ✓ Active     → routing here
-  ├─ Brave       ✕ Down       → skipped
-  └─ Perplexity  ◦ Standby    → ready to take over
+POST /v2/ops/social.x.post.search
+
+  attempt 1  sorsa    502 upstream_unavailable  refunded
+  attempt 2  tikhub   200                       served
+
+  provider: "tikhub"   credits_charged: 1.0 (the method price, unchanged)
 ```
 
-Within a capability (for example, web search), AgentKey keeps multiple providers
-behind the same interface. If the active one fails, the next healthy provider
-takes over transparently.
+What makes this safe to rely on:
 
-## What this means for you
+- **The price does not move.** You pay the method's fixed price whichever
+  provider ends up serving the call.
+- **The shape does not move.** Both providers are mapped to the same output
+  schema; fields one provider structurally lacks are listed in
+  `unsupported_fields`.
+- **Nothing is hidden.** The response names the `provider` that answered and
+  lists every attempt in `attempts[]`.
+- **It only switches on provider faults.** A bad parameter, a missing object or
+  an empty result is returned as such and never costs you a second call.
 
-- **No code changes** — failover happens at the routing layer.
-- **One stable interface** — you call a capability, not a specific vendor.
-- **Higher uptime** — a single provider's outage no longer breaks your agent.
+You can also steer it: pin a provider, change the order, or turn fallbacks off
+with the `routing` parameter. See
+[Routing & Pricing](/api-reference/scenario/routing-and-pricing).
 
-<Card title="Check upstream health" icon="heart-pulse" href="/api-reference/account">
-  The free `account` tool reports remaining credits and upstream provider health.
+## Catalog tools: you choose the tool
+
+`execute_tool` runs exactly the `Provider/operation` you name and returns that
+provider's payload. There is no automatic switch to another provider — a
+different tool would return a different payload, which a caller that chose a
+specific tool would not expect.
+
+When a catalog call fails upstream, the retry is yours to make, and usually
+cheap: most capabilities exist on more than one provider.
+
+1. **Sibling surface** — many providers expose the same operation under an app
+   path and a web path (`…/app/…` vs `…/web/…`); try the other one.
+2. **Sibling version** — endpoints carrying `v1` / `v2` / `v3` in the name are
+   parallel versions of the same operation.
+3. **Another provider** — `find_tools` lists every provider for a capability;
+   `describe_tool` the equivalent tool and call it.
+
+Each retry is a separate billed call, so cap it at two or three attempts.
+
+<Card title="Check upstream health first" icon="heart-pulse" href="/api-reference/account">
+  The free `agentkey_account` tool reports every provider's health and latency, and
+  `GET /v2/ops/{method}` shows live health per provider for one method.
 </Card>
