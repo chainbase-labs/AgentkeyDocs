@@ -1,50 +1,68 @@
 ---
 title: "describe_tool"
-description: "Get a tool's parameters, per-call cost, and a ready-to-run template."
+description: "Get a tool's parameters, per-call cost, live health and a ready-to-run template."
 ---
 
-Returns the full contract for a tool: parameter definitions (types, required
-fields, enums, examples), the per-call cost, and an `execute_as` template you can
-copy into [`execute_tool`](/api-reference/execute-tool).
+Returns the full contract for one catalog tool: its parameter schema, its cost,
+whether it is healthy right now, and an `execute_as` template you can copy into
+[`execute_tool`](/api-reference/execute-tool).
 
 <Warning>
   Call `describe_tool` before every `execute_tool`. Never guess parameters.
 </Warning>
 
-<ParamField path="name" type="string" required>
-  A canonical `Provider/Operation` tool name (e.g. `Firecrawl/scrape`,
-  `Brave/getWebSearch`), a browse path (e.g. `crypto/market/...`), or
-  `agentkey_account`. On a typo, returns fuzzy-match suggestions — read them and
-  correct rather than retrying blindly.
+<ParamField body="name" type="string" required>
+  A canonical `Provider/Operation` name (`Firecrawl/scrape`, `Brave/getWebSearch`),
+  a browse path from `find_tools` (`social/twitter/post_search_tweets`), or
+  `agentkey_account`. On a typo the response contains fuzzy-match suggestions —
+  read them and correct rather than retrying blindly.
 </ParamField>
 
-### Returns
-
-- **params** — JSON Schema of parameters with types, `required`, enums, examples
-- **cost** — `{ credits_per_call, usd_per_call, cost_by_provider }`
-- **execute_as** — a ready-to-run template for `execute_tool`
-- **health** — upstream availability for the tool
-
-## Cost guidance
-
-Multiply `cost.credits_per_call` by your planned call count **before** executing a
-batch. For bulk work (≥3 calls or a meaningful credit estimate), check your
-balance first with [`account`](/api-reference/account).
-
-## Example
+## Returns
 
 ```text
-describe_tool("Firecrawl/scrape")
+describe_tool("Serper/search")
 ```
 
 ```json
 {
-  "name": "Firecrawl/scrape",
-  "cost": { "credits_per_call": 0.2, "usd_per_call": 0.004 },
-  "execute_as": { "name": "Firecrawl/scrape", "params": { "url": "<The URL to scrape.>" } },
-  "params": { "type": "object", "required": ["url"], "properties": { "url": { "type": "string", "format": "uri" } } }
+  "name": "Serper/search",
+  "provider": "Serper",
+  "category": "Search",
+  "tags": ["Serper"],
+  "summary": "Web search",
+  "description": "",
+  "cost": { "credits_per_call": 0.2 },
+  "health": { "healthy": true },
+  "params": {
+    "type": "object",
+    "required": ["q"],
+    "properties": {
+      "q":   { "type": "string",  "description": "Search query string." },
+      "gl":  { "type": "string",  "default": "us", "description": "Country code (geolocation), e.g. us, cn, gb." },
+      "hl":  { "type": "string",  "default": "en", "description": "UI language code, e.g. en, zh-cn." },
+      "num": { "type": "integer", "description": "Number of results to return." },
+      "tbs": { "type": "string",  "description": "Time-based filter: qdr:h, qdr:d, qdr:w, qdr:m, qdr:y." }
+    }
+  },
+  "execute_as": { "name": "Serper/search", "params": { "q": "<Search query string.>" } }
 }
 ```
+
+| Field | Meaning |
+| --- | --- |
+| `params` | JSON Schema of the parameters: types, `required`, enums, defaults, descriptions. These are the provider's own parameter names. |
+| `cost.credits_per_call` | Price in credits. |
+| `cost.metered`, `cost.credits_minimum`, `cost.billing_note` | Present on metered tools (for example `Firecrawl/scrape`): the price is a minimum and the actual charge depends on the response. Read `credits_charged` on the execute result. |
+| `health.healthy` | Whether AgentKey's probes currently see the provider as healthy. |
+| `execute_as` | A template with placeholders for every required parameter. Fill in the values and pass it to `execute_tool`. |
+
+## Cost guidance
+
+Multiply `cost.credits_per_call` by your planned call count **before** executing a
+batch. For bulk work (three or more calls, or a meaningful credit estimate),
+check your balance first with the free [`agentkey_account`](/api-reference/account)
+tool and confirm the plan with the user.
 
 ## Next step
 

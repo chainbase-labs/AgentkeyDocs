@@ -1,50 +1,86 @@
 ---
 title: "find_tools"
-description: "Discover the right tool from natural-language intent."
+description: "Discover catalog tools from natural-language intent, or browse the category tree."
 ---
 
-Semantic search across all of AgentKey's tools. Pass the user's full,
-natural-language intent — the router uses embeddings plus platform-alias and
-intent-keyword boosting to rank matches.
+The single entry point to the tool catalog. Pass `q` to search semantically,
+`prefix` to browse the tree one level at a time, or both to search inside one
+subtree. Omit both to list the top-level categories.
 
-<ParamField path="q" type="string" required>
-  The user's original phrasing — not a single extracted keyword. Works in
-  multiple languages. Examples: `"search the latest OpenAI news"`,
-  `"find trending posts on X about GPT"`, `"scrape the article at https://example.com"`.
+<ParamField body="q" type="string">
+  The user's original phrasing — not a single extracted keyword. English,
+  Chinese and mixed queries work. Examples: `"search the latest OpenAI news"`,
+  `"find trending posts on X about GPT"`, `"抓取 https://example.com 的正文"`.
 </ParamField>
 
-### Returns
-
-A ranked list of tools, each with:
-
-- **name** — the canonical `Provider/Operation` identifier
-- **summary** — what the tool does
-- **cost** — per-call price in credits
+<ParamField body="prefix" type="string">
+  A tree path such as `social`, `social/twitter`, `crypto/market`,
+  `ecommerce/taobao` or `search/serper`. The top level is the eleven
+  categories; the second level is a platform for social and e-commerce, a
+  capability for crypto, and the provider elsewhere.
+</ParamField>
 
 <Tip>
   Don't pre-extract a keyword. Passing the full intent lets both the action verb
-  ("search", "scrape", "trending") and any platform mention reach the router.
+  ("search", "scrape", "trending") and any platform mention reach the ranker.
 </Tip>
 
-## Example
+## Search results
 
 ```text
-find_tools("what people are saying about Claude on X today")
+find_tools(q="search recent tweets about AgentKey on X")
 ```
 
 ```json
-[
-  { "name": "Twitter/searchTweets", "summary": "Search recent public tweets", "cost": { "credits_per_call": 0.5 } }
-]
+{
+  "mode": "semantic",
+  "query": "search recent tweets about agentkey on x",
+  "count": 10,
+  "tools": [
+    { "name": "Sorsa/post_search_tweets", "summary": "Search Tweets", "cost": 1, "score": 0.69, "recommended": true, "fit": 0.9 },
+    { "name": "Serper/search", "summary": "Web search", "cost": 0.2, "score": 0.71 }
+  ]
+}
 ```
+
+| Field | Meaning |
+| --- | --- |
+| `name` | The canonical `Provider/Operation` identifier to pass to `describe_tool` and `execute_tool`. |
+| `summary` | What the tool does, in one line. |
+| `cost` | Per-call price in credits. For metered tools this is the minimum; `describe_tool` has the detail. |
+| `score` | Retrieval similarity, 0–1. Useful for ordering, not a quality guarantee. |
+| `recommended` | Present on at most one result: the single best match once validated. Prefer it unless the user asked for alternatives. |
+| `fit` | Present on validated results: how well the tool fits the request, 0–1. A result without `fit` was not validated, not rejected. |
+
+## Browsing
+
+```text
+find_tools(prefix="social/twitter")
+```
+
+```json
+{
+  "mode": "browse",
+  "prefix": "social/twitter",
+  "count": 73,
+  "items": [
+    { "path": "social/twitter/post_search_tweets", "summary": "Search Tweets" },
+    { "path": "social/twitter/web_fetch_search_timeline", "summary": "Search" },
+    { "path": "social/twitter/twitterSearchTweets", "summary": "Search tweets" }
+  ]
+}
+```
+
+Browse items are tree paths. Pass a leaf path to `describe_tool` and it resolves
+to the canonical tool; a non-leaf path lists the next level, with up to five
+representative tools per group.
+
+<Note>
+  `list_tools` is deprecated: it performed this same tree walk. It still answers,
+  but new integrations should call `find_tools(prefix=…)`.
+</Note>
 
 ## Next step
 
-Pass the chosen `name` to [`describe_tool`](/api-reference/describe-tool) to get
-its parameters and a ready-to-run template.
-
-<Note>
-  To browse instead of search, use `list_tools(prefix)` — it walks the category
-  tree (`search`, `scrape`, `social`, `crypto`, `finance`, `business`,
-  `ecommerce`).
-</Note>
+Pass the chosen `name` to [`describe_tool`](/api-reference/describe-tool) for
+its parameters, cost and a ready-to-run template.

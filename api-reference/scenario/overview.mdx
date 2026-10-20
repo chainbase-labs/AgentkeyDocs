@@ -1,0 +1,170 @@
+---
+title: "Scenario Methods"
+sidebarTitle: "Overview"
+description: "Fixed-contract REST methods over AgentKey's providers — one name, one schema, one price, with server-side routing and failover."
+---
+
+Scenario Methods are the way to call AgentKey from code — built for developers
+and enterprise integrations, while agents on the MCP server use the
+[tool catalog](/concepts/discover-describe-execute). Each method has a fixed
+name, a fixed input schema, a fixed output schema and a fixed price. AgentKey
+picks the upstream provider, normalizes the response, fails over when a provider
+breaks, and tells you exactly what it did.
+
+```bash
+curl https://api.agentkey.app/v2/ops/social.x.post.search \
+  -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "from:NASA", "limit": 5}'
+```
+
+If you are wiring an agent to the MCP server instead, the catalog's
+`find_tools` → `describe_tool` → `execute_tool` flow is documented under
+[Tool Catalog](/api-reference/find-tools); [Two Ways to Call](/concepts/two-ways-to-call)
+explains when to use which.
+
+<Note>
+  Scenario Methods are in **beta**. Schemas may still gain fields; we avoid
+  breaking changes and version them when unavoidable (see
+  [Stability and versions](#stability-and-versions)).
+</Note>
+
+## Method names
+
+A method is named `domain.platform.action`, or `domain.action` where there is
+no platform:
+
+| Example | Domain | Platform | Action |
+| --- | --- | --- | --- |
+| `social.x.post.search` | social | x | post.search |
+| `ecommerce.amazon.product.get` | ecommerce | amazon | product.get |
+| `finance.quote` | finance | — | quote |
+| `web.search` | web | — | search |
+
+The name is the same identifier everywhere: in the REST path, in the catalog, in
+the OpenAPI `operationId` (dots become underscores) and in future SDKs. Within a
+domain the same action means the same thing on every platform — `post.search`
+on X and on Xiaohongshu take the same core parameters and return the same `Post`
+object.
+
+## What is covered
+
+Public methods span ten domains. Social and e-commerce methods come in
+platform × action combinations; the other domains are provider-independent
+lookups.
+
+| Domain | Platforms / scope |
+| --- | --- |
+| **Social** | X (Twitter), Reddit, YouTube, Instagram, TikTok, LinkedIn, Xiaohongshu, Douyin, Kuaishou, Bilibili, Weibo, Zhihu, WeChat Official Accounts, WeChat Channels — posts, comments, users, topics, trending, share links, transcripts |
+| **E-commerce** | Amazon, AliExpress, Shopee, TikTok Shop, Temu, Taobao, JD.com, 1688, Xianyu, Xiaohongshu Shop — product search, details, reviews, rankings, shops |
+| **Finance** | Quotes, candles, company profiles, financial statements, earnings, estimates, ownership, SEC filings, symbol search, macro series, news |
+| **Crypto** | Token price and info, market lists, holders, wallet assets and transactions, derivatives snapshot, news |
+| **Business** | Company search and profiles, funding rounds, people |
+| **Web** | Web search, page scraping, grounded answers |
+| **Travel** | Hotel search, flight search, location lookup |
+| **Jobs** | Job search and details |
+| **Weather** | Forecast, location lookup |
+| **Academic** | Paper search and details |
+
+Browse them in the sidebar, or fetch the live catalog:
+
+```bash
+curl "https://api.agentkey.app/v2/ops?domain=social&platform=x"
+```
+
+## Why fewer methods than catalog tools
+
+The catalog lists every upstream endpoint; Scenario Methods are a curated layer
+on top of it, so there are far fewer of them. That is by design:
+
+- **One method per capability.** A method such as `social.x.post.search` stands
+  in for every endpoint that does that job — several providers, their app and
+  web variants, their v1 / v2 / v3 generations. Where the catalog shows many
+  tools, the method shows one, and the server chooses among them.
+- **Stability over coverage.** A method is a contract: fixed schema, integer
+  versions, additive changes only. Catalog tools follow their provider and can
+  be renamed or dropped whenever the provider changes. An operation becomes a
+  method only when its contract can be kept for years.
+- **Normalized output.** Methods return shared objects — `Post`, `Product`,
+  `Quote`, … Endpoints whose data does not map onto one of those objects —
+  platform-specific analytics, raw feeds, login-state or ad-ops operations —
+  stay in the catalog.
+- **Validated against real responses.** A method ships only after every provider
+  behind it has been sampled with real calls and its field mapping checked
+  against recorded responses. New providers therefore appear in the catalog
+  first; the method list lags it on purpose.
+- **The common tasks first.** Methods cover what agents ask for most — search
+  posts, fetch a product, quote a symbol, scrape a page. The long tail is a
+  `find_tools` call away.
+
+If a capability you need is in the catalog but not yet a method, call it
+through the catalog today and [tell us](/support): methods are added where usage
+shows demand.
+
+## The contract
+
+Every method gives you the same guarantees:
+
+- **Strict input.** The input schema is exact; an unknown field is a `400`, not a
+  silent no-op. See [Requests](/api-reference/scenario/requests).
+- **Normalized output.** Results are mapped to shared objects — `Post`, `User`,
+  `Product`, `Quote`, … — whatever provider served the call. Fields a provider
+  structurally lacks are declared in `unsupported_fields`, so `null` always means
+  "this record has none". See [Responses](/api-reference/scenario/responses).
+- **One price.** Charged once per successful call, the same whichever provider
+  answered. Failed attempts are refunded. See
+  [Routing & Pricing](/api-reference/scenario/routing-and-pricing).
+- **Nothing hidden.** The envelope names the `provider`, lists every `attempt`,
+  reports `credits_charged` and carries a `request_id`.
+- **Readable without a key.** The catalog, every method's describe and the
+  OpenAPI document are public, so you can evaluate the contract before you sign
+  up.
+
+## Stability and versions
+
+Each method carries a tier in the catalog and in `x-stability` in the OpenAPI
+document:
+
+| Tier | Meaning |
+| --- | --- |
+| `beta` | Current state of every method. The schema may gain optional fields and new enum values; we do not remove or retype fields without versioning. |
+| `stable` | The schema is frozen except for additive changes. |
+| `deprecated` | A newer version exists. Responses carry `Deprecation` and `Sunset` headers; the method keeps working for at least 180 days after the sunset is announced. |
+
+Versions are integers at two levels:
+
+- The **surface** version is in the path: `/v2`. It changes only when the
+  envelope, the reserved parameters or the shared objects change incompatibly.
+- The **method** version is a suffix on the name: `social.x.post.search` is
+  version 1; a breaking change ships as `social.x.post.search.v2` while the old
+  name stays available through its sunset. The envelope reports the version
+  that served you as `op_version`.
+
+What counts as breaking: removing a field, changing its type or meaning,
+making an optional input required, changing what an enum value means. What does
+not: adding an optional input, an output field, an enum value, a platform or a
+method. Write clients to ignore output fields they don't know.
+
+## Reading a method page
+
+Each method page in the sidebar is generated from the same OpenAPI document the
+server serves at `/v2/openapi.yaml`. It shows the request body with every
+parameter, the success envelope for that method's output type, the error
+responses, and the providers behind it (`x-providers`). For live information —
+provider health right now, which fields each provider cannot supply, and a
+recorded example response per provider — call `GET /v2/ops/{method}`.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/api-reference/scenario/quickstart">
+    Catalog, describe and your first call in three curl commands.
+  </Card>
+  <Card title="Requests" icon="arrow-right-to-line" href="/api-reference/scenario/requests">
+    Authentication, shared parameters, reserved fields, pagination.
+  </Card>
+  <Card title="Responses" icon="braces" href="/api-reference/scenario/responses">
+    The envelope and the shared objects.
+  </Card>
+  <Card title="Routing & Pricing" icon="shuffle" href="/api-reference/scenario/routing-and-pricing">
+    Provider selection, failover rules, fixed prices, overrides.
+  </Card>
+</CardGroup>

@@ -1,0 +1,57 @@
+---
+title: "Errors"
+description: "HTTP statuses, error types, and what to do about each."
+---
+
+Errors come back as the [error envelope](/api-reference/scenario/responses#error-envelope):
+`error` (message), `code` (HTTP status), `error_type` (stable kind), plus `op`,
+`request_id` and `attempts` when the request got that far. Match on
+`error_type`, not on the message text.
+
+## Status codes
+
+| HTTP | `error_type` | When | What to do |
+| --- | --- | --- | --- |
+| `400` | `validation` | Unknown field, wrong type or enum value, `cursor` reused with different parameters, a provider repeated in `routing.order` / `routing.only`, an unsupported `routing.strategy`, or "no provider accepts this combination of inputs". | Fix the request. Not charged. |
+| `401` | `unauthorized` | Missing or invalid `Authorization: Bearer ak_...`. | Check the key in the [console](https://console.agentkey.app). |
+| `402` | `insufficient_credits` | Your allowance and extra credits are used up. The body also carries `action` (`upgrade` or `topup_or_upgrade`) and the console URL. | Top up or upgrade. No upstream call was made. |
+| `404` | `not_found` | Unknown method name — or the object does not exist upstream (deleted post, bad ID, private account). | Check the name against `GET /v2/ops`; for objects, the input was valid but there is nothing there. Not charged, no failover. |
+| `413` | `validation` | Request body larger than 1 MB. | Shrink the body. |
+| `429` | `rate_limit` | The provider rate-limited the call and no fallback could serve it. | Retry with backoff. Refunded. |
+| `502` | `upstream_unavailable` · `provider_error` | Every eligible provider failed: outage, broken response, or no provider can serve right now. `attempts` shows each failure. | Retry with backoff; consider `routing.only` on a provider that was not the one failing. Refunded. |
+| `504` | `timeout` | The method's time budget ran out across the attempts. | Retry; lower `limit`. Refunded. |
+
+Other kinds you may see inside `attempts[].error_type` but rarely as the final
+status: `upstream_unauthorized` (a provider rejected AgentKey's own credential —
+we are alerted and the call fails over) and `provider_error` (the provider
+returned an error inside a `200`).
+
+## A disabled category
+
+A category you switched off in the console (Marketplace) is refused before any
+upstream call. For compatibility with the MCP surface this refusal is an **HTTP
+200** with a distinctive body, not an error envelope:
+
+```json
+{
+  "disabled": true,
+  "category": "social",
+  "message": "AgentKey's social capability is turned off in this user's AgentKey settings. …",
+  "reenable_at": "AgentKey console → Marketplace → Social"
+}
+```
+
+Check for `disabled: true` before reading `data`. Do not retry and do not route
+the request through another method; re-enable the category in the console if
+you need it.
+
+## Retrying
+
+- Retry `429`, `502` and `504` with exponential backoff; the failed attempts
+  were refunded, so a retry costs you nothing extra until it succeeds.
+- Do not retry `400`, `401`, `402` or `404` unchanged — the result will be the
+  same.
+- When one provider keeps failing, name a different one with `routing.only` (see
+  [Routing & Pricing](/api-reference/scenario/routing-and-pricing)) rather than
+  retrying blindly; `GET /v2/ops/{method}` shows each provider's live health.
+- Include `request_id` when you contact support about a call.

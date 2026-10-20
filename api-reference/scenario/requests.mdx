@@ -1,0 +1,153 @@
+---
+title: "Requests"
+description: "Base URL, authentication, request body rules and the parameters every Scenario Method shares."
+---
+
+Every Scenario Method is one HTTP call:
+
+```http
+POST https://api.agentkey.app/v2/ops/{method}
+Authorization: Bearer ak_...
+Content-Type: application/json
+```
+
+The body is a JSON object with the method's parameters. The response is always a
+JSON envelope — see [Responses](/api-reference/scenario/responses).
+
+## Endpoints
+
+| Endpoint | Auth | What it does |
+| --- | --- | --- |
+| `GET /v2/ops` | none | The method catalog: name, tier, summary, price, providers. Filter with `?domain=`, `?platform=`, `?action=`. |
+| `GET /v2/ops/{method}` | none | Describe one method: input schema, output schema, providers with live health, unsupported fields, example responses. |
+| `POST /v2/ops/{method}` | API key | Call the method. |
+| `GET /v2/openapi.yaml` · `GET /v2/openapi.json` | none | The OpenAPI 3.1 document for every public method. |
+
+Catalog, describe and the OpenAPI document never need a key, so you can
+read the whole contract before you spend a credit.
+
+## Authentication
+
+Send your master key as a bearer token:
+
+```bash
+curl https://api.agentkey.app/v2/ops/web.search \
+  -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "AgentKey"}'
+```
+
+The same `ak_...` key you use for the MCP server works here. A missing or
+invalid key returns `401`. See [Authentication](/authentication).
+
+## Request body rules
+
+- The body must be a JSON object, at most 1 MB. Larger bodies return `413`.
+- Schemas are strict. A field the method does not declare is rejected with
+  `400` and `error_type: "validation"` — nothing is silently ignored, so a
+  typo or an upstream parameter name never slips through.
+- Every parameter has a type, and enums are enforced. Defaults are applied on
+  the server (`limit` defaults to 20 on paged methods).
+- The exact schema of a method is on its page in the sidebar, in
+  `GET /v2/ops/{method}` as `input_schema`, and in the OpenAPI document.
+
+## Shared parameters
+
+Parameters keep the same name and meaning across methods. Which ones a given
+method accepts, and the valid values, are on the method's page.
+
+| Parameter | Type | Meaning |
+| --- | --- | --- |
+| `query` | string | Free-text search query. Platform operators work where the platform supports them (X: `from:user`, `since:YYYY-MM-DD`, `"exact phrase"`, `#hashtag`). |
+| `id_or_url` | string | The object to fetch — a platform ID or the public URL of the post, user, product, paper or shop. The server extracts the ID from the URL. |
+| `cursor` | string | Opaque pagination cursor from the previous response's `next_cursor`. Send it with the same parameters. |
+| `limit` | integer | Maximum number of items to return. Each method states its range and default. |
+| `sort` | enum | Ordering, e.g. `latest` / `top` for posts, `relevance` / `recent` / `citations` for papers. |
+| `country` | enum or string | ISO 3166-1 alpha-2 country code — a marketplace on Amazon, a trend region on X, a ship-to country on AliExpress. |
+| `lang` | string | BCP 47 language tag for the content you want, e.g. `en`, `zh`. |
+| `time_range` | enum | Recency window: `day`, `week`, `month`, `all`. |
+| `symbol` | string | Ticker or token symbol (`AAPL`, `0700.HK`, `BTC`). Case-insensitive where noted. |
+| `url` | string | A full URL when the method works on a page or document rather than an ID. |
+
+E-commerce methods add `price_min` / `price_max`, `region`, `currency` and
+platform filters; finance methods add `start` / `end`, `period`, `statement`,
+`interval`. These are typed and documented per method.
+
+## Reserved parameters
+
+Four parameters exist on every method. They control routing and the shape of
+the response, not what the method does.
+
+<ParamField body="routing" type="object">
+  Override provider selection: `order`, `only`, `allow_fallbacks`, `strategy`.
+  Details in [Routing & Pricing](/api-reference/scenario/routing-and-pricing).
+</ParamField>
+
+<ParamField body="provider" type="string">
+  Shorthand for `routing.only = [provider]` — pin the call to one provider.
+</ParamField>
+
+<ParamField body="fields" type="string[]">
+  Return only these dotted paths of `data`, e.g.
+  `["items.id", "items.text", "items.metrics.likes"]`. Use it to keep responses
+  small for an LLM context. `raw` is not affected.
+</ParamField>
+
+<ParamField body="include_raw" type="boolean" default="false">
+  Attach the upstream provider's payload as `raw`. It is not part of the
+  contract and may change whenever the provider changes; payloads above 256 KB
+  are truncated and flagged with `raw_truncated: true`.
+</ParamField>
+
+## Pagination
+
+Methods that return a list (`PostPage`, `ProductPage`, `UserPage`, …) page with
+an opaque cursor:
+
+1. Call the method without `cursor`. The response's `data.next_cursor` is a
+   string when more results exist, `null` when they don't.
+2. Call again with the **same parameters** plus `cursor`.
+
+Two rules follow from how cursors work:
+
+- A cursor is bound to the provider that produced the first page, so later pages
+  come from the same provider and stay consistent. If that provider fails on a
+  later page, the call fails rather than silently switching.
+- A cursor is bound to the query. Reusing it with a different `query` (or other
+  parameters) returns `400`.
+
+A `limit` smaller than the provider's own page size is fine: the server keeps
+reading the same upstream page across your calls, so nothing is skipped.
+Methods without pagination (single-object lookups) have no `cursor` and no
+`next_cursor`.
+
+## Example
+
+Search X for recent posts, keep three fields and page through the results:
+
+```bash
+curl https://api.agentkey.app/v2/ops/social.x.post.search \
+  -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "from:NASA filter:images",
+    "sort": "latest",
+    "limit": 10,
+    "fields": ["items.id", "items.text", "items.url", "next_cursor"]
+  }'
+```
+
+Then, with the `next_cursor` from the response:
+
+```bash
+curl https://api.agentkey.app/v2/ops/social.x.post.search \
+  -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "from:NASA filter:images",
+    "sort": "latest",
+    "limit": 10,
+    "fields": ["items.id", "items.text", "items.url", "next_cursor"],
+    "cursor": "eyJwIjoic29yc2EiLCJjIjp7Li4ufX0"
+  }'
+```

@@ -1,0 +1,139 @@
+---
+title: "Routing & Pricing"
+description: "How a method picks its provider, when it fails over, what you pay, and how to override the route."
+---
+
+A Scenario Method is backed by one or more upstream providers. The server
+chooses which one serves your call, retries once on a different provider when
+the first fails, and bills a fixed price regardless of which provider answered.
+Everything it did is visible in the response.
+
+## Fixed price per method
+
+Every method has one price in credits — `price_credits` in the catalog and in
+describe, `x-price-credits` in the OpenAPI document. The rules:
+
+- You are charged **only for a successful call**, and **at most once per
+  request**. A failed attempt that triggers a failover is refunded.
+- The price does not change with the provider. If the primary provider fails
+  and a more expensive one serves the call, you still pay the method price.
+- The response tells you what you paid in `credits_charged`.
+
+<Note>
+  **Metered methods.** `web.scrape` is served by Firecrawl, which bills on what a
+  page actually costs to fetch (anti-bot pages and PDFs cost more). For such
+  methods the fixed price is a floor: `credits_charged` reports the real
+  amount. The OpenAPI document marks them `x-pricing: fixed_floor_metered`, and
+  describe marks the binding `metered: true` with a `metered_note`. PDF parsing
+  on `web.scrape` is capped at 20 pages per call.
+</Note>
+
+## How a provider is chosen
+
+For each call the server builds an ordered list of eligible providers and tries
+them in turn:
+
+<Steps>
+  <Step title="Start from the method's curated order">
+    The `bindings` array in describe is the default order. It is set by hand
+    from real sampling of each provider, best first.
+  </Step>
+  <Step title="Drop providers that cannot take this input">
+    Some providers only accept certain inputs — a numeric ID but not a URL, one
+    marketplace but not another, a language they don't publish in. Describe
+    lists these as `accepts_input` and `unsupported_input`.
+  </Step>
+  <Step title="Drop unhealthy providers">
+    Live health from AgentKey's probes. Describe shows it as `healthy` per
+    binding.
+  </Step>
+  <Step title="Skip providers that are only used on request">
+    A provider marked `explicit_only: true` in describe costs far more than the
+    method price. It is skipped unless you name it, or nothing cheaper can
+    serve the request.
+  </Step>
+  <Step title="Try, and fail over once">
+    The first eligible provider is called. If it fails in a way that is the
+    provider's fault, the second one is tried. **At most two attempts** are made
+    per request, within the method's time budget (`timeout_ms` in describe).
+  </Step>
+</Steps>
+
+If no provider accepts the combination of inputs you sent, the call returns
+`400` with `"no provider accepts this combination of inputs"`. If providers
+exist but none can serve right now (for example all unhealthy), it
+returns `502` with `"no provider can serve this request right now"`.
+
+## What triggers a failover
+
+| Outcome of an attempt | Failover? | Billing |
+| --- | --- | --- |
+| Transport error, HTTP 5xx or gateway timeout from the provider | Yes | Attempt refunded |
+| HTTP 429 from the provider | Queued once, then yes | Attempt refunded |
+| HTTP 200 whose body is the provider's own error (error code inside the JSON) | Yes | Attempt refunded |
+| HTTP 200 whose body is not JSON, or no longer has the expected shape | Yes | Attempt refunded |
+| Request problem — bad parameter, object not found, private object | **No** | Not charged |
+| A valid but empty result | **No** — you get an empty page and the provider that produced it | Charged |
+
+An empty result is a result, not a failure: switching providers on empty pages
+would turn one query into two billed calls and often return the same nothing.
+
+## Overriding the route
+
+All four fields live in the reserved `routing` object (see
+[Requests](/api-reference/scenario/requests)).
+
+```json
+{
+  "query": "AgentKey",
+  "routing": {
+    "order": ["tikhub", "sorsa"],
+    "allow_fallbacks": true
+  }
+}
+```
+
+<ParamField body="routing.order" type="string[]">
+  Try these providers first, in this order. Providers you don't list keep their
+  default position after them.
+</ParamField>
+
+<ParamField body="routing.only" type="string[]">
+  Restrict the call to these providers. `"provider": "tikhub"` at the top level
+  is shorthand for `"routing": {"only": ["tikhub"]}`. Naming an
+  `explicit_only` provider here serves the call at the method's fixed price.
+</ParamField>
+
+<ParamField body="routing.allow_fallbacks" type="boolean" default="true">
+  `false` tries only the first eligible provider and never fails over.
+</ParamField>
+
+<ParamField body="routing.strategy" type="string" default="auto">
+  How eligible providers are ordered. `auto` is the curated order. `fastest`,
+  `stable` and `popular` are reserved and return `400 not supported yet` until
+  they ship; describe lists the accepted values in `strategies`. A strategy
+  never changes the price, and cannot be combined with `order`.
+</ParamField>
+
+Rules: a provider repeated in `order` or `only` is a `400`. When you send a
+`cursor`, the provider is already fixed by the cursor and `routing` cannot move
+the call to another one.
+
+## Seeing what happened
+
+You never have to guess which provider answered:
+
+- `provider` in the envelope is the provider that actually served the call.
+- `attempts[]` lists every attempt, successful or not, with the provider, the
+  upstream tool, the mapped status, latency and whether it was refunded. A
+  failover is never invisible.
+- `unsupported_fields` lists the output paths this provider structurally does
+  not supply, so you can tell "this provider never has it" from "this record
+  has none".
+- `request_id` (also sent as the `X-Request-Id` header) identifies the call for
+  support.
+
+Before calling, `GET /v2/ops/{method}` shows the same information
+prospectively: every provider with `healthy`, `explicit_only`, `metered`,
+`unsupported_input`, `unsupported_fields` and an `example` response recorded
+from that provider.

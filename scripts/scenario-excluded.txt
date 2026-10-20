@@ -1,0 +1,24 @@
+# Scenario methods that exist in the OpenAPI snapshot but have no routable
+# provider yet (every binding is still a draft). Calling them returns
+# 502 "no provider can serve", so they are kept out of the public docs.
+#
+# Regenerate from the server repo:
+#   go run ./tools/gen-scenario methods
+# and list every method whose bindings are ALL marked "(draft)".
+# Last synced: 2026-10-20 (184 methods, 16 excluded; 7 methods promoted after the 2026-10-20 re-recording).
+ecommerce.shopee.product.reviews
+ecommerce.shopee.shop.get
+ecommerce.shopee.shop.products
+social.douyin.topic.posts
+social.kuaishou.link.resolve
+social.kuaishou.topic.posts
+social.linkedin.post.comments
+social.linkedin.user.posts
+social.wechat_channels.link.resolve
+social.wechat_channels.post.comments
+social.wechat_channels.post.get
+social.wechat_channels.user.get
+social.wechat_mp.post.comments
+social.xiaohongshu.link.resolve
+social.youtube.post.trending
+social.zhihu.post.comments
