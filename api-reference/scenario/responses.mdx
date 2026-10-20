@@ -187,7 +187,8 @@ top-level comment), `text`, `published_at`, `author { id, handle, name, url }`,
 | `image_url` | string \| null | Main image. |
 | `images` | string[] \| null | All listing images, main first. |
 | `in_stock` | boolean \| null | |
-| `sales_count` | integer \| null | Units sold when the platform exposes a number. |
+| `sales_count` | integer \| null | Cumulative units sold when the platform exposes a number. |
+| `monthly_sales_count` | integer \| null | Units sold in the past month when that is what the platform shows (Amazon's "bought in past month" badge, Douyin Shop search cards and shop listings). Not comparable with `sales_count`. |
 | `sales_text` | string \| null | The platform's own sales line ("1.8K+ sold", "1万+人收货"). |
 | `shop` | object | `{ id, name, url }` — the seller. |
 

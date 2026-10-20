@@ -3490,8 +3490,6 @@ paths:
       tags:
         - ecommerce/tiktok_shop
       x-action: product.reviews
-      x-draft-bindings:
-        - tikhub
       x-platform: tiktok_shop
       x-price-credits: 0.2
       x-pricing: fixed
@@ -6702,7 +6700,7 @@ paths:
   /v2/ops/social.instagram.topic.posts:
     post:
       description: |-
-        Posts under one Instagram topic by topic ID or topic page URL. Normalized to the Post object; page with next_cursor.
+        Posts under one Instagram hashtag by name or hashtag page URL. Normalized to the Post object; page with next_cursor. sort=hot (the default) is served by a single provider route with no failover; sort=latest has two further fallbacks (the GraphQL hashtag feeds are recent-only), so prefer latest when availability matters more than ranking.
 
         Fixed price: 0.2 credits per successful call, whichever provider serves it.
       operationId: social_instagram_topic_posts
@@ -9930,14 +9928,11 @@ paths:
       tags:
         - social/wechat_mp
       x-action: post.get
-      x-draft-bindings:
-        - redfox
       x-platform: wechat_mp
       x-price-credits: 2
       x-pricing: fixed
       x-providers:
         - tikhub
-        - redfox
       x-since: "2026-10-13"
       x-stability: beta
   /v2/ops/social.wechat_mp.post.search:
@@ -13632,13 +13627,10 @@ paths:
       tags:
         - web
       x-action: answer
-      x-draft-bindings:
-        - brave
       x-price-credits: 1.1
       x-pricing: fixed
       x-providers:
         - tavily
-        - brave
       x-since: "2026-10-13"
       x-stability: beta
   /v2/ops/web.scrape:
@@ -16543,6 +16535,11 @@ components:
           type:
             - boolean
             - "null"
+        monthly_sales_count:
+          description: Units sold in the past month when that is what the platform shows (Amazon's "500+ bought in past month" badge, Douyin Shop's "月销" on search cards and shop listings). Not comparable with sales_count.
+          type:
+            - integer
+            - "null"
         platform:
           description: Platform slug, identical to the one in the method name.
           type: string
@@ -16586,12 +16583,12 @@ components:
             - count
           type: object
         sales_count:
-          description: Units sold / "已售" counter when the platform exposes one (approximate on platforms that report "1万+").
+          description: Cumulative units sold / "已售" counter when the platform exposes one (approximate on platforms that report "1万+"). Platforms that only show a past-month figure report it in monthly_sales_count instead.
           type:
             - integer
             - "null"
         sales_text:
-          description: The platform's own sales line as displayed ("1万+人收货", "1.8K+ sold", "500+ bought in past month"); sales_count is the number read from it.
+          description: The platform's own sales line as displayed ("1万+人收货", "1.8K+ sold", "500+ bought in past month"); sales_count or monthly_sales_count is the number read from it.
           type:
             - string
             - "null"
@@ -16637,6 +16634,7 @@ components:
         - price
         - rating
         - sales_count
+        - monthly_sales_count
         - sales_text
         - in_stock
         - image_url
