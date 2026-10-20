@@ -44,7 +44,7 @@ paths:
   /v2/ops/academic.paper.get:
     post:
       description: |-
-        Paper details by AMiner paper id (24 hex chars, from academic.paper.search). arXiv ids / URLs are accepted by draft alphaXiv bindings that are not served yet; DOIs are not resolved.
+        Paper details by arXiv id (2307.12307, optionally with a version suffix), arxiv.org / alphaxiv.org abs or pdf URL, or AMiner paper id (24 hex chars, from academic.paper.search). arXiv papers come from alphaXiv's public API with title, abstract, authors, date and links; AMiner adds DOI, venue and citation count for its own ids. DOIs are not resolved.
 
         Fixed price: 0.2 credits per successful call, whichever provider serves it.
       operationId: academic_paper_get
@@ -57,7 +57,7 @@ paths:
                 fields:
                   $ref: '#/components/schemas/FieldsProjection'
                 id_or_url:
-                  description: AMiner paper id (24 hex chars). arXiv ids (1706.03762) and arxiv.org URLs are reserved for the alphaXiv bindings (draft).
+                  description: arXiv id (1706.03762), arxiv.org / alphaxiv.org abs or pdf URL, or AMiner paper id (24 hex chars).
                   type: string
                 include_raw:
                   $ref: '#/components/schemas/IncludeRaw'
@@ -90,18 +90,15 @@ paths:
           $ref: '#/components/responses/Timeout'
       security:
         - ApiKeyAuth: []
-      summary: Fetch one paper by AMiner id (arXiv ids planned). Returns a normalized Paper.
+      summary: Fetch one paper by arXiv id, arXiv URL or AMiner id. Returns a normalized Paper.
       tags:
         - academic
       x-action: paper.get
-      x-draft-bindings:
-        - alphaxiv
-        - alphaxiv
       x-price-credits: 0.2
       x-pricing: fixed
       x-providers:
         - aminer
-        - alphaxiv
+        - alphaxiv-api
       x-since: "2026-10-13"
       x-stability: beta
   /v2/ops/academic.paper.search:

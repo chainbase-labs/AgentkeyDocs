@@ -59,7 +59,7 @@ Pass the request in plain language and let the router pick the tool:
 ```text
 find_tools(q="newest papers on speculative decoding for LLM inference")
 find_tools(q="根据标题搜索论文并获取 DOI")
-find_tools(prefix="academic/alphaxiv")       # arXiv discovery, content, PDF queries, code
+find_tools(prefix="academic/alphaxiv")       # arXiv discovery, content, PDF queries, code, metadata, references
 find_tools(prefix="academic/aminer")         # paper search, detail, citations, recommendations
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
@@ -75,9 +75,11 @@ alphaXiv accepts an id, URL or title directly.
   failover:
   [`academic.paper.search`](/api-reference/scenario/methods/academic-paper-search),
   [`academic.paper.get`](/api-reference/scenario/methods/academic-paper-get).
-  Today `academic.paper.get` takes the AMiner paper id that
-  `academic.paper.search` returns; arXiv ids and URLs are served through the
-  catalog's alphaXiv tools, not the method.
+  `academic.paper.get` takes an arXiv id or arxiv.org URL (served by
+  alphaXiv's public API: title, abstract, authors, first submission date and
+  links) or the AMiner paper id that `academic.paper.search` returns (which
+  adds DOI, venue and citation count). Reading a paper's content or asking
+  questions of its PDF stays with the catalog's alphaXiv tools.
 </Note>
 
 ## FAQ
@@ -96,7 +98,9 @@ alphaXiv accepts an id, URL or title directly.
   </Accordion>
   <Accordion title="What identifiers do I need?">
     AMiner detail tools take AMiner paper ids, which the search tools return —
-    start with a search, then open the detail. alphaXiv tools accept a paper
-    id, an arXiv URL or the paper title.
+    start with a search, then open the detail. alphaXiv's agent tools accept a
+    paper id, an arXiv URL or the paper title; its REST tools
+    (`alphaxiv-api/*` — metadata, citation count, references) take a bare
+    arXiv id.
   </Accordion>
 </AccordionGroup>

@@ -26,6 +26,7 @@ look up patents — from two providers.
 | --- | --- |
 | **AMiner** | Papers: search by title or by title / keyword / abstract / author / institution / venue, paper detail, citation list, batch paper info, recommendations by topic or scholar. Scholars: search, detail, research profile (interests, fields, structured career and education), papers, patents, projects, statistics (paper count, citations, h-index, g-index). Organizations: search, name disambiguation, detail, papers, patents, scholars. Venues: search, detail, papers by year. Patents: search, detail, brief info |
 | **alphaxiv** | `discover_papers` ranks candidate papers for a research topic; `get_paper_content` and `answer_pdf_queries` return a paper's content or the pages relevant to a question (by id, URL or title); `find_researchers`, `resolve_researchers`, `get_researcher` and `get_researcher_papers` profile researchers; `read_files_from_github_repository` reads a paper's code repository |
+| **alphaxiv-api** | alphaXiv's public REST API, by arXiv id: paper metadata with authors, abstract, first submission date and links (`getPaperMetadata`); a compact record with the citation count alphaXiv tracks (`getPaper`); the resolved reference list with each cited paper's arXiv id and DOI where known (`getPaperReferences`) |
 
 AMiner tools return gateway-wrapped JSON with the payload under `data`; most
 detail tools take an AMiner id, so start from a `search_*` tool. AMiner
