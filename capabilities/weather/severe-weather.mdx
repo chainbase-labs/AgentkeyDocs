@@ -1,0 +1,83 @@
+---
+title: "Severe weather alerts and typhoon tracking for AI agents"
+sidebarTitle: "Severe weather"
+description: "Official weather warnings in effect for any coordinate, plus typhoon lists, live positions, tracks and forecasts from QWeather."
+---
+
+When weather turns dangerous an agent needs the official word — the warning a
+meteorological service has actually issued — and, for the storms that cross
+the Northwest Pacific every year, where the typhoon is and where it is headed.
+Through AgentKey your agent reads both from QWeather with the same three calls
+— `find_tools`, `describe_tool`, `execute_tool`.
+
+## What you can ask
+
+- *"Are there any weather warnings in effect for Guangzhou right now?"*
+- *"现在有哪些台风正在活动？路径是怎样的？"*
+- *"Where is the typhoon now, and where is it forecast to go over the next few days?"*
+- *"List the typhoons in the Northwest Pacific this year."*
+- *"Is there a heat or thunderstorm alert at this coordinate?"*
+- *"Show the full track of the storm that hit Hainan last year."*
+- *"Check these five coordinates and tell me which have an active official warning."*
+
+## What's covered
+
+**Official weather alerts**
+- Warnings currently in effect for a latitude and longitude, from official
+  sources in China and in the other countries and regions QWeather covers
+- Event type, level and text as issued, with an option to express times in
+  the location's local time, and localized output via `lang`
+
+**Typhoons and tropical cyclones**
+- The list of storms in a basin for a given year, covering the last two
+  years; the Northwest Pacific basin — the storms that affect China's coast —
+  is the one currently served
+- Live status and track of an active storm: current position, intensity
+  level, central pressure and wind speed, plus the path it has followed
+- The forecast for a storm: predicted positions, level, pressure and wind
+  speed for the coming period; a storm that has ended returns no forecast, so
+  check its status in the list first
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="official weather warnings in effect for Guangzhou")
+find_tools(q="现在有哪些台风正在活动")
+find_tools(prefix="weather/qweather")      # browse all weather tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Alerts take a latitude and longitude — resolve a place with
+[location lookup](/capabilities/weather/location-lookup) first. Typhoon tools
+chain: list the storms for a basin and year, then pass a storm id to the track
+or forecast tool. Always `describe_tool` before executing.
+
+<Note>
+  **Building with code?** Alerts and typhoon tracking are available through
+  the catalog tools above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for them yet. The daily
+  forecast and place lookup do have methods — see
+  [Forecasts](/capabilities/weather/forecasts).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which regions have alerts?">
+    China nationwide plus the other countries and regions on QWeather's
+    warning coverage list. The alert tool itself takes any coordinate and
+    returns whatever official warnings exist for it.
+  </Accordion>
+  <Accordion title="Which ocean basins have typhoon data?">
+    The storm list is currently limited to the Northwest Pacific basin, the
+    storms that affect China's coastal regions. Track and forecast tools work
+    for any storm id the list returns.
+  </Accordion>
+  <Accordion title="Can it notify me when a warning is issued?">
+    No. Every call is a pull at request time. To watch a location, call on a
+    schedule and compare the active warnings between runs.
+  </Accordion>
+</AccordionGroup>

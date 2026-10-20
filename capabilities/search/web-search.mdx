@@ -1,0 +1,117 @@
+---
+title: "Web search for AI agents"
+sidebarTitle: "Web search"
+description: "Google results via Serper, Brave's independent index, Tavily, Exa and Parallel — with operators, country and language, freshness filters and pagination."
+---
+
+Web search is the one capability almost every agent needs and the one a base
+model cannot do on its own: the answer to "what is true right now" lives on
+pages published after training. Through AgentKey your agent searches the same
+way it does everything else — `find_tools`, `describe_tool`, `execute_tool` —
+and chooses between several engines behind one key: Google results through
+Serper, Brave's own independent index, Tavily's LLM-oriented search, Exa's
+neural and keyword retrieval, and Parallel for running several queries in one
+call.
+
+## What you can ask
+
+- *"Find the official documentation for the Rust tokio crate."*
+- *"What has been written about AgentKey in the past week, in English?"*
+- *"Search only arxiv.org and github.com for retrieval-augmented generation benchmarks."*
+- *"Run these five product-name queries at once and give me the top result for each."*
+- *"Give me German-language results from Germany for 'Wärmepumpe Förderung 2026'."*
+- *"Find pages about a CLI tool that syncs OpenAPI specs to a docs site, even if they don't use those words."*
+- *"Page through the first three pages of Google results for this query and dedupe the domains."*
+- *"Return the full page text with each result so I can read the top three sources."*
+
+## What's covered
+
+**Query controls**
+- Search operators — `site:`, exact phrases, exclusions — on the engines that
+  support them; Brave lets you switch operator parsing off for literal queries
+- Spell correction and autocorrect, on by default and switchable
+- Query suggestions and autocomplete for a partial query
+- Custom re-ranking of Brave results with Goggles, hosted or inline
+
+**Country, language and location**
+- A country code to bias results, and separate codes for the result language
+  and the interface language
+- A named location such as "New York, United States" for Google results;
+  latitude / longitude, city, state or postal-code hints for Brave
+
+**Freshness**
+- Past hour, day, week, month or year on Google results
+- The last 24 hours, 7 days, 31 days or 365 days, or a custom date range, on
+  Brave
+- A relative time range or explicit start and end dates on Tavily
+
+**Pagination and volume**
+- Page numbers on Google results, an offset on Brave, and a per-call result
+  count on every engine
+- Several queries in a single Parallel call, each with its own ranked results
+
+**Result shapes**
+- Ranked organic results with title, URL and snippet; extra snippets on Brave
+- Brave result filters to keep only certain blocks — discussions, FAQ,
+  infobox, news, videos, locations — and an optional summary
+- Tavily options to include a generated answer, each page's cleaned content
+  as markdown or text, and images; to restrict or exclude domains; topic
+  modes for general, news and finance; basic, fast or advanced depth
+- Exa retrieval modes — auto, neural, keyword, fast — with full page text or
+  highlighted snippets per result
+
+## How to use it
+
+Pass the request in plain language and let the router pick the engine:
+
+```text
+find_tools(q="latest reviews of the Framework 13 laptop from the past month")
+find_tools(q="site:github.com OpenAPI to Mintlify sync tool")
+find_tools(prefix="search/serper")        # Google results
+find_tools(prefix="search/brave")         # Brave's independent index
+find_tools(prefix="search/tavily")
+find_tools(prefix="search/exa")
+find_tools(prefix="search/parallel")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — the same idea has different
+parameter names on each engine (`gl` / `hl` on Google results, `country` /
+`search_lang` on Brave, `tbs` versus `freshness` versus `time_range`), and
+per-call costs differ.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic engine
+  failover: [`web.search`](/api-reference/scenario/methods/web-search) takes a
+  query with optional country, language, time range, domain include / exclude
+  lists and a pagination cursor, and returns a normalized result page.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which countries and languages are supported?">
+    Google results through Serper take any Google country and interface
+    language code, plus a free-text location. Brave takes a fixed list of
+    countries and result languages covering the Americas, Europe and most of
+    Asia-Pacific, including simplified and traditional Chinese. Tavily's
+    country boost applies to its general topic. Queries themselves can be in
+    any language.
+  </Accordion>
+  <Accordion title="How fresh are the results?">
+    Every call goes to the engine at request time; nothing is served from an
+    AgentKey cache. Freshness filters narrow results by the engine's own
+    discovery or publication date.
+  </Accordion>
+  <Accordion title="Which engine should I pick?">
+    Google results when you want familiar ranking and operators; Brave when
+    you want an independent index or result-type filters; Exa when the query
+    is a description rather than keywords; Tavily when you want cleaned page
+    content or an answer alongside results; Parallel when you have many
+    queries to run at once. `execute_tool` calls exactly the engine you name —
+    switch engines yourself if one fails, or use `web.search`, which fails
+    over for you.
+  </Accordion>
+</AccordionGroup>

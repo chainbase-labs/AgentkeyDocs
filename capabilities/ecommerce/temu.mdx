@@ -1,0 +1,78 @@
+---
+title: "Temu product data for AI agents"
+sidebarTitle: "Temu"
+description: "Read Temu's homepage product feed for a chosen site, page by page — for sourcing, catalog monitoring and trend spotting — through AgentKey."
+---
+
+Temu merchandises through its homepage: the feed is where new arrivals, deep
+discounts and the products it wants to push appear first, and it changes
+constantly. There is no public API, and the site is built to be used in the
+app. Through AgentKey your agent reads that feed the same way it reads
+everything else — `find_tools`, `describe_tool`, `execute_tool` — choosing
+the Temu site on each call.
+
+## What you can ask
+
+- *"What is on Temu's US homepage right now? List the first 40 products with prices."*
+- *"Pull the Temu homepage feed for the UK site and tell me the price range and the most common product types."*
+- *"Fetch Temu's homepage feed every morning and tell me which products are new since yesterday."*
+
+## What's covered
+
+**Homepage feed**
+- Product cards from the Temu homepage for a selected site, with offset
+  pagination — the products Temu is actively pushing at that moment
+- Suited to product sourcing, catalog monitoring and marketplace trend
+  analysis
+
+**Sites**
+- The feed is fetched per site, so the same request can be repeated across
+  Temu's regional storefronts
+
+Not covered today: keyword search, product detail by ID, reviews and shop
+pages for Temu. For a product you spot in the feed, search the same keyword
+on [Amazon](/capabilities/ecommerce/amazon),
+[AliExpress](/capabilities/ecommerce/aliexpress) or
+[1688](/capabilities/ecommerce/1688) to go deeper.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what Temu is promoting on its US homepage today")
+find_tools(q="Temu 美国站首页在推什么商品")
+find_tools(prefix="ecommerce/temu")         # browse everything for Temu
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in the currency of the site you selected, not converted.
+Always `describe_tool` before executing: it shows the site field and its
+accepted values, the offset parameter, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.temu.product.rank`](/api-reference/scenario/methods/ecommerce-temu-product-rank).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Temu account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can I search Temu by keyword or open a single product?">
+    Not today. The Temu coverage is the homepage feed; use it to see what the
+    platform is pushing, then continue the research on a marketplace with
+    search and detail lookups.
+  </Accordion>
+  <Accordion title="How fresh is the feed?">
+    Every call goes to Temu at request time; nothing is served from a stale
+    archive. The cards are what the homepage shows for that site at that
+    moment, so two calls minutes apart can differ.
+  </Accordion>
+</AccordionGroup>

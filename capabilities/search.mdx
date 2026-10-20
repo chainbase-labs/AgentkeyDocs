@@ -1,45 +1,70 @@
 ---
 title: "Search"
-description: "Web, news, image, and LLM-context search across multiple providers."
+sidebarTitle: "Overview"
+description: "Web, news, image, video, place and scholar search across six engines."
 ---
 
-The **Search** category gives your agent fresh, real-time web results — the live
-data a base model can't reach. Discover a tool with `find_tools`, then call it
-with `type` + params.
+The **Search** category gives your agent fresh web results — the live data a
+base model can't reach. Six engines sit behind it. Each is a separate
+`Provider/Operation` with its own parameters, so discover with `find_tools`,
+read the parameters with `describe_tool`, then `execute_tool` the one you chose.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Web search" href="/capabilities/search/web-search">
+    General web results from several engines, with country, language and freshness controls.
+  </Card>
+  <Card title="News search" href="/capabilities/search/news-search">
+    Headlines and articles by keyword and recency.
+  </Card>
+  <Card title="Image and video search" href="/capabilities/search/image-and-video-search">
+    Images and videos by keyword.
+  </Card>
+  <Card title="Places and local search" href="/capabilities/search/places-and-local">
+    Businesses, points of interest and local descriptions.
+  </Card>
+  <Card title="Answer engines and LLM context" href="/capabilities/search/answer-and-llm-context">
+    Cited answers and search results shaped for a model's context.
+  </Card>
+  <Card title="Scholar and patent search" href="/capabilities/search/scholar-search">
+    Google Scholar results and patents.
+  </Card>
+</CardGroup>
 
 ## Providers
 
-| Provider | Best for |
+| Provider | Operations in the catalog |
 | --- | --- |
-| **Tavily** | AI-optimized search with semantic understanding |
-| **Brave Search** | Privacy-focused, independent index, no tracking |
-| **Perplexity** | Answer engine with verified, cited sources |
-| **Serper** | Fast, reliable access to Google's index at scale |
-| **Exa** | Neural/semantic search for research workflows |
-| **Parallel** | High-throughput search |
+| **Brave** | Web, news, image and video search; place search and local POI descriptions; LLM-context chunks (`getLlmContext`); grounded answers (`postAnswers`); suggest, spell check and rich results |
+| **Serper** | Google web, news, image, video, maps, places, shopping, patent and scholar search; query autocomplete |
+| **Tavily** | Search (`post_search`), plus `post_extract`, `post_crawl` and `post_map` for pulling page content from one URL, a whole site or a site map |
+| **Exa** | Web search with a selectable retrieval mode (auto / neural / keyword / fast) and optional page text or highlights per result |
+| **Parallel** | Batched web search — several queries in one call |
+| **Perplexity** | Web search that returns the relevant page contents |
 
-## Common operations
+Tool names follow the engine: `Brave/getWebSearch`, `Serper/searchNews`,
+`Tavily/post_search`, `Exa/search`. The per-call cost is shown by
+`describe_tool`.
 
-- Web search
-- News search (`getNewsSearch`)
-- Image search (`getImageSearch`)
-- LLM context (`getLlmContext`)
-- Local POIs and descriptions (`getLocalPois`, `getLocalDescriptions`)
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
 
-## Example
+## Browse the catalog
 
-<Steps>
-  <Step title="Discover">
-    `find_tools("search the web for the latest Claude news")`
-  </Step>
-  <Step title="Describe">
-    `describe_tool("Brave/getWebSearch")` → params + per-call cost
-  </Step>
-  <Step title="Execute">
-    `execute_tool("Brave/getWebSearch", { query: "Claude news" })`
-  </Step>
-</Steps>
+```text
+find_tools(prefix="search")                                      # every search tool
+find_tools(q="latest news about Anthropic from the past week")    # ranked by intent
+describe_tool("Brave/getNewsSearch")                             # params + per-call cost
+execute_tool("Brave/getNewsSearch", { ...params })               # copy describe_tool's execute_as
+```
 
-<Card title="The calling model" icon="route" href="/concepts/discover-describe-execute">
-  Discover → describe → execute, explained.
-</Card>
+<Note>
+  `execute_tool` calls exactly the tool you name — there is no automatic
+  failover in the catalog. If an engine is down, pick another from the
+  `find_tools` result, or use `web.search`, which fails over for you.
+</Note>

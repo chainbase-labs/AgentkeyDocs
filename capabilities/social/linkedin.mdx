@@ -1,0 +1,93 @@
+---
+title: "LinkedIn data for AI agents"
+sidebarTitle: "LinkedIn"
+description: "LinkedIn profiles and member activity, post and article detail, comments, company pages and posts, job search and job detail through AgentKey — no partner API."
+---
+
+LinkedIn is the record of who works where and what professionals are saying,
+and it is one of the most closed platforms on the web: the official API is
+limited to approved partners and the site aggressively blocks anonymous
+visitors. Through AgentKey your agent reads public LinkedIn data the same way it
+reads everything else — `find_tools`, `describe_tool`, `execute_tool` — with
+more than one provider behind the scenes, so one route failing does not stop
+the task.
+
+## What you can ask
+
+- *"Summarize what this person has posted on LinkedIn in the last month."*
+- *"Get the headline, location and current role from this LinkedIn profile."*
+- *"Pull the comments on this post and tell me which companies the commenters work for."*
+- *"What has Anthropic's company page published recently?"*
+- *"Find open machine-learning engineer jobs in Berlin on LinkedIn."*
+- *"Give me the full description of this job posting."*
+- *"Which posts has this founder commented on or reacted to lately?"*
+- *"Compare the posting cadence of these three company pages this quarter."*
+
+## What's covered
+
+**People**
+- Profile by username or by profile URL — name, headline and the other core
+  profile fields
+- A member's activity, filtered by type: the posts they published, the posts
+  they commented on, the posts they reacted to
+- Offset and continuation-token pagination, so a long history can be walked
+  page by page
+
+**Posts**
+- Detail for a post or a long-form article
+- Comments sorted by relevance or by most recent, page by page, optionally
+  narrowed to one share of the post
+
+**Companies**
+- Company profile — the public page's description and details
+- The posts published on a company page
+
+**Jobs**
+- Job search
+- Job detail for a single posting, as shown on the job page
+
+A typical task chains these: resolve the person from a profile URL, pull their
+activity, then fetch the comments on the posts that matter — or search jobs,
+then open the detail of each shortlisted posting.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what this person has posted on LinkedIn in the last month")
+find_tools(prefix="social/linkedin")       # browse everything for LinkedIn
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing — parameters and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.linkedin.post.get`](/api-reference/scenario/methods/social-linkedin-post-get),
+  [`social.linkedin.user.get`](/api-reference/scenario/methods/social-linkedin-user-get).
+  Member activity, company pages and jobs are available through the catalog
+  tools above.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a LinkedIn account or partner API access?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read connection-only content or send messages?">
+    No. Only what a profile, company page or post exposes publicly is
+    available, and every tool is read-only — no connection requests, messages
+    or posting.
+  </Accordion>
+  <Accordion title="Is job data current?">
+    Every call goes to LinkedIn at request time, so job search and job detail
+    reflect the listings that are live at that moment.
+  </Accordion>
+</AccordionGroup>

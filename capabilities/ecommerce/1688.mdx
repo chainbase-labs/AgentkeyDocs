@@ -1,0 +1,77 @@
+---
+title: "1688 wholesale product data for AI agents"
+sidebarTitle: "1688"
+description: "Search 1688 wholesale listings by keyword and read a listing's public detail by item ID — for supplier sourcing and catalog research — through AgentKey."
+---
+
+1688 is Alibaba's domestic wholesale marketplace, where factories and
+distributors list the offers behind much of what sells at retail elsewhere.
+Sourcing teams live on it, but it is Chinese-language, login-walled and
+hostile to automation. Through AgentKey your agent reads public 1688 listings
+the same way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool` — and can hand a retail product straight to a wholesale
+search.
+
+## What you can ask
+
+- *"1688 上搜 '不锈钢保温杯'，列出前 20 个货源和价格。"*
+- *"Search 1688 for 'silicone phone case' and shortlist suppliers worth contacting."*
+- *"Open this 1688 listing and summarize the offer."*
+- *"Find a 1688 wholesale source for this product I found on Amazon."*
+
+## What's covered
+
+**Search**
+- Keyword search of wholesale listings — discover candidate products or
+  suppliers during sourcing and market research
+
+**Listing details**
+- The public detail of a wholesale listing by item ID — review a known offer
+  during sourcing or catalog research
+
+Not covered today: supplier company profiles, reviews, order placement and
+anything behind a buyer login. To check how a candidate product sells at
+retail, pair this page with [Taobao / Tmall](/capabilities/ecommerce/taobao-tmall)
+or [Amazon](/capabilities/ecommerce/amazon).
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="1688 上搜不锈钢保温杯的货源")
+find_tools(q="wholesale suppliers for silicone phone cases on 1688")
+find_tools(prefix="ecommerce/1688")         # browse everything for 1688
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in yuan, as the listing shows them, not converted. Always
+`describe_tool` before executing: it shows the exact parameters, the item ID
+the detail lookup expects, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.1688.product.search`](/api-reference/scenario/methods/ecommerce-1688-product-search),
+  [`ecommerce.1688.product.get`](/api-reference/scenario/methods/ecommerce-1688-product-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a 1688 or Alibaba account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="What exactly comes back for a listing?">
+    The public detail of the listing as 1688 presents it. Which fields a given
+    offer carries depends on the seller, so run `describe_tool` for the
+    parameters and try one item before relying on a specific field.
+  </Accordion>
+  <Accordion title="How fresh are prices?">
+    Every call goes to 1688 at request time; nothing is served from a stale
+    archive. A price is what the listing shows at that moment, in yuan.
+  </Accordion>
+</AccordionGroup>

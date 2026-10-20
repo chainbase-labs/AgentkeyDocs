@@ -1,0 +1,116 @@
+---
+title: "DEX and derivatives data for AI agents"
+sidebarTitle: "DEX & derivatives"
+description: "DEX pairs, pools, liquidity and swaps; exchange tickers, order books, OHLCV, funding rates, open interest, liquidations and options through AgentKey."
+---
+
+Trading data splits in two: decentralized pools, where price and liquidity live
+in contracts, and centralized exchanges, where order books, perpetuals and
+options live behind per-venue APIs. Getting both into one agent normally means
+a DEX indexer plus a key for every exchange. Through AgentKey your agent reads
+both sides the same way — `find_tools`, `describe_tool`, `execute_tool` — with
+CoinMarketCap and Surf behind the scenes.
+
+## What you can ask
+
+- *"What is the funding rate and open interest on BTC perps right now?"*
+- *"Show the order book depth for ETH/USDT and the current spread."*
+- *"Which exchange had the most liquidations in the last 4 hours?"*
+- *"Pull 1h candles for SOL/USDT for the past week."*
+- *"Find the liquidity pools for this token and how much liquidity each has."*
+- *"Is this DEX token safe? Run a security check and show the holder trend."*
+- *"What is the put/call ratio and max pain for BTC options?"*
+- *"Aave 上收益最高的池子是哪些？"*
+
+## What's covered
+
+**DEX tokens and pairs**
+- Search DEX tokens by keyword, symbol, name or address; token detail by
+  platform and address; batch token and price queries
+- Latest price for a DEX token; latest quotes for DEX spot pairs; paginated
+  listings of active spot pairs by network or asset
+- Latest swap transactions for a token or pool
+- List and detail of supported DEX platforms (blockchain networks); DEX
+  exchange metadata and aggregate listings
+
+**Liquidity, holders and safety**
+- Liquidity pools for a token, token liquidity, and liquidity change events
+  for tokens and pools
+- Holder count, holder tag counts, holder trend over time, detailed holder
+  lists and single-holder detail
+- Security analysis for a DEX token
+- DeFi yield pools ranked by APY or TVL, filterable by protocol such as Lido
+  or Aave
+
+**Exchanges and spot markets**
+- Exchange metadata and id map; exchange assets as the token holdings of large
+  exchange wallets; historical exchange quotes
+- Trading pairs on an exchange by type — spot, swap, future, option — or
+  free-text search, with base/quote currencies, status and default fee rates
+- Real-time ticker — last price, bid/ask, 24h high/low, volume and change —
+  for spot or perpetual
+- Order book depth with spread, spread percentage, mid-price and total bid/ask
+  depth
+- OHLCV candlesticks at intervals from one minute to one month, with period
+  summary stats
+
+**Perpetuals, liquidations and options**
+- Perpetual snapshot: current funding rate, next settlement, mark and index
+  price, open interest
+- Funding rate history and long/short ratio history at 1h, 4h or 1d
+  granularity
+- Futures overview across all tracked tokens: open interest, funding rate,
+  long/short ratio, 24h volume
+- Liquidations: an OHLC-style chart per token and exchange, a breakdown by
+  exchange over 1h to 24h windows, and individual large liquidation orders
+  above a USD threshold
+- Options: open interest, volume, put/call ratio and max pain price
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="BTC perpetual funding rate and open interest")
+find_tools(q="这个代币在 DEX 上的流动性池")
+find_tools(prefix="crypto/dex")           # pairs, pools, liquidity, DEX holders
+find_tools(prefix="crypto/exchange")      # tickers, depth, OHLCV, perps, options
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — these tools are parameter-heavy (exchange, symbol, market type,
+interval, network and address), and the per-call cost is shown there too.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`crypto.derivatives.snapshot`](/api-reference/scenario/methods/crypto-derivatives-snapshot)
+  returns the open interest and funding of a perpetual contract on one
+  exchange.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which exchanges and networks are covered?">
+    Exchange tools take an exchange identifier and a trading pair per call;
+    DEX tools take a platform (network) and a token or pool address. The
+    exchange id map and the DEX platform list are themselves available, so an
+    agent can discover what is supported before querying. `describe_tool`
+    shows the accepted values.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Yes — OHLCV candles, funding rate history, long/short ratio history,
+    historical exchange quotes, holder trend series and liquidity change
+    events all paginate through time. Tickers, depth, perpetual snapshots and
+    liquidation rankings are current readings fetched at request time.
+  </Accordion>
+  <Accordion title="Spot or perpetual?">
+    The ticker and order book tools default to spot; setting the market type
+    to swap returns the perpetual contract instead. Funding, open interest and
+    long/short ratio are perpetual-only by nature.
+  </Accordion>
+</AccordionGroup>

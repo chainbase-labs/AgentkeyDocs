@@ -1,0 +1,96 @@
+---
+title: "Shopee product data for AI agents"
+sidebarTitle: "Shopee"
+description: "Search Shopee items, read details, SKU matrices, installments and reviews, and profile shops with their listings and ratings per site through AgentKey."
+---
+
+Shopee is the marketplace to watch in Southeast Asia and Taiwan, and it is
+awkward to reach: each country runs as its own site, the official Open Platform
+only serves sellers managing their own shops, and the storefront is a
+JavaScript app that resists scraping. Through AgentKey your agent reads public
+Shopee data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — picking the site on each call. Shopee has
+the deepest coverage in this category, from search facets down to the review
+split per SKU.
+
+## What you can ask
+
+- *"Search Shopee Taiwan for 行動電源 and list the ten cheapest with their ratings."*
+- *"Which categories does Shopee Indonesia return for the keyword 'air fryer'?"*
+- *"Open this Shopee item and give me every SKU option with its price."*
+- *"How do the ratings on this item split across its variants, and what are the review tags?"*
+- *"Pull only the one- and two-star reviews for this listing."*
+- *"What installment plans does Shopee Taiwan offer on this item?"*
+- *"Profile this Shopee shop: rating summary, categories, and what it is listing right now."*
+- *"List everything this shop sells on Shopee Thailand and flag anything under 500 baht."*
+
+## What's covered
+
+**Search**
+- Keyword search inside a marketplace site
+- Category facets for a keyword — how the results split by category before
+  you drill in
+
+**Product details & SKUs**
+- Item details and a display snapshot by site and item ID
+- The SKU option matrix, and the observed SKU models with offset and rating
+  filters
+- Installment plans and amounts (Taiwan and Indonesia; not Thailand)
+
+**Reviews**
+- Item reviews with offset pagination and a rating filter
+- Review tags, and how reviews distribute across the item's SKU models
+
+**Shops**
+- Basic profile and detailed shop information by shop username; profile and
+  rating summary by shop ID
+- Shop categories and the shop's item cards
+- Shop reviews, plain or enriched, with pagination and rating filters
+
+**Sites**
+- Every operation targets one marketplace site; the catalog descriptions
+  reference Taiwan, Indonesia and Thailand
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="cheapest power banks on Shopee Taiwan with ratings")
+find_tools(q="蝦皮台灣這個商品的評價和規格")
+find_tools(prefix="ecommerce/shopee")       # browse everything for Shopee
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in the site's own currency, not converted. Always
+`describe_tool` before executing: it shows the site field and its accepted
+values, the identifier each operation expects (item ID, shop username or shop
+ID), and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.shopee.product.search`](/api-reference/scenario/methods/ecommerce-shopee-product-search),
+  [`ecommerce.shopee.product.get`](/api-reference/scenario/methods/ecommerce-shopee-product-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Shopee seller or Open Platform account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Which Shopee sites are available?">
+    Every operation takes a site parameter. The catalog descriptions reference
+    Taiwan, Indonesia and Thailand, and the installment lookup is explicitly
+    limited to Taiwan and Indonesia. Check `describe_tool` for the accepted
+    values of the operation you are about to call.
+  </Accordion>
+  <Accordion title="How fresh are prices, stock and reviews?">
+    Every call goes to Shopee at request time; nothing is served from a stale
+    archive. Prices are what the site shows at that moment, in its own currency.
+  </Accordion>
+</AccordionGroup>

@@ -1,38 +1,78 @@
 ---
 title: "Social"
-description: "Real-time data across major social platforms."
+sidebarTitle: "Overview"
+description: "Posts, users, comments and trends across dozens of global and Chinese social platforms."
 ---
 
-The **Social** category is one of AgentKey's largest — with a deep set of tools
-across major global social platforms. It lets agents monitor trends, sentiment,
-conversations, and creator data in real time.
-
-<Tip>
-  Social has many endpoints per platform. Discover with `find_tools` using the
-  platform name and your intent, e.g. `find_tools("trending posts on X about GPT")`,
-  or browse with `list_tools("social")`.
-</Tip>
+The **Social** category is AgentKey's largest: thousands of tools covering posts,
+profiles, comments, followers, search and trending feeds on dozens of
+platforms. It is what an agent uses to monitor a brand, measure a trend, pull a
+creator's history or read what a community is saying — without holding
+credentials for each platform.
 
 ## Platforms
 
-X/Twitter, Reddit, YouTube, LinkedIn, TikTok, Instagram, Threads, Lemon8.
+Tools come from five providers — **TikHub**, **JustOneAPI**, **RedFox**,
+**Rnote** and **Sorsa** — and most platforms are served by more than one of
+them, so when one route fails you can pick another from the same `find_tools`
+result. Global platforms are listed first; the Chinese ecosystem, which is
+unusually deep in this catalog, follows. Each platform has its own page with
+example prompts and a full capability list.
 
-## Typical uses
+### Global platforms
 
-- **Brand & competitor monitoring** — track mentions and sentiment on X, Reddit, and Threads.
-- **Trend discovery** — trending topics, hashtags, and viral content on TikTok, Instagram, and YouTube.
-- **Content extraction** — YouTube transcripts, post text, and creator/channel data.
-- **Research** — community discussion from Reddit and professional signals from LinkedIn.
+| Platform | Typical operations |
+| --- | --- |
+| [X (Twitter)](/capabilities/social/x) | Tweet search, detail, comments, quotes and retweeters; user profiles, followers and following; lists, communities, Spaces, trends; follower-quality scores (Sorsa) |
+| [Reddit](/capabilities/social/reddit) | Post detail and comments, subreddit feeds and info, user posts and comments, search, trending searches |
+| [YouTube](/capabilities/social/youtube) | Video search, detail and comments; captions; channel info, videos, shorts and community posts; trending |
+| [Instagram](/capabilities/social/instagram) | Post detail and comments, user profiles and posts, hashtag feeds |
+| [TikTok](/capabilities/social/tiktok) | Post search, detail and comments; user profiles and posts; topics and trending |
+| [LinkedIn](/capabilities/social/linkedin) | User profiles and posts, post comments, company profiles and posts, job detail |
+| [Threads](/capabilities/social/threads) | Post detail and comments, user info and posts |
+| Also covered | Facebook, Telegram, Lemon8, IMDb — see [More platforms](/capabilities/social/more-platforms) |
 
-## Example
+### China platforms
+
+| Platform | Typical operations |
+| --- | --- |
+| [Xiaohongshu (RedNote)](/capabilities/social/xiaohongshu) | Note search and detail, comments, user notes, topic feeds, inspiration feeds, product search |
+| [Douyin](/capabilities/social/douyin) | Post search and detail, comments, user profiles and works, topics, daily hot and surge rankings |
+| [Kuaishou](/capabilities/social/kuaishou) | Video search and detail, comments, user profiles and videos |
+| [Bilibili](/capabilities/social/bilibili) | Video detail, comments and danmaku, captions, user profiles and video lists |
+| [Weibo](/capabilities/social/weibo) | Post search and comments, user profiles, posts, videos and fans |
+| [Zhihu](/capabilities/social/zhihu) | Answers, articles and columns, comments, user content |
+| [WeChat Official Accounts](/capabilities/social/wechat-official-accounts) | Article search, detail, metrics and comments; account search, info and history; original-content and reading-growth rankings; WeChat Index |
+| [WeChat Channels](/capabilities/social/wechat-channels) | Account videos, video info and title, search, link conversion |
+| Pugongying | [Xiaohongshu's creator marketplace](/capabilities/social/xiaohongshu): creator search and profiles, core metrics, follower growth and distribution, content square |
+| Also covered | Toutiao, Pipixia, Xigua, Douban, QQ Huxuan, Yiche, Autohome, Dongchedi, Youku — see [More platforms](/capabilities/social/more-platforms); cross-platform hot rankings on [Trending & hot lists](/capabilities/social/trending) |
+
+<Tip>
+  Chinese and English queries both work in `find_tools`, and platform aliases
+  resolve either way (推特 → twitter, 小红书 → xiaohongshu).
+</Tip>
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
 
 ```text
-find_tools("what people are saying about AgentKey on X today")
+find_tools(prefix="social")                   # the whole category
+find_tools(prefix="social/twitter")           # one platform's subtree
+find_tools(q="what people are saying about AgentKey on X today")
+find_tools(q="小红书上关于防晒霜的热门笔记")        # Chinese works too
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
 <Note>
-  Endpoints, params, and per-call costs differ widely across platforms. Always
-  `describe_tool` before executing.
+  Endpoints, parameters and per-call costs differ widely across platforms and
+  providers — always `describe_tool` before executing. `execute_tool` calls
+  exactly the tool you name; if you want AgentKey to pick the route and fail
+  over for you, use a Scenario Method.
 </Note>

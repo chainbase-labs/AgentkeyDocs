@@ -1,0 +1,99 @@
+---
+title: "Weibo data for AI agents"
+sidebarTitle: "Weibo"
+description: "Weibo post search and detail, comments, reposts and likes, user profiles, posts and fans, plus the hot search ranking and entertainment, life and social lists."
+---
+
+Weibo (微博) is where Chinese news breaks and public opinion forms, and its hot
+search list is watched by every newsroom and brand team in the country. The
+official API has been closed to new developers for years. Through AgentKey your
+agent reads public Weibo data the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — with more than one provider
+behind the scenes, so one route failing does not stop the task.
+
+## What you can ask
+
+- *"What is on the Weibo hot search list right now?"*
+- *"微博上关于这个事件大家都在说什么？"*
+- *"Pull this Weibo post with its comments and repost chain."*
+- *"Show me the latest posts from this account and their engagement."*
+- *"Who follows this Weibo account?"*
+- *"Find posts mentioning our brand between 9 and 12 this morning."*
+- *"What is in today's entertainment ranking?"*
+- *"这个博主发过哪些视频？"*
+
+## What's covered
+
+**Posts**
+- Post detail by ID or MID; likes and reposts on a post
+- Keyword search inside a day-and-hour window, sorted hot or latest
+- Advanced, realtime, comprehensive, picture, video and topic search
+- AI search and AI smart search; similar-search recommendations
+- Search within one user's own posts
+
+**Comments**
+- Comments sorted by time or hotness, paginated; sub-comments
+- Whether a post allows image comments
+
+**Users**
+- Profile, basic and detailed info; user search
+- Published posts, original posts only, timeline and profile feed, articles
+- Videos and video collections, albums, audios, super topics
+- Fans, followers and following lists
+
+**Trending**
+- The hot search ranking — the top ten or the full fifty; hot search brief and
+  categories
+- Hot ranking timeline; entertainment, life and social rankings
+- The home recommend feed
+
+**Video**
+- Video detail, Weibo TV video detail, the featured video feed
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what is on the Weibo hot search list right now")
+find_tools(q="微博上关于这个事件大家都在说什么")
+find_tools(prefix="social/weibo")          # browse everything for Weibo
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.weibo.post.search`](/api-reference/scenario/methods/social-weibo-post-search),
+  [`social.weibo.post.get`](/api-reference/scenario/methods/social-weibo-post-get),
+  [`social.weibo.post.comments`](/api-reference/scenario/methods/social-weibo-post-comments),
+  [`social.weibo.topic.search`](/api-reference/scenario/methods/social-weibo-topic-search),
+  [`social.weibo.user.get`](/api-reference/scenario/methods/social-weibo-user-get),
+  [`social.weibo.user.posts`](/api-reference/scenario/methods/social-weibo-user-posts),
+  [`social.weibo.user.search`](/api-reference/scenario/methods/social-weibo-user-search),
+  [`social.weibo.trending`](/api-reference/scenario/methods/social-weibo-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Weibo account or developer key?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Why does keyword search ask for a time window?">
+    One search route mirrors Weibo's own advanced search, which filters by day
+    and hour, so the agent passes a start and end time with the keyword. Other
+    search routes do not require one; `describe_tool` shows which is which.
+  </Accordion>
+  <Accordion title="How fresh is the hot search list?">
+    Every call goes to Weibo at request time, so the ranking is what Weibo
+    shows at that moment; the hot ranking timeline route gives the recent
+    history of the list.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,89 @@
+---
+title: "Astronomy, tides and solar data for AI agents"
+sidebarTitle: "Astronomy & tides"
+description: "Sunrise and sunset, moonrise, moonset and moon phase, solar elevation and azimuth, ocean tides and a solar radiation forecast from QWeather."
+---
+
+Photographers want golden hour, sailors want the tide, solar installers want
+irradiance, and everyone occasionally wants to know when the moon rises. These
+are calculable facts about a place and a time, and QWeather serves them for
+any location. Through AgentKey your agent reads them with the same three calls
+— `find_tools`, `describe_tool`, `execute_tool`.
+
+## What you can ask
+
+- *"When is sunset in Lisbon on 2 November?"*
+- *"What's the moon phase tonight in Sydney?"*
+- *"Sun elevation and azimuth at this coordinate at 15:30 local time on 21 June."*
+- *"High and low tides at Xiamen for the next three days."*
+- *"厦门明天的潮汐时间是几点？"*
+- *"Hourly solar radiation forecast for a panel tilted 30 degrees facing south at this site, next 48 hours."*
+- *"Golden-hour times for a shoot in Kyoto next Friday."*
+
+## What's covered
+
+**Sun**
+- Sunrise and sunset for any location on any date in the next 60 days
+- Solar elevation and azimuth for any location at a given date, time and
+  timezone, with the observer's altitude taken into account
+
+**Moon**
+- Moonrise and moonset and the hour-by-hour moon phase for cities, for any
+  date in the next 60 days
+- Phases are already correct for the southern hemisphere
+
+**Tides**
+- Tide tables for the next ten days worldwide: high and low tide times and
+  heights, plus hourly tide levels, for a tide station on a given date
+
+**Solar radiation**
+- A radiation forecast for any coordinate at 1 km resolution, up to 60 hours
+  ahead, at 15-, 30- or 60-minute intervals
+- Optional panel tilt and azimuth so the forecast matches a real
+  installation, and an option to express times in local time
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="sunset time in Lisbon on 2 November")
+find_tools(q="厦门明天的潮汐时间")
+find_tools(prefix="weather/qweather")      # browse all weather tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { location: "<location id or lon,lat>", date: "2026-11-02" })
+```
+
+Sun and moon tools take a location id or coordinates plus a date; the tide
+tool takes a tide-station id, found with the POI search described in
+[location lookup](/capabilities/weather/location-lookup); the radiation
+forecast takes a latitude and longitude. Always `describe_tool` before
+executing — the solar-elevation tool needs date, time, timezone and altitude
+together.
+
+<Note>
+  **Building with code?** Astronomy, tides and solar radiation are available
+  through the catalog tools above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for them yet. Sunrise,
+  sunset, moonrise, moonset and moon phase are also part of each day in the
+  [daily forecast](/capabilities/weather/forecasts), which does have a method.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which locations are covered?">
+    Sunrise, sunset, solar elevation and solar radiation work for any
+    coordinate on Earth; moon data is served for cities; tides are served for
+    tide stations worldwide.
+  </Accordion>
+  <Accordion title="How are times and timezones handled?">
+    The solar-elevation tool takes an explicit timezone, and the radiation
+    forecast can be switched to local time. For the other tools, check the
+    time fields that `describe_tool` and the response show before converting.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Astronomical times are computed facts and do not change; tide tables and
+    the radiation forecast are fetched from QWeather at request time.
+  </Accordion>
+</AccordionGroup>

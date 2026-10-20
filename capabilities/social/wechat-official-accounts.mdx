@@ -1,0 +1,98 @@
+---
+title: "WeChat Official Accounts data for AI agents"
+sidebarTitle: "WeChat Official Accounts"
+description: "WeChat Official Account articles with read counts, comments, account profiles and histories, keyword search, viral and reading-growth rankings, WeChat Index."
+---
+
+WeChat Official Accounts (公众号) are where Chinese media, brands and
+independent writers publish long-form, and the content is famously unsearchable
+from outside WeChat: there is no public API, no web index and no way to see an
+article's read count without the app. Through AgentKey your agent reads public
+Official Account data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — with several providers behind the scenes, so
+one route failing does not stop the task.
+
+## What you can ask
+
+- *"Pull the full text of this WeChat article and summarize it."*
+- *"这篇公众号文章的阅读量和点赞数是多少？"*
+- *"List the recent articles from the 人民日报 official account."*
+- *"Which original articles went viral yesterday?"*
+- *"Search WeChat articles about AI search from the past week."*
+- *"Who operates this official account — the registered principal and verification?"*
+- *"How has the WeChat Index for 新能源汽车 moved over the past month?"*
+- *"Which accounts gained the most readers recently?"*
+
+## What's covered
+
+**Articles**
+- Article detail by URL or by UUID, as plain text or rich text, with the full
+  body
+- Read, like and other interaction metrics; article stats
+- Comments on an article and the replies under a comment
+- Ads shown inside an article; related articles
+- Expansion of a short or intermediate article link to its resolved URL
+
+**Accounts**
+- Account info by name, wxid or biz ID, including principal (ownership)
+  information
+- Historical articles and the account's article list, paginated
+- Original-article count; the services and custom menu an account offers
+- Account search by keyword
+
+**Search**
+- Article search by keyword with publish-time and sort filters; a search for
+  AI-generated articles
+- Universal WeChat search; search suggestions scoped by business type
+- Mini Program search
+
+**Rankings and trends**
+- Original viral article ranking and the 100K+ reads article ranking
+- Reading-growth ranking and overall strength ranking of accounts
+- WeChat Index for a keyword — interest inside WeChat over time
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="full text and read count of this WeChat official account article")
+find_tools(q="这篇公众号文章的阅读量和点赞数")
+find_tools(prefix="social/wechat_mp")      # browse Official Account tools
+find_tools(prefix="social/wechat")         # more article, account and Index tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.wechat_mp.post.search`](/api-reference/scenario/methods/social-wechat_mp-post-search),
+  [`social.wechat_mp.post.get`](/api-reference/scenario/methods/social-wechat_mp-post-get),
+  [`social.wechat_mp.user.get`](/api-reference/scenario/methods/social-wechat_mp-user-get),
+  [`social.wechat_mp.user.posts`](/api-reference/scenario/methods/social-wechat_mp-user-posts),
+  [`social.wechat_mp.user.search`](/api-reference/scenario/methods/social-wechat_mp-user-search).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a WeChat account or an Official Account of my own?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="How fresh are the metrics and rankings?">
+    Article detail, metrics and comments go to WeChat at request time. The
+    viral-article and 100K+ reads rankings describe the previous day and are
+    refreshed once a day.
+  </Accordion>
+  <Accordion title="What about WeChat Channels videos?">
+    Channels (视频号) is a separate surface with its own tools; see
+    [WeChat Channels](/capabilities/social/wechat-channels). One of those tools
+    finds the Channels account bound to an Official Account.
+  </Accordion>
+</AccordionGroup>

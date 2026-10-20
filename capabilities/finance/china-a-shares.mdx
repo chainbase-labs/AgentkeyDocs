@@ -1,0 +1,140 @@
+---
+title: "China A-share and Hong Kong market data for AI agents"
+sidebarTitle: "China A-shares"
+description: "A-share and Hong Kong bars, financial statements, holders, margin, Dragon-Tiger lists, indices, funds, bonds, futures and China macro data for AI agents."
+---
+
+China's onshore market has its own identifiers, adjustment conventions and
+disclosure formats, and nearly all of it is documented in Chinese. Through
+AgentKey your agent reads the full Tushare catalog — A-shares, Hong Kong,
+indices, funds, bonds, futures, options, FX, gold and China macro — with the
+same `find_tools`, `describe_tool`, `execute_tool` loop it uses for US data,
+phrasing the request in either language.
+
+## What you can ask
+
+- *"贵州茅台最近一年的日线行情和复权因子"*
+- *"宁德时代最新一期的利润表、资产负债表和前十大流通股东"*
+- *"今天的龙虎榜，以及两市融资融券余额"*
+- *"Give me 5-minute bars for 000001.SZ for today."*
+- *"Which stocks are in the CSI 300 and what are their weights this month?"*
+- *"List all ST stocks as of the last trading day and the upcoming restricted-share unlocks."*
+- *"How have China's CPI, PPI and PMI moved over the past 24 months?"*
+- *"Daily prices for Tencent and the top 10 southbound Stock Connect names today."*
+
+## What's covered
+
+**Listings and reference data**
+- A-share list with code, name, listing and delisting dates; listed-company
+  basics; management and their pay and holdings; historical name changes; ST
+  and risk-warning lists by date; Beijing Stock Exchange old / new code mapping
+- New IPO listings; daily suspensions and resumptions; daily limit-up and
+  limit-down prices; pre-market share capital
+- Hong Kong and US stock lists; trading calendars for the mainland, Hong Kong
+  and US markets; Stock Connect (沪深港通) constituents
+
+**Prices**
+- A-share daily, weekly and monthly bars, raw and adjusted, with daily-updated
+  weekly and monthly variants; adjustment factors; daily indicators for every
+  stock
+- Minute bars from 1 to 60 minutes for A-shares, Hong Kong stocks and futures;
+  real-time minute data for A-shares; real-time daily candles for Hong Kong
+  stocks and exchange indices
+- Hong Kong daily and adjusted daily bars with share capital, market cap, turnover
+
+**Financial statements and disclosures**
+- Income statement, balance sheet, cash flow and financial indicators for
+  listed companies; main-business composition by region and by product
+- Earnings forecasts (业绩预告), express reports (业绩快报), disclosure-date
+  schedules, audit opinions, dividends and bonus shares
+
+**Holders, flows and market reference**
+- Top 10 shareholders and top 10 float shareholders, shareholder counts,
+  major-holder increases and decreases, share pledges (statistics and detail),
+  buybacks, restricted-share unlocks
+- Block trades; Dragon-Tiger lists (龙虎榜) — daily statistics and
+  institutional seat detail
+- Margin trading summary and detail, eligible securities, securities-lending
+  (转融通) summaries
+- Stock Connect flows: northbound and southbound top 10 names, Hong Kong
+  Connect daily and monthly turnover since 2014; weekly new brokerage accounts
+
+**Indices and industry classification**
+- Index basics, daily, weekly and monthly bars, monthly constituents and
+  weights, daily indicators for the major benchmarks (SSE Composite, SZSE
+  Component, SSE 50, CSI 500, SME Board, ChiNext), major global indices
+- Shenwan (申万) industry classification in its 2014 and 2021 editions with
+  members; CITIC (中信) industry indices and members; exchange daily trading
+  statistics
+
+**Funds, bonds and derivatives**
+- ETFs: basics (including QDII), daily bars with more than ten years of
+  history, adjustment factors, benchmark indices; mutual funds: list,
+  managers, fund companies, NAV, dividends, quarterly holdings, size
+- Convertible bonds: basics, daily bars, issuance, conversion-price changes,
+  coupons, ratings, calls and redemptions, conversion results, top 10
+  holders; bond repo daily, bond block trades, OTC bond quotes
+- Futures: contracts, daily / weekly / monthly / minute bars, position
+  rankings, main-contract mapping, settlement parameters, limit prices and
+  margin rates since 2005, warehouse receipts, weekly exchange reports since
+  2010; options contracts and daily bars; FX daily bars; Shanghai Gold
+  Exchange spot contracts and daily prices
+
+**China macro and rates**
+- CPI (national, urban, rural), PPI, GDP, PMI, monthly money supply, monthly
+  social financing, and the official data-release schedule
+- Shibor and Shibor quotes, LPR, Hibor, Libor, Wenzhou and Guangzhou
+  private-lending rates; US Treasury short- and long-term rates and yield
+  curves
+
+**Text corpora**
+- Investor Q&A from the SSE e-互动 and SZSE 互动易 platforms; long-form
+  financial news with more than eight years of history
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="贵州茅台最近一年的日线行情和复权因子")
+find_tools(q="CSI 300 constituents and weights this month")
+find_tools(prefix="finance/tushare")         # browse everything for China / HK
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Say "A-share", "港股" or "可转债" and the router lands on the right subtree.
+Always `describe_tool` before executing — most tools take a Tushare code plus
+a date range, and several cap rows per call, so long histories are pulled in
+date windows.
+
+<Note>
+  **Building with code?** Tushare backs the China routes of these
+  fixed-contract [Scenario Methods](/api-reference/scenario/overview):
+  [`finance.quote`](/api-reference/scenario/methods/finance-quote),
+  [`finance.price.history`](/api-reference/scenario/methods/finance-price-history),
+  [`finance.financials`](/api-reference/scenario/methods/finance-financials),
+  [`finance.macro.series`](/api-reference/scenario/methods/finance-macro-series).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which code format do the tools expect?">
+    Tushare codes carry the exchange as a suffix — `600519.SH` for a Shanghai
+    listing, `000001.SZ` for Shenzhen, `00700.HK` for Hong Kong — whereas the
+    global quote routes use Yahoo-style suffixes such as `600519.SS` and
+    `0700.HK`. Pull the stock list or check the example in `describe_tool`
+    when converting between them.
+  </Accordion>
+  <Accordion title="Are prices adjusted for splits and dividends?">
+    The daily bars include forward- and back-adjusted series alongside the raw
+    close, and a separate adjustment-factor series covers the full history of
+    a stock or a whole trading day, so you can adjust any bar yourself.
+  </Accordion>
+  <Accordion title="Do I need to read Chinese?">
+    No. Tool summaries are Chinese, but `find_tools(q=...)` matches an English
+    request, and `describe_tool` returns the parameter list and a ready-to-run
+    template. Chinese-language prompts work equally well.
+  </Accordion>
+</AccordionGroup>

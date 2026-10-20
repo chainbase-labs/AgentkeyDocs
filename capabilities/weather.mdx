@@ -1,0 +1,61 @@
+---
+title: "Weather"
+sidebarTitle: "Overview"
+description: "Current conditions, forecasts, air quality, alerts, astronomy and typhoon tracks."
+---
+
+The **Weather** category gives an agent current conditions and forecasts for
+any coordinate or named place, plus the data around them — minute-level
+precipitation, official alerts, air quality, sunrise / moon phase, tides, solar
+radiation, historical weather and typhoon tracking.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Forecasts" href="/capabilities/weather/forecasts">
+    Current conditions, hourly and daily forecasts, minute-level rain, indices.
+  </Card>
+  <Card title="Air quality" href="/capabilities/weather/air-quality">
+    Current and forecast AQI, monitoring stations.
+  </Card>
+  <Card title="Severe weather" href="/capabilities/weather/severe-weather">
+    Alerts, storms and typhoon tracks.
+  </Card>
+  <Card title="Astronomy and tides" href="/capabilities/weather/astronomy-and-tides">
+    Sun and moon times, solar elevation, tides, solar radiation.
+  </Card>
+  <Card title="Location lookup" href="/capabilities/weather/location-lookup">
+    City and POI search, the ids forecasts take.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Provider | Coverage |
+| --- | --- |
+| **QWeather** | Real-time weather, hourly and daily forecasts, grid (lat / lon) weather now, hourly and daily; minute-level precipitation; current weather alerts; weather indices; historical weather; air quality now, hourly and daily plus monitoring-station data; sunrise / sunset, moonrise / moonset and phase, solar elevation angle; ocean tides; solar radiation forecast; typhoon list, forecast and track; geo lookups — city search, POI search and range search, top cities |
+
+QWeather tools expect a location id or coordinates — resolve a place name with
+`QWeather/getGeoCitylookup` first. The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
+
+```text
+find_tools(prefix="weather")
+find_tools(q="hourly rain forecast for Shenzhen tomorrow")
+describe_tool("QWeather/getWeatherHourlyForecast")
+execute_tool("QWeather/getWeatherHourlyForecast", { ...params })   # copy describe_tool's execute_as
+```
+
+<Tip>
+  QWeather tool summaries are in Chinese; `find_tools(q=...)` matches them in
+  either language. For local POIs and place descriptions outside a weather
+  context, see the Brave and Serper tools in [Search](/capabilities/search).
+</Tip>

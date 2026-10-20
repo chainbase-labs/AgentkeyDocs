@@ -1,0 +1,108 @@
+---
+title: "On-chain and wallet data for AI agents"
+sidebarTitle: "On-chain & wallets"
+description: "Wallet balances, cross-chain portfolios, DeFi positions, transactions and transfers, blocks, gas, on-chain SQL and ENS lookups through AgentKey."
+---
+
+Everything on a public blockchain is readable, but reading it well is hard: raw
+RPC nodes return hex, each chain needs its own endpoint, and turning a list of
+transfers into "what does this wallet hold, in dollars" takes an indexer.
+Through AgentKey your agent reads wallets, transactions, blocks and ENS names
+the same way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool` — with Chainbase and Surf behind the scenes, from a single
+balance lookup up to a SQL query over indexed chain data.
+
+## What you can ask
+
+- *"What does wallet 0xabc… hold across chains, in USD?"*
+- *"List every ERC-20 token this address has received, with its current balance."*
+- *"Show this wallet's recent swaps and approvals."*
+- *"Which DeFi protocols is vitalik.eth lending or staking on?"*
+- *"What address does vitalik.eth resolve to, and does 0x… have an ENS name?"*
+- *"What is the gas price on Arbitrum right now?"*
+- *"Decode transaction 0x… on Ethereum."*
+- *"这个钱包属于哪个机构？帮我查一下它的标签。"*
+
+## What's covered
+
+**Wallet holdings**
+- Native token balance of an address
+- Every ERC-20 balance an address holds, or the balance of one specific
+  contract
+- NFTs owned by an address; ENS domains held by an address
+- Cross-chain portfolio with a per-chain USD breakdown across EVM chains, with
+  selectable sections for balance, tokens, labels and NFTs
+- Net worth in USD as a time series over the last 24 hours
+- DeFi protocol positions — lending, staking, LP and farming — with token
+  breakdowns and USD values
+
+**Wallet activity and identity**
+- All transactions sent from an address
+- Transaction history classified by type (send, receive, swap, approve) with
+  native-token value
+- ERC-20 and SPL token transfers with token identity, USD value and in/out
+  direction
+- Entity labels — entity name, type and labels — for many addresses in one
+  batch
+- Wallet search by ENS name, address label or address prefix
+
+**Chain primitives**
+- Latest block height; block detail by number
+- Transaction detail by hash, or by block number and index
+- Current gas price for an EVM chain such as Ethereum, Polygon, BSC, Arbitrum
+  or Optimism, in wei and Gwei
+- Raw SQL `SELECT` queries and structured JSON queries over indexed blockchain
+  tables such as Ethereum DEX trades, with a schema lookup to discover tables
+  and columns first
+
+**Naming services**
+- Resolve an ENS domain to its ETH address; reverse-resolve an address to its
+  ENS domain
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="ERC-20 balances held by wallet 0xabc... on Ethereum")
+find_tools(q="vitalik.eth 对应的地址是什么")
+find_tools(prefix="crypto/wallet")        # balances, portfolio, history, labels
+find_tools(prefix="crypto/chain")         # blocks, transactions, gas, SQL
+find_tools(prefix="crypto/domain")        # ENS resolve and reverse
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — chain parameters, address formats and per-call costs differ
+between providers, and the SQL tools expect a JSON body rather than raw text.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`crypto.wallet.assets`](/api-reference/scenario/methods/crypto-wallet-assets),
+  [`crypto.wallet.transactions`](/api-reference/scenario/methods/crypto-wallet-transactions).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which chains are supported?">
+    Balances, transactions and ENS are EVM-oriented. The cross-chain portfolio
+    spans EVM chains; token transfers cover ERC-20 and SPL (Solana) assets;
+    net worth history and DeFi positions take EVM addresses only. Gas price
+    and transaction lookup list their chains — Ethereum, Polygon, BSC,
+    Arbitrum, Optimism and more — in `describe_tool`.
+  </Accordion>
+  <Accordion title="Is this a privacy concern?">
+    Only public on-chain data is read: anything visible on a block explorer
+    for an address you supply. Nothing here signs, sends or needs a private
+    key — every tool is read-only.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Fetched at request time. Balances, gas and the latest block reflect the
+    chain at that moment; the 24-hour net worth series and transfer lists come
+    from the provider's index of recent activity.
+  </Accordion>
+</AccordionGroup>

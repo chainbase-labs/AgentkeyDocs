@@ -1,0 +1,108 @@
+---
+title: "Crypto market data for AI agents"
+sidebarTitle: "Market data"
+description: "Live and historical crypto prices, rankings, K-line candles, CMC indices, Fear & Greed, on-chain indicators and spot ETF flows through AgentKey."
+---
+
+Market data is the first thing a crypto agent needs and the first thing that
+breaks: free endpoints rate-limit, paid ones each want their own key, and
+historical series are scattered across vendors. Through AgentKey your agent
+gets quotes, rankings, candles, indices and on-chain indicators the same way it
+gets everything else — `find_tools`, `describe_tool`, `execute_tool` — with
+CoinMarketCap, Surf and Chainbase behind the scenes, so a price question can be
+answered from a market aggregator or straight from the chain.
+
+## What you can ask
+
+- *"What is ETH trading at right now, and how much did it move in the last 24 hours?"*
+- *"List the top 20 tokens by market cap with their 24h change."*
+- *"Which meme coins gained the most today?"*
+- *"Give me daily BTC candles for the last 90 days."*
+- *"What is the Fear & Greed index today, and what was it a month ago?"*
+- *"How much flowed into US spot Bitcoin ETFs this week?"*
+- *"比特币的 MVRV 现在是多少？过去一年的走势如何？"*
+- *"What does the 4h MACD look like for BTC/USDT right now?"*
+
+## What's covered
+
+**Quotes and listings**
+- Latest quote — price, volume, market cap — for one or more cryptocurrencies
+  by id, slug or symbol
+- Ranked, paginated listing of every active cryptocurrency with current market
+  data, or the ranking as it stood on a past date
+- Token leaderboard sorted by market cap, 24h change or volume, with FDV,
+  supply, ATH/ATL and 24h range; filter by category such as meme, AI, L1, L2,
+  DeFi or gaming
+- Current price and price history of a token by contract address, read from
+  the chain
+
+**Price history and candles**
+- Historical quotes (price, volume, market cap) over an interval
+- K-line candles — open, high, low, close, volume and trader count — and
+  lighter K-line price points
+- Price history over preset ranges from one day to all-time, or a custom
+  from/to window
+- Technical indicators for a trading pair on a given exchange and interval, as
+  the latest value or a time series, with indicator-specific tuning
+
+**Indices and market-wide metrics**
+- CoinMarketCap 20 and CoinMarketCap 100 indices — latest value, constituents
+  and weights, plus history
+- Global cryptocurrency market metrics, latest and historical
+- Fear & Greed index — latest value and history, with a classification label
+  and the BTC price at each point
+
+**On-chain indicators and ETF flows**
+- On-chain indicator series for BTC and ETH: NUPL, SOPR, MVRV, Puell Multiple,
+  NVM, NVT, NVT golden cross and exchange flows (inflow, outflow, netflow,
+  reserve)
+- Daily US spot ETF flow history for BTC and ETH — net flow in USD, token
+  price and a per-ticker breakdown
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="top 20 tokens by market cap with 24h change")
+find_tools(q="比特币最近 90 天的日 K 线")
+find_tools(prefix="crypto/market")        # browse everything in market data
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — the identifier a tool expects (CoinMarketCap id, symbol, slug or
+contract address), the interval options and the per-call cost differ between
+providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`crypto.market.list`](/api-reference/scenario/methods/crypto-market-list)
+  for a ranked token list and
+  [`crypto.token.price`](/api-reference/scenario/methods/crypto-token-price)
+  for one token's current price and 24h figures.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Is historical data available?">
+    Yes. Historical quotes, K-line candles, listings as of a past date, index
+    history, Fear & Greed history, on-chain indicator series and daily ETF
+    flows all accept a time range or interval. Candle granularity depends on
+    the provider — `describe_tool` shows the options.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call is fetched at request time from the provider; nothing is served
+    from a stale archive. Quotes reflect what the aggregator or the chain
+    returns at that moment.
+  </Accordion>
+  <Accordion title="Which assets do the on-chain indicators and ETF flows cover?">
+    On-chain indicators (NUPL, SOPR, MVRV and the rest) and spot ETF flow
+    history are available for BTC and ETH. Quotes, listings, candles and price
+    history cover any listed cryptocurrency.
+  </Accordion>
+</AccordionGroup>

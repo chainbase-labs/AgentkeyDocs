@@ -1,0 +1,89 @@
+---
+title: "Threads data for AI agents"
+sidebarTitle: "Threads"
+description: "Threads posts and replies, user profiles, posts, replies and reposts, and search for top or recent content and profiles through AgentKey — no Meta API needed."
+---
+
+Threads is Meta's text-first network and the closest thing to a second X for
+public conversation, yet its official API only covers accounts you own and the
+web app shows little without a login. Through AgentKey your agent reads public
+Threads data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — and the same prompts that work for X work
+here.
+
+## What you can ask
+
+- *"What has @zuck posted on Threads lately?"*
+- *"Pull the replies on this Threads post and summarize the reaction."*
+- *"Search Threads for recent posts about the new iPhone."*
+- *"Find Threads profiles related to climate journalism."*
+- *"Show me this user's reposts and replies, not just original posts."*
+- *"What are the top posts about 'AgentKey' on Threads?"*
+- *"Give me the text and media of this Threads post from its URL."*
+- *"Compare how these two accounts talk about the same product launch."*
+
+## What's covered
+
+**Posts**
+- Post detail by ID — text, media and author
+- Post detail straight from a copied URL, so a shared link needs no parsing
+- The comments (replies) under a post
+
+**Users**
+- Profile by username, which also yields the numeric user ID
+- Profile by numeric user ID, for accounts you already resolved
+- A user's own posts
+- Their replies to other people, as a separate stream
+- Their reposts
+
+**Search**
+- Top content for a keyword — what Threads ranks highest
+- Recent content for a keyword — newest first
+- Profile search by name or keyword
+- Results carry the post and user identifiers the detail tools above take, so
+  search → detail → replies needs no manual ID extraction
+
+A typical task starts with search (content or profiles), resolves the account,
+then pulls its posts, replies and reposts, and finally reads the replies under
+the posts that matter. Each step is a separate call, so budget for the number
+of accounts and posts you plan to walk.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="recent Threads posts about the new iPhone")
+find_tools(prefix="social/threads")        # browse everything for Threads
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs are listed there, and the user tools differ in
+whether they take a username or a numeric ID.
+
+<Note>
+  **Building with code?** Threads is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Threads account or a Meta developer app?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read private profiles?">
+    No. Only public posts, replies, reposts and profiles are available, and
+    every tool is read-only — nothing is posted or followed on your behalf.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the platform at request time; nothing is served from a
+    stale archive. "Recent" and "top" search reflect what Threads returns at
+    that moment.
+  </Accordion>
+</AccordionGroup>

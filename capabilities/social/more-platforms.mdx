@@ -1,0 +1,144 @@
+---
+title: "More social platforms"
+sidebarTitle: "More platforms"
+description: "Facebook, Telegram, Lemon8, IMDb, Toutiao, Xigua, Pipixia, Douban, QQ Huxuan, Youku, Yiche, Autohome and Dongchedi data for AI agents through AgentKey."
+---
+
+Beyond the platforms with their own pages, the Social category covers a long
+tail of networks and content sites. Each works the same way — `find_tools`,
+`describe_tool`, `execute_tool` — and the browse prefix for each is listed with
+its section. These platforms are available through the catalog only; none of
+them has fixed-contract Scenario Methods yet.
+
+## Global
+
+### Facebook
+
+Browse with `find_tools(prefix="social/facebook")`.
+
+- Public post search by keyword, with an optional inclusive date range
+- A profile's public posts, after resolving the profile ID from its path
+- Comments on a post and the replies under a comment
+
+### Telegram
+
+Browse with `find_tools(prefix="social/telegram")`.
+
+- Channel info, single or in batch; similar channels
+- A channel's posts, paginated; search for posts inside a channel
+- A single post and its comments (discussion)
+
+### Lemon8
+
+Browse with `find_tools(prefix="social/lemon8")`.
+
+- Discover page — banners, main content and Editor's Picks; hot search keywords
+- Keyword search; post info and the comments on a post
+- Topic info and the posts under a topic
+- User info, fans and following; post and user IDs from sharing links, single or
+  batch
+
+### IMDb
+
+Browse with `find_tools(prefix="social/imdb")`.
+
+- Title lookup by ID — base info, details and extended details, plot, top cast
+  and crew, countries of origin, release expectation
+- Awards, box office, critics-review and user-review summaries, "Did You Know"
+  trivia, recommendations of similar titles
+- Top 250 movie and TV charts; news by category; Prime Video streaming picks
+- Language and country preferences on every call
+
+## China
+
+### Toutiao (今日头条)
+
+Browse with `find_tools(prefix="social/toutiao")`.
+
+- Article detail and video detail; comments on a post
+- User profile, user ID from a profile URL, and a user's works
+- Keyword search for articles and works, and for accounts
+
+### Xigua Video (西瓜视频)
+
+Browse with `find_tools(prefix="social/xigua")`.
+
+- Video detail and the video play URL
+- User info and a user's posts
+- Video comments; video search
+
+### Pipixia (皮皮虾)
+
+Browse with `find_tools(prefix="social/pipixia")`.
+
+- Home feed and the short-drama feed; hot search words and hot search boards
+- Hashtag detail and the posts under a hashtag; keyword search
+- Post detail, statistics and comments
+- User info, posts, followers and following
+
+### Douban (豆瓣)
+
+Browse with `find_tools(prefix="social/douban")`.
+
+- Movie or TV subject detail
+- Short comments ordered by time or newest rating; long-form reviews and a
+  single review's detail
+- Recent hot movies and recent hot TV
+
+### QQ Huxuan (互选)
+
+Browse with `find_tools(prefix="social/qq-huxuan")`. Huxuan is Tencent's
+brand-creator matching platform for Channels and Official Accounts.
+
+- Video Account creators — search by nickname, creator detail, recent videos
+  within a date range
+- Official Account creators — search by nickname or account, creator detail,
+  article list within a date range with an optional title keyword
+
+### Youku (优酷)
+
+Browse with `find_tools(prefix="social/youku")`.
+
+- Video search by keyword
+- Video detail; user profile
+
+### Yiche (易车)
+
+Browse with `find_tools(prefix="social/yiche")`.
+
+- Article detail and video detail
+- A user's works; account search; works search by keyword
+
+### Autohome (汽车之家)
+
+Browse with `find_tools(prefix="social/autohome")`.
+
+- Chejiahao (车家号) article detail and video detail
+- An author's works; works search by keyword
+
+### Dongchedi (懂车帝)
+
+Browse with `find_tools(prefix="social/dongchedi")`.
+
+- Work detail
+- A user's works; user search; works search by keyword
+
+## How to use them
+
+```text
+find_tools(q="recent posts in this Telegram channel")
+find_tools(q="豆瓣上这部电影的短评")
+find_tools(prefix="social/imdb")           # browse one platform
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before executing
+— parameters and per-call costs differ between tools.
+
+<Note>
+  **Building with code?** These platforms are available through the catalog
+  tools only; there are no fixed-contract Scenario Methods for them yet. See
+  the [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>

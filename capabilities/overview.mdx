@@ -3,51 +3,78 @@ title: "Capabilities Overview"
 description: "Everything your agent can reach through AgentKey."
 ---
 
-AgentKey groups its ~1,800 tools into eight categories. Each tool is named
-`Provider/Operation` and is reached through the same
-[discover → describe → execute](/concepts/discover-describe-execute) flow.
+AgentKey's catalog holds thousands of tools from dozens of providers, grouped into eleven
+categories. Each tool is named `Provider/Operation` and is reached through the
+same [discover → describe → execute](/concepts/discover-describe-execute) flow.
 
 <CardGroup cols={2}>
-  <Card title="Search" icon="magnifying-glass" href="/capabilities/search">
-    Web, news, image, and LLM-context search across six providers.
+  <Card title="Search" icon="search" href="/capabilities/search">
+    Web, news, image, video, place and scholar search across six engines.
   </Card>
   <Card title="Scrape" icon="file-code" href="/capabilities/scrape">
-    Turn any URL into clean markdown; bypass anti-bot pages.
+    Turn any URL into clean text; unlock challenge-gated pages.
   </Card>
-  <Card title="Social" icon="share-nodes" href="/capabilities/social">
-    Real-time data across major global social platforms.
+  <Card title="Social" icon="share-2" href="/capabilities/social">
+    Posts, users, comments and trends on dozens of global and Chinese platforms.
   </Card>
   <Card title="Crypto" icon="bitcoin" href="/capabilities/crypto">
-    Market data, on-chain, NFTs, DEX, wallets, prediction markets.
+    Market data, on-chain, DEX, wallets, NFTs, prediction markets, crypto news.
   </Card>
   <Card title="Finance" icon="chart-line" href="/capabilities/finance">
-    Technical indicators, commodities, and market data.
+    Quotes, candles, fundamentals, SEC filings, ownership and macro series.
   </Card>
-  <Card title="Business" icon="building" href="/capabilities/business">
-    Company, acquisition, and entity intelligence.
+  <Card title="Business" icon="building-2" href="/capabilities/business">
+    Companies, people, funding rounds and investors.
   </Card>
-  <Card title="E-commerce" icon="cart-shopping" href="/capabilities/ecommerce">
-    Product search, details, and best-seller rankings.
+  <Card title="E-commerce" icon="shopping-cart" href="/capabilities/ecommerce">
+    Product search, details, reviews and rankings on the major marketplaces.
+  </Card>
+  <Card title="Weather" icon="cloud-sun" href="/capabilities/weather">
+    Current conditions, forecasts, air quality, alerts and typhoon tracks.
+  </Card>
+  <Card title="Travel" icon="plane" href="/capabilities/travel">
+    Hotels, flights, car rentals, attractions and taxis.
+  </Card>
+  <Card title="Jobs" icon="briefcase" href="/capabilities/jobs">
+    Job search, posting details and salary estimates.
+  </Card>
+  <Card title="Academic" icon="graduation-cap" href="/capabilities/academic">
+    Papers, researchers, institutions, venues and patents.
   </Card>
   <Card title="Account" icon="wallet" href="/api-reference/account">
-    Credits and upstream health — always free.
+    Credits and upstream health via `agentkey_account` — always free.
   </Card>
 </CardGroup>
 
 ## At a glance
 
-| Category | Tools | Discover with |
-| --- | --- | --- |
-| Search | ~33 | `find_tools("search ...")` or `list_tools("search")` |
-| Scrape | ~4 | `find_tools("scrape <url>")` or `list_tools("scrape")` |
-| Social | ~1,169 | `find_tools("<platform> ...")` or `list_tools("social")` |
-| Crypto | ~179 | `find_tools("<token/chain> ...")` or `list_tools("crypto")` |
-| Finance | ~347 | `find_tools("<indicator/asset> ...")` or `list_tools("finance")` |
-| Business | ~96 | `find_tools("company ...")` or `list_tools("business")` |
-| E-commerce | ~34 | `find_tools("product ...")` or `list_tools("ecommerce")` |
-| Account | 1 | `account` (free) |
+| Category | Discover with |
+| --- | --- |
+| Search | `find_tools(prefix="search")` |
+| Scrape | `find_tools(prefix="scrape")` |
+| Social | `find_tools(prefix="social")`, or one platform: `find_tools(prefix="social/twitter")` |
+| Crypto | `find_tools(prefix="crypto")` |
+| Finance | `find_tools(prefix="finance")` |
+| Business | `find_tools(prefix="business")` |
+| E-commerce | `find_tools(prefix="ecommerce")` |
+| Weather | `find_tools(prefix="weather")` |
+| Travel | `find_tools(prefix="travel")` |
+| Jobs | `find_tools(prefix="jobs")` |
+| Academic | `find_tools(prefix="academic")` |
+| Account | `execute_tool("agentkey_account")` — free |
+
+Browsing by prefix is for orientation. When you know what you want, pass the
+intent straight to `find_tools(q="...")` and it ranks matches across every
+category; combine `q` and `prefix` to search inside one subtree.
 
 <Tip>
-  Tool counts grow over time as providers are added. Always discover with
-  `find_tools` rather than hard-coding a tool name.
+  The catalog grows as providers are added. Discover with `find_tools` at run
+  time rather than hard-coding tool names.
 </Tip>
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call the
+  same categories through [Scenario Methods](/api-reference/scenario/overview):
+  fixed REST contracts with a stable schema, a fixed price and automatic
+  provider failover. See [Two Ways to Call](/concepts/two-ways-to-call).
+</Note>

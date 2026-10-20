@@ -1,0 +1,127 @@
+---
+title: "Xiaohongshu (RedNote) data for AI agents"
+sidebarTitle: "Xiaohongshu (RedNote)"
+description: "Xiaohongshu (RedNote) note search, comments, creator profiles, topics and hot-note rankings, products and the Pugongying creator marketplace through AgentKey."
+---
+
+Xiaohongshu (小红书, RedNote) is where Chinese consumers research purchases,
+travel and lifestyle, and it has no public API at all: every note sits behind
+app-signed requests and a login wall. Through AgentKey your agent reads public
+Xiaohongshu data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — with several providers behind the scenes, so
+one route failing does not stop the task.
+
+## What you can ask
+
+- *"What are the most-liked notes about sunscreen on Xiaohongshu this month?"*
+- *"小红书上关于防晒霜的热门笔记有哪些？"*
+- *"Pull this note's text, images and comments and summarize how people react."*
+- *"Show me this account's recent notes and their likes, collects and comments."*
+- *"Which beauty creators are open for cooperation, and what are their quotes?"*
+- *"What is in today's hot-notes ranking, and which dark-horse notes went viral overnight?"*
+- *"帮我看看这个博主在蒲公英上的粉丝画像和报价"*
+- *"Transcribe this Xiaohongshu video note."*
+
+## What's covered
+
+**Notes**
+- Keyword search with sort, note-type and publish-time filters; a search for
+  AI-generated notes
+- Note detail by ID or URL — body text, watermark-free images or the video play
+  URL, hashtags, author and engagement counts
+- Short share-link resolution
+- Hot-notes insight: the most-engaged notes, with or without a keyword
+
+**Comments**
+- First-level comments sorted by default, latest or like count; replies under a
+  comment
+- Bulk first-level comment pulls as a submit-then-fetch task
+
+**Users**
+- Profile by user ID or profile URL — bio, IP location, follower, like and
+  collect counts
+- Published notes; collected (faved) notes
+- User search by nickname or niche; account info
+
+**Topics and discovery**
+- Topic info and the topic note feed, hot or latest
+- Search keyword suggestions, image search, group-chat search
+- Homepage feed and categories; Ask Dots AI answers for a question
+
+**Trending and inspiration**
+- Hot search; daily and 7-day hot-notes rankings; dark-horse viral notes
+- Hot account recommendations by day, week or month
+- Creator-center inspiration feeds, hot and recommended
+
+**Products**
+- Product search, product detail and related recommendations
+- Review overview — average score and star distribution — and review lists
+
+**Transcripts**
+- Video-note transcription as a submit-then-fetch task
+
+### Creator marketplace (Pugongying)
+
+Pugongying (蒲公英) is Xiaohongshu's official brand-creator cooperation
+platform, and its data is read through the same three calls:
+
+- Creator search with audience, location, content, pricing, performance and
+  cooperation filters; the filter options themselves; a separate square for
+  live-commerce creators
+- Creator profile with cooperation quotes, content and feature tags; similar
+  creators
+- Core metrics with daily trends, data summary, note performance medians and
+  rates, cost-effectiveness analysis
+- Follower summary, growth history over 30 or 90 days, and follower
+  distribution by gender, age, region, interest and device
+- Creator note lists and note cases, note detail, featured comments and the
+  components mounted on a note
+- Content Square leaderboards of what is hot right now; keyword overview,
+  daily search index and related keywords
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="most liked Xiaohongshu notes about sunscreen this month")
+find_tools(q="小红书上关于防晒霜的热门笔记")
+find_tools(prefix="social/xiaohongshu")    # browse everything for Xiaohongshu
+find_tools(prefix="social/pugongying")     # the creator marketplace
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.xiaohongshu.post.search`](/api-reference/scenario/methods/social-xiaohongshu-post-search),
+  [`social.xiaohongshu.post.get`](/api-reference/scenario/methods/social-xiaohongshu-post-get),
+  [`social.xiaohongshu.post.comments`](/api-reference/scenario/methods/social-xiaohongshu-post-comments),
+  [`social.xiaohongshu.topic.posts`](/api-reference/scenario/methods/social-xiaohongshu-topic-posts),
+  [`social.xiaohongshu.user.get`](/api-reference/scenario/methods/social-xiaohongshu-user-get),
+  [`social.xiaohongshu.user.posts`](/api-reference/scenario/methods/social-xiaohongshu-user-posts),
+  [`social.xiaohongshu.user.search`](/api-reference/scenario/methods/social-xiaohongshu-user-search),
+  [`social.xiaohongshu.post.trending`](/api-reference/scenario/methods/social-xiaohongshu-post-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Xiaohongshu account or Pugongying login?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="How fresh are the rankings?">
+    Search, note detail and comments go to the platform at request time. The
+    daily rankings describe the previous day and are refreshed once a day.
+  </Accordion>
+  <Accordion title="Can it read private notes or direct messages?">
+    No. Only public notes, comments, profiles, topics and products are
+    available.
+  </Accordion>
+</AccordionGroup>

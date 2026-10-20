@@ -1,0 +1,108 @@
+---
+title: "Prediction market data for AI agents"
+sidebarTitle: "Prediction markets"
+description: "Polymarket and Kalshi events, markets, prices, order books, trades, volume, open interest, smart money and cross-platform matching through AgentKey."
+---
+
+Prediction markets put a live probability on almost anything, which makes them
+a rich signal for an agent — if it can read them. Polymarket and Kalshi expose
+different APIs, use different identifiers and quote in different units, and
+matching the same question across the two is manual work. Through AgentKey your
+agent reads both platforms the same way — `find_tools`, `describe_tool`,
+`execute_tool` — with Surf behind the scenes, including analytics that already
+line the two up.
+
+## What you can ask
+
+- *"What are the odds on Polymarket for this event, and how have they moved this month?"*
+- *"Find the same election market on Polymarket and Kalshi and tell me the price spread."*
+- *"Which prediction markets have the most volume this week?"*
+- *"What is smart money betting on in the politics category?"*
+- *"Show the order book for this Kalshi market."*
+- *"Who are the top Polymarket traders by realized PnL?"*
+- *"这个钱包在 Polymarket 上持有哪些仓位？"*
+- *"Which crypto-category markets move together?"*
+
+## What's covered
+
+**Discovery**
+- Browse and search markets across platforms by platform, category, status,
+  keyword and smart-money direction, with volume, open interest, trade counts
+  and smart-money signals per result
+- Polymarket events with nested markets and two-sided outcomes; Polymarket
+  markets by slug
+- Kalshi events with nested markets; Kalshi markets with price, volume and
+  status
+
+**Prices and order books**
+- Polymarket price history as one point per interval, or as OHLCV candles for
+  charting
+- Kalshi price history as daily or hourly OHLC, or the latest price from
+  recent trades
+- Historical order book snapshots — raw bid/ask depth on Polymarket, yes-side
+  bid/ask levels on Kalshi
+
+**Volume, open interest and trades**
+- Volume history on both platforms, and a YES/NO volume split per hour, day or
+  week on Polymarket
+- Daily open interest history on both platforms
+- Individual trades — on Polymarket filtered by market, wallet, outcome,
+  minimum size and time range, including splits, merges and redemptions; on
+  Kalshi filtered by taker side, minimum contracts and date range
+
+**Traders and smart money**
+- Polymarket leaderboard ranked by realized PnL, volume or trade count, with
+  wallet addresses
+- Smart-money positioning per market — net bullish or bearish signal and
+  conviction — and the individual large smart-wallet trades behind it
+- Open positions of one wallet on Polymarket
+
+**Analytics and cross-platform**
+- Platform-wide totals of volume, open interest and market count; trends, top
+  markets, momentum distribution and per-market momentum signals, by category
+  or across everything
+- 30-day price correlations between Polymarket markets within a category,
+  covering the highest-volume markets
+- Matched Polymarket–Kalshi pairs for the same event with live price spread,
+  and a daily volume and open interest comparison for a matched pair
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="Polymarket odds and price history for the US election market")
+find_tools(q="Kalshi 和 Polymarket 上同一事件的价差")
+find_tools(prefix="crypto/prediction")    # browse everything for prediction markets
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — Polymarket tools key on condition ids and slugs, Kalshi tools on
+event and market tickers, and the per-call cost is shown there.
+
+<Note>
+  **Building with code?** Prediction market data is available through the
+  catalog today; there is no dedicated Scenario Method yet. See
+  [Scenario Methods](/api-reference/scenario/overview) for the fixed-contract
+  API and the methods that exist.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which platforms are covered?">
+    Polymarket and Kalshi, individually and through the cross-platform search,
+    analytics and pair-matching tools that span both.
+  </Accordion>
+  <Accordion title="Can the agent place bets?">
+    No. Every tool is read-only: markets, prices, order books, trades and
+    positions are observed, never created.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Yes — price history and candles, order book snapshots, volume and open
+    interest series and trade records are all time series. Market listings,
+    leaderboards and smart-money positioning are fetched at request time.
+  </Accordion>
+</AccordionGroup>

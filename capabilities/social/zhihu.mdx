@@ -1,0 +1,102 @@
+---
+title: "Zhihu data for AI agents"
+sidebarTitle: "Zhihu"
+description: "Zhihu questions, answers and comments, column articles, pins, user profiles and follow graphs, keyword search and the Zhihu hot list through AgentKey."
+---
+
+Zhihu (知乎) is China's question-and-answer network — the place for long,
+reasoned answers from practitioners, and a prime source for research on how
+Chinese professionals think about a topic. It has no public API and gates most
+pages behind a login. Through AgentKey your agent reads public Zhihu data the
+same way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool` — with more than one provider behind the scenes, so one route
+failing does not stop the task.
+
+## What you can ask
+
+- *"What are the top answers to this Zhihu question?"*
+- *"知乎热榜现在有什么？"*
+- *"Search Zhihu for discussions about AI agents from the past month."*
+- *"Pull this column's recent articles and summarize them."*
+- *"Who does this Zhihu user follow, and which topics do they follow?"*
+- *"Get the comments on this answer, hottest first."*
+- *"这个用户在知乎上写过哪些文章？"*
+
+## What's covered
+
+**Questions and answers**
+- Question detail; the answers to a question with sorting and pagination
+- Answer detail; a user's answers
+
+**Articles and columns**
+- Column article detail and the article list of a column; related articles
+- A user's articles sorted by publish time or upvotes; their included (收录)
+  articles
+- Similar column recommendations
+
+**Pins (想法)**
+- Pin detail, pin comments, a user's pins
+
+**Comments**
+- Comments on an answer or other content, hottest or latest; replies
+
+**Users**
+- Public profile by URL token; user search
+- Followers and following
+- Followed topics, columns, questions and collections; created collections
+
+**Search**
+- Keyword search with result type, sort, time interval and topic display
+  controls
+- Dedicated search for articles, columns, topics, users, videos, ebooks, Salt
+  (盐选) and scholar content
+- Search suggestions and recommendations; AI search
+
+**Trending**
+- The hot list, the hot recommend feed, the video list
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="top answers to this Zhihu question")
+find_tools(q="知乎热榜现在有什么")
+find_tools(prefix="social/zhihu")          # browse everything for Zhihu
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing — parameters and per-call
+costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.zhihu.post.search`](/api-reference/scenario/methods/social-zhihu-post-search),
+  [`social.zhihu.post.get`](/api-reference/scenario/methods/social-zhihu-post-get),
+  [`social.zhihu.topic.search`](/api-reference/scenario/methods/social-zhihu-topic-search),
+  [`social.zhihu.user.get`](/api-reference/scenario/methods/social-zhihu-user-get),
+  [`social.zhihu.user.posts`](/api-reference/scenario/methods/social-zhihu-user-posts),
+  [`social.zhihu.user.search`](/api-reference/scenario/methods/social-zhihu-user-search),
+  [`social.zhihu.trending`](/api-reference/scenario/methods/social-zhihu-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Zhihu account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Does it cover paid Salt (盐选) content?">
+    Salt titles can be searched like other content types. Whether a given
+    title's body is returned depends on what Zhihu serves publicly for it;
+    paywalled text is not unlocked.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to Zhihu at request time; the hot list, answers and
+    comments reflect what Zhihu returns at that moment.
+  </Accordion>
+</AccordionGroup>

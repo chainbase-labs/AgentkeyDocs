@@ -1,0 +1,101 @@
+---
+title: "Researcher and institution data for AI agents"
+sidebarTitle: "Researchers & institutions"
+description: "Researcher profiles, h-index and citation stats, papers, patents and projects, plus institution, venue and patent lookups for AI agents."
+---
+
+Finding out who a researcher is, where they are now, what they have published
+and who else works at their lab means cross-referencing homepages, indexes and
+patent offices by hand. Through AgentKey your agent asks directly —
+`find_tools`, `describe_tool`, `execute_tool` — with AMiner behind the scenes
+for scholars, institutions, venues and patents, and alphaXiv for current
+affiliations and career moves.
+
+## What you can ask
+
+- *"Who is Yoshua Bengio — affiliation, research interests, honors, h-index?"*
+- *"List the researchers currently at DeepMind who work on reinforcement learning."*
+- *"Which researchers left OpenAI in the past year, and where are they now?"*
+- *"Give me this scholar's papers, patents and funded projects."*
+- *"Normalize 'MIT CSAIL' to its parent institution and list its scholars."*
+- *"Is ICLR a journal or a conference, and what is its ISSN?"*
+- *"Find patents on solid-state lithium electrolytes with inventors and assignees."*
+- *"清华大学计算机系有哪些学者，各自的研究方向是什么？"*
+
+## What's covered
+
+**Researchers**
+- Search scholars by name, returning id, name, institution, interests and
+  citation count
+- Profile: biography in English and Chinese, education, title, honors
+- Research portrait: interests, research fields, structured work and
+  education history
+- Statistics: paper count, citations, h-index, g-index, activity and
+  diversity scores
+- A scholar's papers, patents and projects — including funding amount,
+  currency, dates and source
+- Current affiliations, organization rosters, who has left and career moves;
+  compact profiles for one or many names; a researcher's arXiv papers; turning
+  a roster or award list into current researcher entries
+
+**Institutions**
+- Search institutions by name; normalize a free-text affiliation to its
+  standard name, or to first- and second-level institution ids
+- Institution detail: aliases and acronyms, founding date, description, type
+- The scholars, papers and patents of an institution
+
+**Venues**
+- Search journals and conferences by name; detail with ISSN, EISSN, aliases
+  and venue type
+- A venue's papers, filterable by year
+
+**Patents**
+- Search patents by title
+- Brief info (title, number, inventors, country, application and publication
+  year) and full detail with abstract, application date and number, applicant,
+  assignee and publication date
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="h-index and research interests of Yoshua Bengio")
+find_tools(q="清华大学计算机系的学者列表")
+find_tools(prefix="academic/aminer")         # scholars, institutions, venues, patents
+find_tools(prefix="academic/alphaxiv")       # current affiliations, rosters, career moves
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — AMiner detail tools take an id from the matching search tool, and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** There is no dedicated Scenario Method for
+  researchers or institutions yet; the capability is available through the
+  catalog today. Paper lookups do have fixed contracts — see
+  [`academic.paper.search`](/api-reference/scenario/methods/academic-paper-search)
+  and the [Scenario Methods overview](/api-reference/scenario/overview).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an id first?">
+    For AMiner, yes: search for the scholar, institution, venue or patent to
+    get its id, then open detail, papers, patents or statistics with it. The
+    alphaXiv researcher tools accept full names directly.
+  </Accordion>
+  <Accordion title="Does it handle Chinese names and institutions?">
+    Yes. AMiner returns Chinese and English names for scholars, institutions
+    and venues side by side, and the institution tools normalize a free-text
+    affiliation string to a standard name or id.
+  </Accordion>
+  <Accordion title="How current are affiliations?">
+    The alphaXiv researcher tools are built for current affiliation, role and
+    position history, and can refresh a stale roster. AMiner profiles reflect
+    its index and are best for publication record, statistics and honors.
+  </Accordion>
+</AccordionGroup>

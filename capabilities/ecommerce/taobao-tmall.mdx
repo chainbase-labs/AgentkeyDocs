@@ -1,0 +1,85 @@
+---
+title: "Taobao & Tmall product data for AI agents"
+sidebarTitle: "Taobao / Tmall"
+description: "Search Taobao and Tmall with price and Tmall-only filters, read product details, reviews and buyer questions, and list a shop's products through AgentKey."
+---
+
+Taobao and Tmall together are China's largest marketplace, and for an agent
+outside Alibaba's ecosystem they are nearly sealed: the open platform wants a
+registered Chinese business and app approval, and the storefront demands a
+login before it shows a search result. Through AgentKey your agent reads public
+Taobao and Tmall data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — across both storefronts in one place.
+
+## What you can ask
+
+- *"淘宝搜 '无线降噪耳机'，价格 200 到 500，只看天猫，按销量排序。"*
+- *"这个淘宝商品的评价怎么样？差评主要集中在哪些问题？"*
+- *"Pull the details for this Tmall item and tell me the price and the seller."*
+- *"What are buyers asking about this product, and what does the discussion say?"*
+- *"List everything this Taobao seller is selling, sorted by sales."*
+- *"Find the cheapest Tmall listings for this phone model and compare them side by side."*
+
+## What's covered
+
+**Search**
+- Keyword search across Taobao and Tmall with page and sort controls
+- A Tmall-only switch and an inclusive price range
+
+**Product details**
+- Details for a Taobao or Tmall item by item ID — several versions of the
+  lookup are listed and act as siblings, so one unhealthy route is not the end
+
+**Reviews & Q&A**
+- Product reviews by item ID, paginated and sortable
+- The product's social feed — buyer questions and related discussion — for
+  customer-concern research
+
+**Shops**
+- A seller's products by seller or user ID, paginated, in default or sales
+  order
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="淘宝上 200 到 500 元的无线降噪耳机，只看天猫")
+find_tools(q="reviews and buyer questions for this Tmall product")
+find_tools(prefix="ecommerce/taobao")       # browse everything for Taobao and Tmall
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in yuan, as the listing shows them, not converted. Aliases
+resolve (淘宝, 天猫, Taobao and Tmall all land here). Always `describe_tool`
+before executing: it shows which identifier each operation expects (item ID,
+seller ID or user ID), the sort and filter options, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.taobao.product.search`](/api-reference/scenario/methods/ecommerce-taobao-product-search),
+  [`ecommerce.taobao.product.get`](/api-reference/scenario/methods/ecommerce-taobao-product-get),
+  [`ecommerce.taobao.product.reviews`](/api-reference/scenario/methods/ecommerce-taobao-product-reviews),
+  [`ecommerce.taobao.shop.products`](/api-reference/scenario/methods/ecommerce-taobao-shop-products).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Taobao account or Alibaba open-platform access?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Does this cover both Taobao and Tmall?">
+    Yes. Search spans both and has a Tmall-only switch; details, reviews,
+    buyer questions and shop listings work with an item, seller or user ID
+    from either storefront.
+  </Accordion>
+  <Accordion title="How fresh are prices and reviews?">
+    Every call goes to the platform at request time; nothing is served from a
+    stale archive. A price is what the listing shows at that moment, in yuan.
+  </Accordion>
+</AccordionGroup>

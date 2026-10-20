@@ -1,28 +1,77 @@
 ---
 title: "Finance"
-description: "Technical indicators, commodities, and traditional market data."
+sidebarTitle: "Overview"
+description: "Quotes, candles, fundamentals, SEC filings, ownership, estimates, earnings and macro series."
 ---
 
-The **Finance** category exposes traditional-market data — a large library of
-technical indicators plus commodities and pricing data.
+The **Finance** category covers traditional markets end to end: equity and ETF
+quotes and OHLCV history, financial statements and ratios, earnings and analyst
+estimates, insider and institutional ownership, SEC filings down to individual
+sections, FX, options, commodities and macroeconomic series — across US, China /
+Hong Kong and global markets, from nine providers.
 
-## What's inside
+## Explore
 
-- **Technical indicators** — a broad set including ADX, ADXR, Chaikin A/D Line
-  (`getAd`) and Oscillator (`getAdosc`), and many more momentum, trend, volume,
-  and volatility studies.
-- **Commodities** — pricing for metals and other commodities (e.g. `getAluminum`).
-- **Market data** — quotes and related series for traditional assets.
+<CardGroup cols={2}>
+  <Card title="Quotes and candles" href="/capabilities/finance/quotes-and-candles">
+    Prices, OHLCV bars, symbol search, option chains.
+  </Card>
+  <Card title="Fundamentals and statements" href="/capabilities/finance/fundamentals-and-statements">
+    Profiles, income, balance sheet, cash flow, peers.
+  </Card>
+  <Card title="Earnings and estimates" href="/capabilities/finance/earnings-and-estimates">
+    Earnings history, surprises, analyst estimates and recommendations.
+  </Card>
+  <Card title="SEC filings and ownership" href="/capabilities/finance/sec-filings-and-ownership">
+    EDGAR filings, sections, XBRL, insiders, 13F holdings.
+  </Card>
+  <Card title="China A-shares" href="/capabilities/finance/china-a-shares">
+    Mainland and Hong Kong markets end to end, via Tushare.
+  </Card>
+  <Card title="Macroeconomic data" href="/capabilities/finance/macro-economic-data">
+    World Bank, Eurostat and US macro series.
+  </Card>
+  <Card title="FX and commodities" href="/capabilities/finance/fx-and-commodities">
+    Currency pairs, metals, energy and agricultural prices.
+  </Card>
+</CardGroup>
 
-<Tip>
-  This category has hundreds of indicator endpoints. Discover the exact one with
-  `find_tools("<indicator name> for <symbol>")` rather than browsing all of them.
-</Tip>
+## Providers
 
-## Example
+| Provider | Coverage |
+| --- | --- |
+| **Tushare** | China A-share, Hong Kong and US listings: daily / weekly / monthly and minute bars, adjustment factors, daily indicators, income statement, balance sheet, cash flow and financial indicators, dividends, forecasts and express reports, top holders, pledges, margin trading, block trades, Dragon-Tiger lists; indices (CSI, SW and CITIC industry), ETFs and mutual funds, convertible and other bonds, futures, options, FX, Shanghai Gold; China macro (CPI, PPI, GDP, PMI, money supply, social financing, Shibor / LPR / Hibor / Libor) and US Treasury rates |
+| **AlphaVantage** | Global quotes and daily / weekly / monthly time series; company overview, income statement, balance sheet, cash flow, earnings history and estimates, earnings-call transcripts, dividends and splits, insider transactions, institutional holdings, ETF profiles; realtime and historical options; FX and crypto series; commodities (WTI, Brent, natural gas, copper, aluminum, wheat, corn, cotton, sugar, coffee, gold, silver); US macro (GDP, CPI, inflation, fed funds, Treasury yields, unemployment, payrolls, retail sales, durable goods); some fifty technical indicators (SMA, EMA, MACD, RSI, Bollinger Bands, ADX, …); news & sentiment, top gainers / losers, IPO and earnings calendars, market status |
+| **sec-api** (`SecAPI`) | Structured SEC EDGAR: filing search 1993 – present, full-text search, 10-K / 10-Q / 8-K section extractor, XBRL-to-JSON; insider trading (Forms 3 / 4 / 5), 13F holdings and cover pages, 13D / 13G, Form 144, Form D, Form C, S-1 / 424B4, Regulation A, N-PORT / N-CEN / N-PX, Form ADV and schedules; executive compensation, directors and board members, audit fees, subsidiaries, public float; enforcement actions, litigation releases, administrative proceedings, AAERs, SRO filings |
+| **Finnhub** | Quote, company profile and peers, basic financials and financials as reported, earnings surprises and calendar, recommendation trends, insider transactions and sentiment, SEC filings, company and market news, social sentiment, IPO and economic calendars, economic data, market status and holidays, congressional trading, lobbying, USA spending, USPTO patents, H-1B visa applications, stock / forex / crypto symbol lists |
+| **yfinance** | Realtime quote, historical chart, quote summary (profile and fundamentals), fundamental time series, option chain, trending tickers, stock screener, ticker search and autocomplete |
+| **WorldBank** | Country profiles and classifications, indicator definitions and values over time, topics and sources |
+| **SEC** (EDGAR) | Company submissions and filing history by CIK, CIK lookup by name or ticker, XBRL company concepts and frames, full-text search 2001 – present |
+| **Eurostat** | Dataset values filtered by country, period and dimensions; dataflow metadata; code lists |
+
+Tool names follow the provider: `Finnhub/quote`, `yfinance/getChart`,
+`AlphaVantage/getIncomeStatement`, `SecAPI/filing-search`,
+`Tushare/daily`. The per-call cost is shown by
+`describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
 
 ```text
-find_tools("ADX indicator for AAPL daily")
-describe_tool("<returned Provider/Operation>")
-execute_tool("<Provider/Operation>", { symbol: "AAPL", interval: "1day" })
+find_tools(prefix="finance")
+find_tools(q="quarterly income statement for NVDA for the last 8 quarters")
+describe_tool("AlphaVantage/getIncomeStatement")
+execute_tool("AlphaVantage/getIncomeStatement", { ...params })   # copy describe_tool's execute_as
 ```
+
+<Tip>
+  Mention the market in your intent — "A-share", "Hong Kong", "SEC filing",
+  "Eurostat" — and `find_tools` ranks the right provider first. Tushare tool
+  summaries are in Chinese; `find_tools(q=...)` matches them in either language.
+</Tip>

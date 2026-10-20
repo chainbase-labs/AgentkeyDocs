@@ -1,0 +1,55 @@
+---
+title: "Jobs"
+sidebarTitle: "Overview"
+description: "Job search, posting details and salary estimates."
+---
+
+The **Jobs** category lets an agent search live job postings, open a single
+posting with its application links, and estimate pay for a title in a location
+or at a specific company. It is a small category — five tools from two
+providers.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Job search" href="/capabilities/jobs/job-search">
+    Postings across job boards, with filters and pagination.
+  </Card>
+  <Card title="Job details and salaries" href="/capabilities/jobs/job-details-and-salaries">
+    Full posting details and salary estimates.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Tool | What it does |
+| --- | --- |
+| `jsearch/Job_Search` | Search jobs posted on any public job site, aggregated by Google for Jobs, with pagination and the full set of Google for Jobs filters |
+| `jsearch/Job_Details` | All details of one posting: application options and links, employer reviews, estimated salaries for similar jobs |
+| `jsearch/Job_Salary` | Estimated salary / pay for a job title around a location |
+| `jsearch/Company_Job_Salary` | Estimated pay at a specific company by job title, optionally by location and experience level |
+| `liepin/searchJob` | Search jobs on Liepin (China) with an optional filter object; zero-based pagination |
+
+The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
+
+```text
+find_tools(prefix="jobs")
+find_tools(q="remote machine learning engineer jobs posted this week")
+describe_tool("jsearch/Job_Search")
+execute_tool("jsearch/Job_Search", { ...params })   # copy describe_tool's execute_as
+```
+
+<Tip>
+  LinkedIn job details also live in the [Social](/capabilities/social) category
+  (`TikHub/get_job_detail_api_v1_linkedin_web_v2_get_job_detail_get`); `find_tools(q=...)` surfaces them when your
+  intent mentions LinkedIn.
+</Tip>

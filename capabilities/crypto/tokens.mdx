@@ -1,0 +1,95 @@
+---
+title: "Token analytics for AI agents"
+sidebarTitle: "Tokens"
+description: "Token metadata, stable ids, holders and top holders, ERC-20 transfers, DEX swap history and unlock schedules for any token through AgentKey."
+---
+
+A token question rarely stops at the price. Who holds it, how concentrated the
+supply is, what is moving on-chain and when the next unlock lands are the
+questions that separate research from a quote, and each normally means a
+different indexer with its own key. Through AgentKey your agent reads token
+profiles, holders, transfers, DEX trades and tokenomics with `find_tools`,
+`describe_tool` and `execute_tool`, with Chainbase, CoinMarketCap and Surf
+behind the scenes. Prices and candles live on the
+[market data](/capabilities/crypto/market-data) page.
+
+## What you can ask
+
+- *"Who are the top 50 holders of this token on Ethereum, and what share of supply do they hold?"*
+- *"Give me the official website, docs and social links for the ARB token."*
+- *"Show the last 100 transfers of this ERC-20 contract."*
+- *"What DEX swaps hit this token today, and which addresses were taking?"*
+- *"When is the next unlock for this project, and how much vests this month?"*
+- *"这个合约地址对应的是什么代币？"*
+- *"Resolve 'PEPE' to a stable id so I can query it consistently."*
+
+## What's covered
+
+**Profile and identity**
+- Static metadata for one or more cryptocurrencies: logo, description,
+  official website, social links and technical documentation links
+- A stable id map that resolves names and symbols to CoinMarketCap ids for use
+  across other lookups
+- On-chain token metadata for a contract address
+
+**Holders**
+- The holder list and the top holders of a contract
+- Top holders with wallet address, balance and percentage of supply, on EVM
+  chains and Solana
+
+**Transfers and trades**
+- Historical transfer transactions for any ERC-20 contract
+- Recent transfers of a specific ERC-20 or TRC-20 token regardless of sender
+  or receiver, with sender and receiver detail
+- Recent DEX swap events for a token contract on Uniswap, SushiSwap, Curve and
+  Balancer — trading pair, amounts, USD value and taker address
+
+**Tokenomics**
+- Token unlock schedule as a time series with amounts and allocation
+  breakdown, by project or symbol, over a chosen date range
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="top holders of token 0xabc... on Ethereum with percentage")
+find_tools(q="ARB 代币的解锁时间表")
+find_tools(prefix="crypto/token")         # browse everything in token analytics
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — some tools take a contract address plus chain, others a symbol or
+a CoinMarketCap id, and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`crypto.token.price`](/api-reference/scenario/methods/crypto-token-price),
+  [`crypto.token.info`](/api-reference/scenario/methods/crypto-token-info),
+  [`crypto.token.holders`](/api-reference/scenario/methods/crypto-token-holders).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which chains are covered?">
+    Holder lookups by contract run on EVM chains and Solana; transfer history
+    covers ERC-20 and TRC-20 contracts; DEX swap history covers Uniswap,
+    SushiSwap, Curve and Balancer. `describe_tool` lists the chain values each
+    tool accepts.
+  </Accordion>
+  <Accordion title="Can I get the price here too?">
+    The profile tools return identity, not price. Use the market data tools,
+    or the `crypto.token.price` method, which takes a symbol or a contract
+    address.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Transfers and DEX trades are historical event lists, and the unlock
+    schedule can be queried for any date range, past or future. Holder lists
+    reflect the chain at request time.
+  </Accordion>
+</AccordionGroup>

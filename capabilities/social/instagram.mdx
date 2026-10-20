@@ -1,0 +1,101 @@
+---
+title: "Instagram data for AI agents"
+sidebarTitle: "Instagram"
+description: "Instagram posts and Reels, comments, profiles and followers, stories and highlights, hashtag, location and music feeds through AgentKey — no Graph API needed."
+---
+
+Instagram is where brands, creators and trends are made visible, and it is one
+of the least agent-friendly platforms: the Graph API only covers accounts you
+own, and the website demands a login after a few pages. Through
+AgentKey your agent reads public Instagram data the same way it reads
+everything else — `find_tools`, `describe_tool`, `execute_tool` — with several
+providers behind the scenes, so one route failing does not stop the task.
+
+## What you can ask
+
+- *"What are the latest posts from @nike and how is each one performing?"*
+- *"Pull the comments on this Reel and summarize the sentiment."*
+- *"Find recent posts under #sustainablefashion."*
+- *"Who follows this account, and which accounts are similar to it?"*
+- *"What is being posted from Shibuya Crossing right now?"*
+- *"Show me this creator's current stories and highlight reels."*
+- *"Which posts use this audio track?"*
+- *"Translate the top comments on this post into English."*
+
+## What's covered
+
+**Posts and Reels**
+- Post detail by shortcode, media ID or URL; oEmbed info
+- Likes on a post; a user's posts, Reels, reposts and tagged posts
+- Reels search by keyword or hashtag; a recommended Reels feed
+- Translation of a caption or a comment, or a batch of comments at once
+
+**Comments**
+- Top-level comments with popular or newest sorting, paginated
+- Replies under a comment
+
+**Users**
+- Profile by username or user ID, "about" info, former usernames
+- Followers and following lists
+- Similar and related profiles; username → user ID
+
+**Stories and highlights**
+- A user's current stories, their highlight reels and the stories inside each
+  highlight
+
+**Hashtags, locations and music**
+- Posts under a hashtag; hashtag search
+- Location info, posts at a location, nearby content; locations by city or by
+  coordinates, cities by country
+- Music search and the posts using a given audio
+
+**Search and explore**
+- Global search; search for users, hashtags and places
+- Explore page sections and the explore feed
+- Shortcode ↔ media ID conversion; shortcode extraction from a URL
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="latest Instagram posts from @nike with engagement")
+find_tools(prefix="social/instagram")      # browse everything for Instagram
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing — parameters and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.instagram.post.search`](/api-reference/scenario/methods/social-instagram-post-search),
+  [`social.instagram.post.get`](/api-reference/scenario/methods/social-instagram-post-get),
+  [`social.instagram.post.comments`](/api-reference/scenario/methods/social-instagram-post-comments),
+  [`social.instagram.topic.posts`](/api-reference/scenario/methods/social-instagram-topic-posts),
+  [`social.instagram.user.get`](/api-reference/scenario/methods/social-instagram-user-get),
+  [`social.instagram.user.posts`](/api-reference/scenario/methods/social-instagram-user-posts),
+  [`social.instagram.user.search`](/api-reference/scenario/methods/social-instagram-user-search),
+  [`social.instagram.link.resolve`](/api-reference/scenario/methods/social-instagram-link-resolve).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Meta developer app or a business account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read private accounts or direct messages?">
+    No. Only public posts, Reels, stories, profiles and relationships are
+    available.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the platform at request time. Stories and highlights
+    reflect what is live at that moment, so a story that has expired will not
+    be returned.
+  </Accordion>
+</AccordionGroup>
