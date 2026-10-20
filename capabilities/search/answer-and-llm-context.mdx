@@ -1,15 +1,15 @@
 ---
 title: "Answer engines and LLM context for AI agents"
 sidebarTitle: "Answers & LLM context"
-description: "Grounded answers and model-ready web context from Perplexity, Brave's answers, LLM context and summarizer, and Tavily's answers, extract, crawl and map."
+description: "Grounded answers and model-ready web context from Perplexity, Brave's LLM context and summarizer, and Tavily's answers, extract, crawl and map."
 ---
 
 Sometimes an agent does not want ten blue links — it wants the answer, or it
 wants the relevant passages already cut to fit its context window. Through
 AgentKey your agent gets both with the same three calls — `find_tools`,
 `describe_tool`, `execute_tool` — from Perplexity's search with page
-contents, Brave's grounded answers, LLM-context chunks and summarizer, and
-Tavily's generated answers, URL extraction, site crawl and site map.
+contents, Brave's LLM-context chunks and summarizer, and Tavily's generated
+answers, URL extraction, site crawl and site map.
 
 ## What you can ask
 
@@ -59,14 +59,14 @@ Pass the request in plain language and let the router pick the tool:
 find_tools(q="answer with sources: what changed in Python 3.14 free-threading")
 find_tools(q="web context chunks about the EU Digital Markets Act for my prompt")
 find_tools(prefix="search/perplexity")
-find_tools(prefix="search/brave")         # answers, LLM context, summarizer
+find_tools(prefix="search/brave")         # LLM context, summarizer
 find_tools(prefix="search/tavily")        # answers, extract, crawl, map
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
-Always `describe_tool` before executing — Brave answers take a chat-style
-`messages` list, LLM context takes a query with token budgets, Perplexity
+Always `describe_tool` before executing — Tavily's answer rides on its
+search call, Brave's LLM context takes a query with token budgets, Perplexity
 takes `max_tokens` and `max_tokens_per_page`, and per-call costs differ.
 
 <Note>
@@ -91,8 +91,8 @@ takes `max_tokens` and `max_tokens_per_page`, and per-call costs differ.
     filters; Perplexity also filters by publish and last-updated dates.
   </Accordion>
   <Accordion title="Which languages and regions?">
-    Brave answers and LLM context take a country and a language; Perplexity
-    takes a country and ISO 639-1 language codes; Tavily is scoped by domain
-    lists. Questions can be asked in any language.
+    Brave's LLM context takes a country and a language; Perplexity takes a
+    country and ISO 639-1 language codes; Tavily is scoped by domain lists.
+    Questions can be asked in any language.
   </Accordion>
 </AccordionGroup>
