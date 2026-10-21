@@ -1,0 +1,98 @@
+---
+title: "X (Twitter) data for AI agents"
+sidebarTitle: "X (Twitter)"
+description: "Search tweets, read threads and replies, profile accounts, track followers, communities and trends on X (Twitter) through AgentKey — no developer account needed."
+---
+
+X is where news breaks and opinions form, and it is one of the hardest
+platforms for an agent to reach: the official API is expensive and the website
+blocks scraping. Through AgentKey your agent reads public X data the same way it
+reads everything else — `find_tools`, `describe_tool`, `execute_tool` — with
+several providers behind the scenes, so one route failing does not stop the
+task.
+
+## What you can ask
+
+- *"What are people saying about AgentKey on X today?"*
+- *"Pull the last 20 posts from @NASA and summarize the themes."*
+- *"Show me the replies and quote tweets on this post, with the overall sentiment."*
+- *"Who follows this account, and which of them are verified?"*
+- *"Which accounts gained the most followers in the past week among these ten?"*
+- *"What is trending on X in Japan right now?"*
+- *"Is this account shadowbanned?"*
+- *"List the members of this X community and what they have been posting."*
+
+## What's covered
+
+**Posts**
+- Keyword search with X's operators — `from:`, `to:`, `since:` / `until:`,
+  exact phrases, hashtags, media filters
+- Post detail by ID or URL, in single and batch form
+- Replies and comments, quote posts, the list of reposters
+- Long-form articles, a user's media posts, a user's latest replies
+
+**Users**
+- Profile by handle or ID, single or batch; the "about" page; affiliates
+- Followers and following, verified followers, follower category breakdowns
+- New followers and new following over the last seven days
+- Handle ↔ ID conversion, profile link → ID, live-status and shadowban checks
+
+**Lists and communities**
+- List posts, list members, list followers
+- Community info, members and timeline; community search; keyword search
+  inside a community; membership checks
+
+**Trends and Spaces**
+- Trending topics, by country
+- Spaces information
+
+**Relationship and quality signals**
+- Does A follow B, did A repost or quote this post
+- Follower-quality scores and their changes over time, top followers and top
+  following by score
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what people are saying about AgentKey on X today")
+find_tools(q="推特上 @NASA 最近发了什么")
+find_tools(prefix="social/twitter")        # browse everything for X
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and aliases resolve (推特, Twitter and
+X all land here). Always `describe_tool` before executing — parameters and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.x.post.search`](/api-reference/scenario/methods/social-x-post-search),
+  [`social.x.post.get`](/api-reference/scenario/methods/social-x-post-get),
+  [`social.x.post.comments`](/api-reference/scenario/methods/social-x-post-comments),
+  [`social.x.user.get`](/api-reference/scenario/methods/social-x-user-get),
+  [`social.x.user.posts`](/api-reference/scenario/methods/social-x-user-posts),
+  [`social.x.user.search`](/api-reference/scenario/methods/social-x-user-search),
+  [`social.x.trending`](/api-reference/scenario/methods/social-x-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an X developer account or API key?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read protected accounts or direct messages?">
+    No. Only public posts, profiles and relationships are available.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the platform at request time; nothing is served from a
+    stale archive. Trend and search results reflect what X returns at that
+    moment.
+  </Accordion>
+</AccordionGroup>

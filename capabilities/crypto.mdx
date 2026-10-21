@@ -1,39 +1,92 @@
 ---
 title: "Crypto"
-description: "Market data, on-chain analytics, NFTs, DEX, wallets, and prediction markets."
+sidebarTitle: "Overview"
+description: "Market data, on-chain analytics, DEX, wallets, NFTs, prediction markets and crypto news."
 ---
 
-The **Crypto** category gives agents real-time and on-chain blockchain data —
-prices, wallets, tokens, NFTs, DEX pools, news, and more.
+The **Crypto** category gives agents real-time market and on-chain data — token
+prices and rankings, wallet holdings and history, token holders and transfers,
+NFTs, DEX pools, exchange derivatives, prediction markets, crypto news and
+social mindshare — from four providers behind one key.
 
-<Tip>
-  Discover the right type with `find_tools`, or use the crypto catalog
-  (`agentkey_crypto_catalog`) to browse by sub-type.
-</Tip>
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Market data" href="/capabilities/crypto/market-data">
+    Quotes, market caps, listings, trending coins, ETF flows.
+  </Card>
+  <Card title="Tokens" href="/capabilities/crypto/tokens">
+    Metadata, on-chain price, holders, transfers, tokenomics.
+  </Card>
+  <Card title="On-chain and wallets" href="/capabilities/crypto/on-chain-and-wallets">
+    Balances, holdings, transactions, blocks, gas, naming services.
+  </Card>
+  <Card title="DEX and derivatives" href="/capabilities/crypto/dex-and-derivatives">
+    Pairs, trades, klines, funding rates, liquidations.
+  </Card>
+  <Card title="NFTs" href="/capabilities/crypto/nfts">
+    Collections, items, owners and transfer history.
+  </Card>
+  <Card title="News and social intelligence" href="/capabilities/crypto/news-and-social-intelligence">
+    Crypto news, narratives, sentiment, industry events, crypto search.
+  </Card>
+  <Card title="Prediction markets" href="/capabilities/crypto/prediction-markets">
+    Polymarket and Kalshi events, prices and order books.
+  </Card>
+  <Card title="Projects and funds" href="/capabilities/crypto/projects-and-funds">
+    DeFi protocol metrics, fund portfolios and rankings.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Provider | What it brings |
+| --- | --- |
+| **Surf** | Exchange order books, funding, long/short ratios, liquidations and options; Polymarket and Kalshi markets, prices, order books, trades and smart money; social mindshare, sentiment and smart-follower history; wallet detail, net worth, protocol positions and labels; token holders, transfers, DEX trades and unlock schedules; DeFi, bridge and yield rankings; fund profiles and portfolios; news feed plus cross-cutting search over projects, funds, wallets, posts, airdrops and the web; on-chain SQL and structured queries |
+| **CoinMarketCap** | Listings and quotes (latest and historical), K-line candles, CMC20 / CMC100 indices, Fear & Greed, global metrics; DEX pairs, pools, token prices, liquidity and holders; exchange metadata and assets; categories, airdrops, ID maps |
+| **Chainbase** | On-chain primitives: native and ERC-20 balances, account transactions and NFTs, token metadata, holders and transfers, token price and history, NFT collections, items, owners and transfers, ENS resolve / reverse, latest block, block and transaction lookup |
+| **PANews** | Crypto news articles, 24h and weekly rankings, daily must-reads, series and topics, article search, industry calendar and events |
 
 ## Sub-categories
 
+Every crypto tool carries one of these tags, which `find_tools` uses when
+ranking:
+
 | Group | What it covers |
 | --- | --- |
-| **Market Data** | Live quotes, market caps, listings, trending coins, gainers/losers, ETF flows, fear-greed index, TGE schedules |
-| **CEX & Derivatives** | Klines, depth, perpetual funding rates, long/short ratios, liquidation maps |
-| **DEX Pools** | Spot pairs, pair quotes, and trades across major DEXs |
-| **Token Analytics** | Metadata, on-chain price, holders, transfers, tokenomics, holder/transfer insights |
-| **NFTs** | Collections, metadata, floor prices, owners, transfer history, price trails |
-| **Wallets** | Balance, holdings, NFTs, transactions, portfolios, net-worth, protocol exposure, address labels |
-| **Chain Primitives** | Latest block, tx lookup, SQL warehouse, gas price, bridge & yield rankings, raw RPC |
-| **Naming Services** | ENS and Space ID resolve / reverse lookup |
-| **Crypto News** | Breaking articles, daily reads, columns, AI coverage, full-text search |
-| **Industry Events** | Conferences, hackathons, summits, discussion topics |
-| **Social Intelligence** | Trending narratives, mindshare scores, sentiment, smart followers |
-| **Prediction Markets** | Polymarket & Kalshi events, prices, orderbooks, leaderboards, OHLCV |
-| **Projects & Funds** | DeFi protocol metrics, fund portfolios and rankings |
-| **Crypto Search** | Cross-cutting search over web, news, projects, wallets, posts, airdrops |
+| **Market Data** | Live quotes, listings, rankings, K-lines, indices, ETF flows, Fear & Greed, on-chain indicators, token price history |
+| **CEX & Derivatives** | Exchange pairs, tickers, order-book depth, OHLCV, perpetual snapshots, funding history, long/short ratios, liquidations, options |
+| **DEX Pools** | Spot pairs, pool quotes, swap lists, token liquidity, holder counts and trends, security detail, yield rankings |
+| **Token Analytics** | Metadata, holders and top holders, transfers, DEX trade history, unlock schedules |
+| **NFTs** | Collections, items, metadata, owners and owner history, transfers |
+| **Wallets** | Balances, ERC-20 and NFT holdings, transactions, transfers, net worth, DeFi protocol positions, address labels |
+| **Chain Primitives** | Latest block, block and transaction lookup, gas price, on-chain SQL and structured queries |
+| **Naming Services** | ENS resolve and reverse lookup |
+| **Crypto News** | News feeds and articles, rankings, must-reads, series, topics, project AI news |
+| **Industry Events** | Calendar events, conferences and activities, exchange listings, TGEs, public sales, airdrops |
+| **Social Intelligence** | Mindshare rankings and time series, engagement scores, sentiment, smart followers, social user profiles and posts |
+| **Prediction Markets** | Polymarket and Kalshi events, markets, prices, OHLCV, order books, trades, volumes, open interest, leaderboards, cross-platform matching |
+| **Projects & Funds** | Project detail and DeFi metrics, protocol and bridge rankings, fund profiles, portfolios and rankings, categories |
+| **Crypto Search** | Search over projects, funds, wallets, news, social posts and people, airdrops, prediction markets and the web |
 
-## Example
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
 
 ```text
-find_tools("on-chain balance for wallet 0xabc... on Ethereum")
-describe_tool("Chainbase/GetAccountBalance")
-execute_tool("Chainbase/GetAccountBalance", { address: "0xabc...", chain: "ethereum" })
+find_tools(prefix="crypto")
+find_tools(q="ERC-20 balances held by wallet 0xabc... on Ethereum")
+describe_tool("Chainbase/GetAccountTokens")
+execute_tool("Chainbase/GetAccountTokens", { ...params })      # copy describe_tool's execute_as
 ```
+
+<Note>
+  Prediction-market, derivatives and social-intelligence tools are deep and
+  parameter-heavy — always `describe_tool` first. The per-call cost is shown
+  there too.
+</Note>

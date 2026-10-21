@@ -1,0 +1,79 @@
+---
+title: "Job details and salary data for AI agents"
+sidebarTitle: "Job details & salaries"
+description: "Full job posting details with application links and employer reviews, plus estimated salaries by title, location, company and experience level for AI agents."
+---
+
+A search result tells an agent that a job exists; the next questions are how
+to apply, what the employer is like and whether the pay is fair. Through
+AgentKey your agent opens a posting and pulls salary estimates with the same
+`find_tools`, `describe_tool`, `execute_tool` loop, with JSearch behind the
+scenes.
+
+## What you can ask
+
+- *"Open this posting and give me every way to apply."*
+- *"What do employees say about this employer?"*
+- *"What does a data engineer make in Seattle — hourly and yearly?"*
+- *"Estimated pay for a senior software engineer at Google in New York with eight years of experience."*
+- *"Compare product manager salaries in London, Berlin and Amsterdam."*
+- *"Is this posting's salary above the estimate for similar jobs nearby?"*
+
+## What's covered
+
+**Posting details**
+- All details of one job posting, including application options and links
+- Employer reviews
+- Estimated salaries for similar jobs
+
+**Salary estimates by location**
+- Estimated pay for a job title around a location
+- Returned for several periods as the data allows — hourly, daily, weekly,
+  monthly or yearly
+
+**Salary estimates by company**
+- Estimated pay at a specific company by job title
+- Optional location and experience level in years
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="details and application links for this job posting")
+find_tools(q="data engineer salary in Seattle")
+find_tools(prefix="jobs/jsearch")            # details, salary by location, salary by company
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — the details tool takes a job id from
+a search result, and the two salary tools take different combinations of
+title, location, company and experience.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`jobs.get`](/api-reference/scenario/methods/jobs-get) for one posting by
+  the id returned from
+  [`jobs.search`](/api-reference/scenario/methods/jobs-search).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Where does the job id come from?">
+    From a search result — see [Job search](/capabilities/jobs/job-search).
+    Run the search first, then pass the id of the posting you want to open.
+  </Accordion>
+  <Accordion title="Are the salaries actual or estimated?">
+    Estimated. Both salary tools return estimates for a title in a location or
+    at a company, and the periods returned (hourly through yearly) depend on
+    what data is available and relevant for that query.
+  </Accordion>
+  <Accordion title="Can I estimate pay by seniority?">
+    Yes — the company salary tool accepts an experience level in years
+    alongside the title and an optional location.
+  </Accordion>
+</AccordionGroup>

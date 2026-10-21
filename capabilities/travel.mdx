@@ -1,0 +1,60 @@
+---
+title: "Travel"
+sidebarTitle: "Overview"
+description: "Hotels, flights, car rentals, attractions and taxis — search and quote."
+---
+
+The **Travel** category lets an agent plan a trip: find destinations and
+airports, search hotels and rooms, compare flight offers including multi-stop
+routes, price car rentals and taxis, and look up attractions. All operations are
+read-only lookups — searching, pricing and detail pages; none places a
+reservation.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Hotels" href="/capabilities/travel/hotels">
+    Destination search, availability, rooms, reviews and policies.
+  </Card>
+  <Card title="Flights" href="/capabilities/travel/flights">
+    Airport search, itineraries, prices and seat maps.
+  </Card>
+  <Card title="Car rentals" href="/capabilities/travel/car-rentals">
+    Pick-up locations, rentals, vehicles and suppliers.
+  </Card>
+  <Card title="Attractions and transport" href="/capabilities/travel/attractions">
+    Attractions, taxis, currencies and geocoding.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Provider | Coverage |
+| --- | --- |
+| **booking** | Hotels: destination search, hotel search by destination or coordinates, filters and sort options, hotel details, description, facilities, photos, policies, payment features, children policies, room list and availability, availability calendar, review scores, reviews and tips, Q&A, nearby cities. Flights: airport search, flight search (one route or multi-stop), flight details, minimum price, seat map. Car rentals: location search, rental search, vehicle details, supplier details, ratings and reviews, booking summary. Attractions: location search, attraction search, details, reviews, popular nearby. Taxis: location search and taxi search. Utilities: currencies, exchange rates, languages, address to lat / long |
+
+The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
+
+```text
+find_tools(prefix="travel")
+find_tools(q="hotels in Lisbon for two adults, 12 to 15 November")
+describe_tool("booking/Search_Hotels")
+execute_tool("booking/Search_Hotels", { ...params })   # copy describe_tool's execute_as
+```
+
+<Note>
+  Most booking tools expect an identifier from an earlier search — a destination
+  id, hotel id, airport code or location id — so chain
+  `Search_Hotel_Destination` → `Search_Hotels` → `Get_Hotel_Details` rather
+  than calling a detail tool cold. `describe_tool` shows which ids each one
+  needs.
+</Note>

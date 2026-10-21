@@ -1,0 +1,115 @@
+---
+title: "Crypto news and social intelligence for AI agents"
+sidebarTitle: "News & social intel"
+description: "Crypto news feeds, rankings and search; X sentiment, mindshare and smart followers; listings, TGEs, airdrops and industry events, through AgentKey."
+---
+
+Crypto moves on information: a headline, a listing, a shift in who is talking
+about a project on X. An agent that wants that signal has to read news sites,
+social analytics and event calendars that are each sold separately. Through
+AgentKey your agent reads all of it the same way — `find_tools`,
+`describe_tool`, `execute_tool` — with PANews, Surf and CoinMarketCap behind
+the scenes, from a raw article feed to a project's sentiment score.
+
+## What you can ask
+
+- *"What are the top crypto stories of the last 24 hours?"*
+- *"Summarize today's must-read articles on PANews."*
+- *"What is the social sentiment around Solana this week, and is its mindshare rising?"*
+- *"Which DEX projects have the most mindshare over the last 7 days?"*
+- *"Who are the smart followers of this project's X account — VCs, KOLs or developers?"*
+- *"Any exchange listings or delistings this week?"*
+- *"Which airdrops are live right now, and what tasks do they require?"*
+- *"最近有哪些值得关注的行业活动和会议？"*
+
+## What's covered
+
+**News**
+- Latest articles, filterable by column or series; a cross-source crypto news
+  feed filterable by source, project and time range, sorted by recency or
+  trending
+- Full article content by id
+- 24-hour hot article ranking, 7-day search trending ranking and daily
+  must-reads
+- Series and topics — list, search and detail with latest comments
+- Keyword search of articles, ranked by relevance with highlighted matching
+  fragments
+- AI-generated news and signal analysis per project: title, summary, TL;DR,
+  signal type (price analysis, mindshare, funding, Twitter), source URLs and
+  source tweet
+
+**Social intelligence on X (Twitter)**
+- Project-level X analytics: sentiment score from -1 (bearish) to 1
+  (bullish), follower geography, smart-follower breakdown into VCs, KOLs and
+  developers
+- Mindshare — social view count — as a ranking of projects scoped by tag
+  (dex, l1, meme) and window from 24h to 30d, and as a time series per project
+- Engagement score for an account on a 0–1000 scale; smart follower count
+  history for a project
+- X profile, followers, following, recent posts (with or without retweets) and
+  replies for a handle; posts by id; replies to a tweet
+- Search X posts by keyword or `from:handle`; search X users by keyword
+
+**Industry events**
+- Calendar events and categories; industry events and activities
+- Exchange listing and delisting events, filterable by date range, exchange,
+  token symbol, product type and event type
+- Token generation event status and public sale (IDO/ICO/IEO) details — sale
+  type, status, price, raise amount and ROI
+- Airdrops past, present and future; airdrop search by keyword, status, reward
+  type and task type; airdrop activities with social metrics
+
+**Cross-cutting search**
+- Projects, funds, wallets (by ENS name, label or address prefix), prediction
+  markets, and project events of type launch, upgrade, partnership, news,
+  airdrop, listing or twitter
+- Web search over pages and articles, optionally restricted to one site
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="crypto news about Solana in the last 24 hours")
+find_tools(q="以太坊最近的社交情绪和 mindshare")
+find_tools(prefix="crypto/news")          # feeds, articles, rankings, topics
+find_tools(prefix="crypto/intel")         # sentiment, mindshare, smart followers
+find_tools(prefix="crypto/events")        # calendar, listings, TGE, airdrops
+find_tools(prefix="crypto/search")        # cross-cutting keyword search
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — social tools look up by handle, X id or project name depending on
+the tool, and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`crypto.news.search`](/api-reference/scenario/methods/crypto-news-search)
+  returns articles by keyword, or the latest headlines when no keyword is
+  given.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which news sources are included?">
+    PANews articles, columns, series and topics, plus a feed that aggregates
+    major crypto news sources and can be filtered to one source. Social
+    analytics cover X (Twitter) only.
+  </Accordion>
+  <Accordion title="What do sentiment and mindshare mean here?">
+    Sentiment is an aggregate score for a project on a -1 to 1 scale.
+    Mindshare is social view count, available as a cross-project ranking and
+    as a per-project time series. Smart followers are the subset of a
+    project's X followers classified as VCs, KOLs or developers.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Yes — mindshare and smart-follower history accept a date range, the news
+    feed and listing events filter by time range, and the calendar covers
+    scheduled events. Everything is fetched at request time.
+  </Accordion>
+</AccordionGroup>

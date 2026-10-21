@@ -1,0 +1,226 @@
+---
+title: "Responses"
+description: "The success and error envelopes, pagination fields, and the shared objects every method returns."
+---
+
+Every call returns JSON in one of two envelopes. The success envelope wraps the
+method's typed output in `data` and reports what the server did to get it; the
+error envelope carries the same provenance fields around an error.
+
+## Success envelope
+
+```json
+{
+  "op": "social.x.post.search",
+  "op_version": 1,
+  "provider": "sorsa",
+  "request_id": "0199f3c2-5a1e-7c0b-9d4f-2b7e8a61c3d5",
+  "credits_charged": 1,
+  "took_ms": 1130,
+  "attempts": [
+    { "provider": "sorsa", "tool": "Sorsa/post_search_tweets", "status": 200, "upstream_status": 200, "took_ms": 1130 }
+  ],
+  "unsupported_fields": ["items[].metrics.collects", "items[].title", "items[].topic.id", "items[].topic.name"],
+  "data": {
+    "items": [
+      {
+        "id": "2109585153647681901",
+        "platform": "x",
+        "url": "https://x.com/nasa/status/2109585153647681901",
+        "text": "…",
+        "title": null,
+        "lang": "en",
+        "published_at": "2026-10-12T10:01:09Z",
+        "author": { "id": "11348282", "handle": "nasa", "name": "NASA", "url": "https://x.com/nasa", "verified": true, "followers_count": 2983, "created_at": "2007-12-19T20:20:32Z" },
+        "media": [],
+        "metrics": { "likes": 0, "reposts": 0, "replies": 0, "quotes": 0, "views": 0, "bookmarks": 0, "collects": null },
+        "topic": { "id": null, "name": null }
+      }
+    ],
+    "next_cursor": "eyJwIjoic29yc2EiLCJjIjp7…"
+  }
+}
+```
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `op` | string | The method that served the call. |
+| `op_version` | integer | The method version that served it (`1` unless you called a `.vN` name). |
+| `provider` | string | The provider that actually answered. Use it to attribute data or to pin later calls. |
+| `request_id` | string (UUID) | Correlates the call across attempts and logs; also returned as the `X-Request-Id` header. Quote it in support requests. |
+| `credits_charged` | number | What this call cost — the method's fixed price, or the metered amount for metered methods. |
+| `took_ms` | integer | Wall-clock time of the whole request, all attempts included. |
+| `attempts` | array | Every provider attempt, in order, including the successful one. See below. |
+| `unsupported_fields` | string[] | Output paths this provider structurally cannot supply. See [Reading nulls](#reading-nulls). |
+| `data` | object | The method's output: a page `{ items, next_cursor }` or a single object. Typed per method. |
+| `raw` | any | The upstream payload. Present only with `include_raw: true`. Not a stable contract. |
+| `raw_truncated` | boolean | Present with `raw` when the payload exceeded 256 KB and was cut. |
+
+### attempts[]
+
+| Field | Meaning |
+| --- | --- |
+| `provider` | Provider slug of this attempt. |
+| `tool` | The catalog tool (`Provider/operation`) that was called. |
+| `status` | The HTTP status AgentKey mapped the attempt to; `200` on success. |
+| `upstream_status` | The provider's real HTTP status. Absent when nothing was received (timeout, connection error). |
+| `error_type` | On failure: `validation`, `not_found`, `rate_limit`, `timeout`, `upstream_unauthorized`, `upstream_unavailable` or `provider_error`. |
+| `took_ms` | Latency of this attempt. |
+| `refunded` | `true` when the reservation for a failed attempt was returned. |
+
+A single-attempt success has one entry. A failover shows the failed attempt
+first, with `refunded: true`, then the one that served the call.
+
+## Reading nulls
+
+Output schemas are complete: every field of an object is always present. A field
+can be `null` for two different reasons, and the envelope lets you tell them
+apart:
+
+- The path is listed in **`unsupported_fields`** → this provider never returns
+  it. Pick another provider with `routing.only` if you need it, or check the
+  method's describe for a provider that has it.
+- The path is **not** listed → the provider supports the field; this particular
+  record has no value (a post with no media, a product with no brand).
+
+Paths use dots for object members and `[]` for array elements:
+`items[].metrics.collects`, `author.followers_count`.
+
+Counters are never silently `0`: a missing like count is `null`, not zero.
+
+## Pages and single objects
+
+List methods (`*.search`, `*.posts`, `*.comments`, `*.reviews`, `trending`, …)
+return a page:
+
+```json
+{ "items": [ /* objects */ ], "next_cursor": "…" }
+```
+
+`next_cursor` is a string when more results exist and `null` at the end. Send it
+back as `cursor` with the same parameters to continue — see
+[Requests → Pagination](/api-reference/scenario/requests#pagination). Lookup
+methods (`*.get`, `quote`, `forecast`, …) return the object itself as `data`.
+
+## Error envelope
+
+```json
+{
+  "error": "no provider can serve this request right now",
+  "code": 502,
+  "error_type": "upstream_unavailable",
+  "op": "social.x.post.search",
+  "request_id": "0199f3c2-5a1e-7c0b-9d4f-2b7e8a61c3d5",
+  "attempts": [
+    { "provider": "sorsa", "tool": "Sorsa/post_search_tweets", "status": 502, "upstream_status": 503, "error_type": "upstream_unavailable", "took_ms": 318, "refunded": true },
+    { "provider": "tikhub", "tool": "TikHub/fetch_search_timeline_api_v1_twitter_web_fetch_search_timeline_get", "status": 504, "error_type": "timeout", "took_ms": 9680, "refunded": true }
+  ]
+}
+```
+
+`error` is a human-readable message, `code` repeats the HTTP status, and
+`error_type` is the stable machine-readable kind. `op`, `request_id` and
+`attempts` are present whenever the request got far enough to have them. The
+full list of statuses and types is on [Errors](/api-reference/scenario/errors).
+
+## Shared objects
+
+Methods return shared objects so that the same kind of thing looks the same on
+every platform and from every provider. The full schemas are in the OpenAPI
+document and on each method's page; the core fields of the most used objects are
+below. All timestamps are RFC 3339 UTC; all `platform` fields hold the platform
+slug from the method name.
+
+| Domain | Objects |
+| --- | --- |
+| Social | `Post`, `Comment`, `User`, `Topic`, `Transcript`, `LinkTarget` |
+| E-commerce | `Product`, `Review`, `Shop` |
+| Web | `WebResult`, `Answer`, web page content |
+| Finance | `Quote`, `Candle`, `CompanyProfile`, `FinancialStatement`, `Earnings`, `Estimates`, `Holding`, `Filing`, `Symbol`, `SeriesPoint`, `NewsArticle` |
+| Crypto | `Token`, `TokenPrice`, `TokenQuote`, `TokenInfo`, `TokenHolder`, `WalletAsset`, `Transaction`, `DerivativesSnapshot`, `NewsArticle` |
+| Business | `Company`, `Person`, `FundingRound` |
+| Jobs · Travel · Weather · Academic | `Job` · `Hotel`, `FlightOffer`, `TravelLocation` · `Forecast`, `GeoLocation` · `Paper` |
+
+### Post
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Platform-native post ID. |
+| `platform` | string | Platform slug. |
+| `url` | string \| null | Canonical URL. |
+| `text` | string | Post text. Includes the title when the platform has one (title, newline, body). |
+| `title` | string \| null | Headline when the platform has one (Xiaohongshu notes, Bilibili and YouTube videos, Reddit posts). |
+| `lang` | string \| null | BCP 47 tag when reported. |
+| `published_at` | string \| null | |
+| `author` | object | `id`, `handle`, `name`, `url`, `verified`, `followers_count`, `created_at` — each nullable. |
+| `media` | array \| null | `{ type: "image" \| "video", url, thumbnail_url }`. `null` when the provider exposes no media at all. |
+| `metrics` | object | `likes`, `reposts`, `replies`, `quotes`, `views`, `bookmarks`, `collects` — integers or `null`. |
+| `topic` | object | `{ id, name }` — the community or board (subreddit, collection); nulls where the platform has none. |
+
+### User
+
+`id`, `platform`, `handle` (without `@`), `name`, `url`, `avatar_url`, `bio`,
+`verified`, `followers_count`, `following_count`, `posts_count`, `created_at`.
+
+### Comment
+
+`id`, `platform`, `post_id`, `reply_to_id` (parent comment, `null` for a
+top-level comment), `text`, `published_at`, `author { id, handle, name, url }`,
+`metrics { likes, replies }`.
+
+### Topic
+
+`id`, `platform`, `name`, `url`, `post_count`.
+
+### Product
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Platform-native item ID (ASIN on Amazon, item id on Taobao). |
+| `platform` | string | |
+| `title` | string | Listing title. |
+| `url` | string \| null | Canonical product page. |
+| `price` | object | `{ amount, original_amount, currency }` — selling price, struck-through list price, ISO 4217 code. |
+| `rating` | object | `{ score, count }`. |
+| `brand`, `category` | string \| null | As the platform reports them. |
+| `description` | string \| null | Plain text; `null` when the endpoint returns cards only. |
+| `image_url` | string \| null | Main image. |
+| `images` | string[] \| null | All listing images, main first. |
+| `in_stock` | boolean \| null | |
+| `sales_count` | integer \| null | Cumulative units sold when the platform exposes a number. |
+| `monthly_sales_count` | integer \| null | Units sold in the past month when that is what the platform shows (Amazon's "bought in past month" badge, Douyin Shop search cards and shop listings). Not comparable with `sales_count`. |
+| `sales_text` | string \| null | The platform's own sales line ("1.8K+ sold", "1万+人收货"). |
+| `shop` | object | `{ id, name, url }` — the seller. |
+
+### Review
+
+`id`, `platform`, `product_id`, `text` (empty for rating-only reviews),
+`title`, `rating` (platform scale, usually 1–5), `published_at`, `sku`,
+`country`, `verified_purchase`, `images`, `author { id, name }`,
+`metrics { likes, replies }`.
+
+### Shop
+
+`id`, `platform`, `name`, `url`, `logo_url`, `description`, `location`,
+`verified`, `followers_count`, `products_count`, `sales_count`,
+`rating { score, count }`.
+
+### WebResult and NewsArticle
+
+`WebResult`: `title`, `url`, `site` (hostname without `www.`), `snippet`,
+`published_at`.
+
+`NewsArticle`: `id`, `title`, `url`, `source`, `summary`, `image_url`, `lang`,
+`published_at`, `tickers` (related symbols when the provider tags them).
+
+### Quote
+
+`symbol`, `price`, `open`, `high`, `low`, `previous_close`, `change`,
+`change_percent` (1.5 = +1.5 %), `volume`, `market_cap`, `currency`, `as_of`.
+
+## Headers
+
+| Header | When | Meaning |
+| --- | --- | --- |
+| `X-Request-Id` | Every `POST /v2/ops/{method}` response | Same value as `request_id` in the body. |
+| `Deprecation`, `Sunset` | Responses of a deprecated method | The method has a successor; `Sunset` is the date it stops being served. |

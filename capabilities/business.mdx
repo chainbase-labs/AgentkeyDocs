@@ -1,29 +1,59 @@
 ---
 title: "Business"
-description: "Company, acquisition, and entity intelligence."
+sidebarTitle: "Overview"
+description: "Companies, people, funding rounds and investors from Crunchbase and RootData."
 ---
 
-The **Business** category provides structured business intelligence — companies,
-acquisitions, people, and related entities.
+The **Business** category gives agents structured company intelligence from two
+providers: global startup and venture data from Crunchbase, and crypto projects,
+funds and investors from RootData. Typical flow: resolve a name to an
+identifier, then fetch the detailed record.
 
-## What's inside
+## Explore
 
-- **Entity lookups** — companies, acquisitions, addresses, and more, keyed by
-  identifier (e.g. `getAcquisition`, `getAddress`).
-- **Autocomplete** — suggest matching entities for a query
-  (`autocompletes`, scoped by entity definition IDs).
-- **Predictions & cards** — supporting detail such as acquisition predictions and
-  single-card lookups (`getAcquisitionPrediction`, `getAcquisitionCard`).
+<CardGroup cols={2}>
+  <Card title="Company profiles" href="/capabilities/business/company-profiles">
+    Organizations, search, autocomplete, categories and locations.
+  </Card>
+  <Card title="Funding and investors" href="/capabilities/business/funding-and-investors">
+    Funding rounds, investors, acquisitions, IPOs and funds.
+  </Card>
+  <Card title="People and executives" href="/capabilities/business/people-and-executives">
+    Founders, executives, jobs and key-employee changes.
+  </Card>
+  <Card title="Crypto projects and VCs" href="/capabilities/business/crypto-projects-and-vcs">
+    RootData projects, investors, fundraising and indices.
+  </Card>
+</CardGroup>
 
-<Tip>
-  Use `autocompletes` to resolve a name into an entity identifier first, then
-  fetch the detailed record.
-</Tip>
+## Providers
 
-## Example
+| Provider | Coverage |
+| --- | --- |
+| **Crunchbase** | Lookup and search of every Crunchbase entity type: organizations, people, funding rounds, investments, acquisitions, IPOs, funds, events, jobs, layoffs, key-employee changes, legal proceedings, products and launches, ownerships, press references, awards, categories and locations; prediction and insight entities (funding, acquisition, IPO, growth, closure); `autocompletes` resolves a name to an entity identifier |
+| **RootData** | Crypto projects, VCs / investors and people: full profiles, fundraising rounds, ecosystems and tags, calendar events, hires and departures, Hot and Growth indices, X (Twitter) follow graph, trending projects on X, perpetual-exchange leaderboard |
+
+Tool names follow the provider: `Crunchbase/searchOrganizations`,
+`RootData/getProject`. The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
 
 ```text
-find_tools("look up an acquisition by company")
-describe_tool("<returned Provider/Operation>")
-execute_tool("<Provider/Operation>", { ...params })
+find_tools(prefix="business")
+find_tools(q="funding rounds raised by Anthropic")
+describe_tool("Crunchbase/searchFundingRounds")
+execute_tool("Crunchbase/searchFundingRounds", { ...params })   # copy describe_tool's execute_as
 ```
+
+<Tip>
+  Resolve the entity first — `Crunchbase/autocompletes` turns a name into the
+  identifier the detail tools expect; RootData lookups take its own project and
+  people ids, which `business.company.search` returns.
+</Tip>

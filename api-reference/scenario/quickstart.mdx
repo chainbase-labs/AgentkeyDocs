@@ -1,0 +1,285 @@
+---
+title: "Quickstart"
+description: "Read the catalog, describe a method, and make your first call — three curl commands."
+---
+
+You need an AgentKey master key (`ak_...`) from the
+[console](https://console.agentkey.app). Only the third step uses it; the catalog
+and describe are public.
+
+<Steps>
+  <Step title="Find a method in the catalog">
+    List the methods for one platform. Filter with `domain`, `platform` and
+    `action`, or omit them for everything.
+
+    ```bash
+    curl "https://api.agentkey.app/v2/ops?domain=social&platform=x"
+    ```
+
+    ```json
+{
+  "methods": [
+    {
+      "name": "social.x.post.comments",
+      "version": 1,
+      "tier": "beta",
+      "domain": "social",
+      "platform": "x",
+      "action": "post.comments",
+      "summary": "List comments on a X (Twitter) post. Returns a normalized Comment page.",
+      "price_credits": 0.2,
+      "providers": [
+        "tikhub",
+        "sorsa"
+      ]
+    },
+    {
+      "name": "social.x.post.get",
+      "version": 1,
+      "tier": "beta",
+      "domain": "social",
+      "platform": "x",
+      "action": "post.get",
+      "summary": "Fetch one public post on X (Twitter) by ID or URL. Returns a normalized Post.",
+      "price_credits": 1,
+      "providers": [
+        "sorsa",
+        "tikhub"
+      ]
+    },
+    "…"
+  ]
+}
+    ```
+
+    Every entry gives you the name to call, its tier, the fixed price in credits
+    and the providers behind it.
+  </Step>
+
+  <Step title="Describe the method">
+    Describe returns the exact input schema, the output schema, the reserved
+    parameters, and each provider with its live health, the fields it cannot
+    supply and a recorded example response.
+
+    ```bash
+    curl https://api.agentkey.app/v2/ops/social.x.post.search
+    ```
+
+    ```json
+{
+  "name": "social.x.post.search",
+  "version": 1,
+  "tier": "beta",
+  "summary": "Search public posts on X (Twitter) by keyword. Returns a normalized Post page.",
+  "price_credits": 1,
+  "pagination": "cursor",
+  "timeout_ms": 20000,
+  "input_schema": {
+    "type": "object",
+    "required": [
+      "query"
+    ],
+    "properties": {
+      "cursor": {
+        "description": "Opaque pagination cursor from the previous response's next_cursor. Send the same query parameters with it.",
+        "type": "string"
+      },
+      "limit": {
+        "default": 20,
+        "description": "Maximum number of posts to return.",
+        "maximum": 20,
+        "minimum": 1,
+        "type": "integer"
+      },
+      "query": {
+        "description": "Search query. X advanced operators work: from:user, to:user, since:YYYY-MM-DD, until:YYYY-MM-DD, \"exact phrase\", #hashtag, filter:images.",
+        "type": "string"
+      },
+      "sort": {
+        "default": "latest",
+        "description": "latest = most recent first; top = most engaged first.",
+        "enum": [
+          "latest",
+          "top"
+        ],
+        "type": "string"
+      }
+    }
+  },
+  "reserved_params": {
+    "fields": "…",
+    "include_raw": "…",
+    "provider": "…",
+    "routing": "…"
+  },
+  "output_schema": "… (PostPage)",
+  "bindings": [
+    {
+      "provider": "sorsa",
+      "tool": "Sorsa/post_search_tweets",
+      "healthy": true,
+      "unsupported_fields": [
+        "items[].metrics.collects",
+        "items[].title",
+        "items[].topic.id",
+        "items[].topic.name"
+      ],
+      "example": "…"
+    },
+    {
+      "provider": "tikhub",
+      "tool": "TikHub/fetch_search_timeline_api_v1_twitter_web_fetch_search_timeline_get",
+      "healthy": true,
+      "unsupported_fields": [
+        "items[].metrics.collects",
+        "items[].title",
+        "items[].topic.id",
+        "items[].topic.name"
+      ],
+      "example": "…"
+    }
+  ],
+  "strategies": [
+    "auto"
+  ],
+  "endpoint": "POST /v2/ops/social.x.post.search"
+}
+    ```
+
+    The same schema is on the method's page in the sidebar and in the OpenAPI
+    document at `/v2/openapi.yaml`.
+  </Step>
+
+  <Step title="Call it">
+    Send the parameters as JSON with your key as a bearer token.
+
+    ```bash
+    curl https://api.agentkey.app/v2/ops/social.x.post.search \
+      -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"query": "from:NASA", "sort": "latest", "limit": 5}'
+    ```
+
+    The response is the [success envelope](/api-reference/scenario/responses):
+    who served it, what it cost, every attempt, and the normalized `Post` page
+    in `data`.
+
+    ```json
+{
+  "op": "social.x.post.search",
+  "op_version": 1,
+  "provider": "sorsa",
+  "request_id": "0199f3c2-5a1e-7c0b-9d4f-2b7e8a61c3d5",
+  "credits_charged": 1,
+  "took_ms": 1130,
+  "attempts": [
+    {
+      "provider": "sorsa",
+      "tool": "Sorsa/post_search_tweets",
+      "status": 200,
+      "upstream_status": 200,
+      "took_ms": 1130
+    }
+  ],
+  "unsupported_fields": [
+    "items[].metrics.collects",
+    "items[].title",
+    "items[].topic.id",
+    "items[].topic.name"
+  ],
+  "data": {
+    "items": [
+      {
+        "author": {
+          "created_at": "2022-02-08T07:27:48Z",
+          "followers_count": 2983,
+          "handle": "r_5d5d3eead",
+          "id": "1490950408272896085",
+          "name": "r_45e4e664ca1",
+          "url": "https://x.com/r_5d5d3eead",
+          "verified": true
+        },
+        "id": "2109585153647681901",
+        "lang": "en",
+        "media": [],
+        "metrics": {
+          "bookmarks": 0,
+          "collects": null,
+          "likes": 0,
+          "quotes": 0,
+          "replies": 0,
+          "reposts": 0,
+          "views": 0
+        },
+        "platform": "x",
+        "published_at": "2026-10-12T10:01:09Z",
+        "text": "redacted b9d52 f6875 dbe15 8620a de88d b23bd f6779 0c39a 7c313 a922e c1b06 c3584",
+        "title": null,
+        "topic": {
+          "id": null,
+          "name": null
+        },
+        "url": "https://x.com/r_5d5d3eead/status/2109585153647681901"
+      }
+    ],
+    "next_cursor": "eyJwIjoic29yc2EiLCJjIjp7Im5leHQiOiJEQUFE…"
+  }
+}
+    ```
+  </Step>
+
+  <Step title="Get the next page">
+    Repeat the call with the same parameters plus the `cursor` from
+    `data.next_cursor`. The cursor keeps you on the same provider.
+
+    ```bash
+    curl https://api.agentkey.app/v2/ops/social.x.post.search \
+      -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"query": "from:NASA", "sort": "latest", "limit": 5, "cursor": "<next_cursor>"}'
+    ```
+  </Step>
+
+  <Step title="Pin a provider (optional)">
+    When you need one specific provider — to compare, or because it has a field
+    the default one lacks — name it. The price does not change.
+
+    ```bash
+    curl https://api.agentkey.app/v2/ops/social.x.post.search \
+      -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"query": "from:NASA", "limit": 5, "provider": "tikhub"}'
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  Response bodies above are recorded examples with text and handles redacted;
+  live responses carry the real content. The `request_id` is illustrative.
+</Note>
+
+## Generate a client
+
+The OpenAPI 3.1 document covers every public method with full request and
+response schemas, so any OpenAPI code generator can produce a typed client:
+
+```bash
+curl -o agentkey-v2.yaml https://api.agentkey.app/v2/openapi.yaml
+```
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Requests" icon="arrow-right-to-line" href="/api-reference/scenario/requests">
+    Shared parameters, reserved fields, pagination rules.
+  </Card>
+  <Card title="Responses" icon="braces" href="/api-reference/scenario/responses">
+    The envelope and the shared objects.
+  </Card>
+  <Card title="Routing & Pricing" icon="shuffle" href="/api-reference/scenario/routing-and-pricing">
+    How a provider is chosen and what you pay.
+  </Card>
+  <Card title="Errors" icon="triangle-alert" href="/api-reference/scenario/errors">
+    Status codes and error types.
+  </Card>
+</CardGroup>

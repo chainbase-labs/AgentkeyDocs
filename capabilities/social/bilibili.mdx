@@ -1,0 +1,110 @@
+---
+title: "Bilibili data for AI agents"
+sidebarTitle: "Bilibili"
+description: "Bilibili video search, detail, comments and danmaku, captions and transcripts, UP主 profiles and uploads, hot lists, live rooms and Huahuo creator rankings."
+---
+
+Bilibili (B站) is China's home for long-form video, anime, gaming and tech
+explainers, with a comment culture — danmaku scrolling over the video — that
+exists nowhere else. Its web API is undocumented and rate-limited. Through
+AgentKey your agent reads public Bilibili data the same way it reads everything
+else — `find_tools`, `describe_tool`, `execute_tool` — with several providers
+behind the scenes, so one route failing does not stop the task.
+
+## What you can ask
+
+- *"Find the most played Bilibili videos about Rust tutorials this year."*
+- *"B站上这个UP主最近发了哪些视频？"*
+- *"Pull this video's comments and danmaku and tell me what the audience reacts to."*
+- *"Transcribe this Bilibili video."*
+- *"How many followers, total views and likes does this UP主 have?"*
+- *"What is on the Bilibili hot search and popular list right now?"*
+- *"Which UP主 lead the Huahuo rankings in the tech category?"*
+- *"Who is streaming in the gaming live area right now?"*
+
+## What's covered
+
+**Videos**
+- Keyword search sorted by overall ranking, play count or publish time
+- Video detail by BVID or AID; multi-part videos; aid ↔ bvid conversion
+- Play URL and play info, audio URL
+- Danmaku (on-screen comments) by segment; caption and subtitle data
+- Short share-link resolution; the home feed
+
+**Comments**
+- Comments on a video, paginated; replies under a comment; single reply detail
+
+**UP主 (creators)**
+- Profile by UID; relation stats (followers and following); total views and
+  likes
+- Uploaded videos; dynamics (动态) and dynamic detail
+- Collection folders and the videos they hold
+- Account search by keyword
+
+**Trending**
+- Hot search; the popular feed; comprehensive popular-video information
+- Bangumi and cinema tabs
+
+**Live**
+- Live areas, the streamers in an area, live room info and live video data
+
+**Creator marketplace (Huahuo 花火)**
+- Creator rankings by category, video rankings by industry, X-Huo product and
+  creator rankings with their periods and industries
+- Creator profile, representative videos and highlights, video performance,
+  metric trends and follower trends
+- Creators with similar content or overlapping audiences; search by nickname;
+  filter dictionaries for industry, persona, commercial and occupation tags
+- Live-commerce performance and categories, live creator profiles, guilds and
+  MCN organizations
+
+**Transcripts**
+- Transcription as a submit-then-fetch task
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="most played Bilibili videos about Rust tutorials this year")
+find_tools(q="B站上这个UP主最近发了哪些视频")
+find_tools(prefix="social/bilibili")       # browse everything for Bilibili
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing — parameters
+and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.bilibili.post.search`](/api-reference/scenario/methods/social-bilibili-post-search),
+  [`social.bilibili.post.get`](/api-reference/scenario/methods/social-bilibili-post-get),
+  [`social.bilibili.post.comments`](/api-reference/scenario/methods/social-bilibili-post-comments),
+  [`social.bilibili.user.get`](/api-reference/scenario/methods/social-bilibili-user-get),
+  [`social.bilibili.user.posts`](/api-reference/scenario/methods/social-bilibili-user-posts),
+  [`social.bilibili.user.search`](/api-reference/scenario/methods/social-bilibili-user-search),
+  [`social.bilibili.trending`](/api-reference/scenario/methods/social-bilibili-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Bilibili account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="What is the difference between captions, danmaku and a transcript?">
+    Captions are the subtitle tracks attached to a video; danmaku are the
+    viewer comments that scroll over it, fetched per segment; the transcript is
+    speech-to-text produced as a submit-then-fetch task. All three are
+    available and answer different questions.
+  </Accordion>
+  <Accordion title="Can it play members-only content?">
+    Only what is publicly reachable is available. A separate route returns the
+    play URL for VIP titles, but access still depends on what Bilibili serves
+    for that video at request time.
+  </Accordion>
+</AccordionGroup>

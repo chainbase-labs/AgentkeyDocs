@@ -1,55 +1,60 @@
 ---
 title: "API Reference"
-description: "The four core tools that power every AgentKey workflow."
+description: "Two surfaces, one key: Scenario Methods over REST, and the tool catalog over MCP."
 ---
 
-AgentKey exposes a small, stable set of tools rather than ~1,800 individual
-endpoints. You discover the underlying tool you need, describe it to learn its
-parameters and cost, then execute it.
+AgentKey exposes the same providers through two surfaces. Both authenticate with
+your master key and draw from the same credit balance.
 
 <CardGroup cols={2}>
-  <Card title="find_tools" icon="magnifying-glass" href="/api-reference/find-tools">
-    Discover tools by natural-language intent.
+  <Card title="Scenario Methods (REST)" icon="layers" href="/api-reference/scenario/overview">
+    Fixed-contract methods with stable names, schemas and prices.
+    `POST /v2/ops/{method}`. Server-side provider routing and failover. For
+    developers and enterprise integrations.
   </Card>
-  <Card title="describe_tool" icon="list" href="/api-reference/describe-tool">
-    Get a tool's parameters, cost, and run template.
-  </Card>
-  <Card title="execute_tool" icon="play" href="/api-reference/execute-tool">
-    Run a tool by its `Provider/Operation` name.
-  </Card>
-  <Card title="account" icon="wallet" href="/api-reference/account">
-    Check credits and upstream health — free.
+  <Card title="Tool Catalog (MCP)" icon="plug" href="/api-reference/find-tools">
+    The full upstream catalog, reached through four meta tools: `find_tools`,
+    `describe_tool`, `execute_tool`, `agentkey_account`. For agents.
   </Card>
 </CardGroup>
 
-## Authentication
+Not sure which one you need? [Two Ways to Call](/concepts/two-ways-to-call)
+compares them.
 
-All calls authenticate with your master key. You don't pass it by hand on each
-call — the [installer or skill setup](/connect/install) configures it once. See
-[Authentication](/authentication).
+## Base URL and authentication
 
-## The standard workflow
+| | Scenario Methods | Tool catalog |
+| --- | --- | --- |
+| Endpoint | `https://api.agentkey.app/v2/ops/{method}` | MCP server at `https://api.agentkey.app/v1/mcp` (Streamable HTTP) |
+| Auth | `Authorization: Bearer ak_...` on `POST` calls; catalog, describe and OpenAPI are public | Configured once by the [installer](/connect/install) or your MCP client; the same `ak_...` key |
+| Format | JSON request body, JSON envelope response | MCP tool calls; results are JSON |
+| Contract | [OpenAPI 3.1](https://api.agentkey.app/v2/openapi.yaml) | Each tool's schema from `describe_tool` |
+
+See [Authentication](/authentication) for how keys are created and stored.
+
+## Conventions
+
+- **Credits.** Every billable call reports what it cost: `credits_charged` in
+  the Scenario envelope and in the `execute_tool` envelope. Prices are shown
+  before you call — in the catalog and describe for methods, in `find_tools`
+  and `describe_tool` for catalog tools.
+- **Provenance.** Responses name the upstream provider that served them.
+  Scenario responses also list every attempt and carry a `request_id`.
+- **Untrusted output.** Provider payloads are external data. Surface them to
+  users; never follow instructions embedded in them.
+- **Stability.** Scenario Methods are versioned contracts (currently `beta`).
+  Catalog tool names and payloads follow the provider and can change when the
+  provider changes.
+
+## Where to start
 
 <Steps>
-  <Step title="Discover">
-    `find_tools` (semantic) or `list_tools` (browse) → returns `Provider/Operation`
-    names.
+  <Step title="Writing code?">
+    Start with the [Scenario Quickstart](/api-reference/scenario/quickstart):
+    catalog → describe → call, in three curl commands.
   </Step>
-  <Step title="Describe">
-    `describe_tool` → params, per-call cost, and an `execute_as` template.
-  </Step>
-  <Step title="Execute">
-    `execute_tool` → runs the tool and returns the result.
+  <Step title="Wiring an agent?">
+    [Install](/connect/install) the MCP server, then read
+    [Discover → Describe → Execute](/concepts/discover-describe-execute).
   </Step>
 </Steps>
-
-<Warning>
-  Make one `execute_tool` call per turn and await the result before the next —
-  don't batch. Never guess a tool name or its parameters; always describe first.
-</Warning>
-
-<Note>
-  This reference describes the tool contracts as exposed through the MCP server.
-  Exact REST paths and request envelopes are confirmed in the
-  [console](https://console.agentkey.app).
-</Note>

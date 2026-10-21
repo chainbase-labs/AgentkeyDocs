@@ -1,0 +1,115 @@
+---
+title: "Crypto projects and VC data for AI agents"
+sidebarTitle: "Crypto projects & VCs"
+description: "RootData crypto projects, VCs and people through AgentKey: profiles, fundraising rounds, Hot and Growth indices, ecosystems, tags, calendar and X trends."
+---
+
+Web3 companies are badly covered by traditional business databases: funding is
+announced on X, teams are pseudonymous, and a "company" may be a token
+contract. RootData tracks that world — projects, VCs, people and their
+fundraising — and through AgentKey your agent reads it the same way it reads
+everything else — `find_tools`, `describe_tool`, `execute_tool` — resolving a
+name, ticker or X handle to a RootData id and then pulling the full record.
+
+## What you can ask
+
+- *"Who invested in this project, and how much has it raised in total?"*
+- *"List every crypto funding round over $50M announced this month."*
+- *"Which projects are trending on X this week?"*
+- *"Show me Paradigm's portfolio and typical cheque size."*
+- *"What is on the crypto calendar next week — unlocks, mainnet launches, conferences?"*
+- *"Which DePIN projects on Solana have raised money?"*
+- *"Who recently joined or left major crypto companies?"*
+- *"这个代币合约对应的项目是谁投的？"*
+
+## What's covered
+
+**Search and profiles**
+- Keyword search across projects, VCs and people — by project or protocol
+  name, token ticker, fund name, person name or X handle — returning the ids
+  the detail lookups need
+- Full project profile by id or token contract address: description, ticker,
+  total funding raised, investors, tags, social links, Growth and Hot index,
+  market cap, FDV, token price and ecosystems
+- Full investor profile: description, establishment date, investor category,
+  social links, portfolio projects, team members and X heat and influence
+  metrics
+- Person profile: biography, X and LinkedIn links, education history and X
+  heat and influence rankings
+
+**Fundraising**
+- Paginated fundraising rounds — round name, announcement date, amount raised
+  in USD, valuation and participating investors — filterable by project, date
+  window and round size, for rounds announced from 2018 onward
+- Batch export of investor records with portfolio, investment overview,
+  cheque-size distribution, sector breakdown and team
+
+**Rankings and indices**
+- Top 300 projects by the RootData Growth Index, a composite of fundamental
+  momentum
+- Top 100 projects by the RootData Hot Index over the past 1 or 7 days — what
+  the market is paying attention to
+- Trending projects on X by heat, influence and follower count; the most
+  popular crypto figures on X
+- Perpetual-contract exchange leaderboard scored on contracts listed, open
+  interest and turnover change, order book depth, spread, funding rate and
+  fee rates
+
+**Ecosystems, tags, calendar and people moves**
+- Ecosystem dictionary and projects by ecosystem (Ethereum, Solana, Base and
+  others); tag dictionary and projects by tag or sector (DeFi, RWA, DePIN and
+  others)
+- Crypto calendar — token unlocks, mainnet launches, airdrops, conferences,
+  AMAs — filterable by project, date range and event type
+- Recent hires and departures across tracked crypto organisations
+- Follow-graph detail for one X account over the past 14 days — who it
+  followed and unfollowed, who followed and unfollowed it — plus its most
+  influential followers
+- Incremental sync: projects, VCs, people and financing records changed
+  within a time window
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="crypto funding rounds announced this month with investors")
+find_tools(q="Solana 生态里的 DePIN 项目")
+find_tools(prefix="business/rootdata")    # browse everything from RootData
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — detail lookups take RootData ids that the search tool returns,
+some batch exports are billed per record, and the per-call cost is shown
+there.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover — backed by both Crunchbase and RootData:
+  [`business.company.search`](/api-reference/scenario/methods/business-company-search),
+  [`business.company.get`](/api-reference/scenario/methods/business-company-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How far back does fundraising data go?">
+    Rounds announced from 2018 onward are available, filterable by date
+    window and size. Profiles, indices and leaderboards are fetched at
+    request time.
+  </Accordion>
+  <Accordion title="How is this different from the crypto category's Projects and funds page?">
+    That page is protocol-centric — TVL, fees, tokenomics and fund portfolios
+    from Surf and CoinMarketCap. RootData is the business record: fundraising
+    rounds with valuations, investor and people profiles, ecosystem and tag
+    dictionaries, hiring moves and a crypto calendar.
+  </Accordion>
+  <Accordion title="Can I keep a local copy in sync?">
+    Yes. The updated-entities tool returns every project, VC, person and
+    financing record that changed in a time window, so a mirror can refresh
+    incrementally instead of re-reading everything.
+  </Accordion>
+</AccordionGroup>

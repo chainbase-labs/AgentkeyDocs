@@ -1,0 +1,100 @@
+---
+title: "Company data for AI agents"
+sidebarTitle: "Company profiles"
+description: "Crunchbase organizations through AgentKey: lookup, search, autocomplete, categories, locations, products, press references, awards and ownerships."
+---
+
+Company research starts with a reliable record — who a company is, where it
+sits, what it makes, who owns it — and Crunchbase is the standard source,
+normally behind an enterprise license. Through AgentKey your agent reads
+Crunchbase organizations the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — resolving a name to an
+identifier and then pulling the record and whichever related cards it needs.
+
+## What you can ask
+
+- *"Find the Crunchbase record for Anthropic: description, headquarters and founders."*
+- *"Which companies in the generative AI category are headquartered in London?"*
+- *"List this company's subsidiaries and its parent."*
+- *"Which organizations are most similar to Stripe?"*
+- *"What products has this company launched, and when?"*
+- *"Show press coverage of this company from the past month."*
+- *"Which fintech companies won awards this year?"*
+- *"这家公司的总部地址和分支机构在哪里？"*
+
+## What's covered
+
+**Finding an organization**
+- Autocomplete a name to matching entity identifiers, scoped by entity type
+- Search organizations with complex filters expressed in the request body
+- Principals — organizations and people under one entity type — lookup and
+  search
+
+**The organization record**
+- Full organization lookup by identifier
+- Single cards on an organization: addresses, founders, awards, child
+  organizations and ownerships, event appearances, acquisitions made and
+  received, and funding, acquisition and closure predictions, among others
+- Ownership records with parent and child organization cards and press
+  references
+- Organization similarity — lookup and search for comparable companies
+
+**Taxonomy and geography**
+- Categories, category groups and micro-categories — lookup and search
+- Locations and addresses — lookup and search; address cards for the event or
+  organization at that address
+
+**Products, press, awards and events**
+- Products, product launches and product similarities — lookup and search
+- Press references and partnership announcements — lookup and search
+- Awards and diversity spotlights — lookup and search
+- Events and event appearances, with event cards for address, speakers,
+  sponsors, exhibitors, organizers, contestants and press references
+
+**Keeping a mirror current**
+- Deleted entities, across all collections or for one collection
+- Growth insights and research insights — lookup and search
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="Crunchbase profile of Anthropic with founders and headquarters")
+find_tools(q="伦敦的生成式 AI 公司有哪些")
+find_tools(prefix="business/crunchbase")  # browse every Crunchbase entity type
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — search tools take a structured query body, card lookups take a
+card name, and the per-call cost is shown there. Resolve the identifier with
+autocomplete first.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`business.company.search`](/api-reference/scenario/methods/business-company-search),
+  [`business.company.get`](/api-reference/scenario/methods/business-company-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Crunchbase license or API key?">
+    No. AgentKey holds the upstream access; your agent only needs your
+    AgentKey subscription.
+  </Accordion>
+  <Accordion title="How do I express a complex search?">
+    Search tools accept a query in the request body — field filters, ordering
+    and the fields to return. `describe_tool` shows the schema. For a simple
+    name lookup, autocomplete returns the identifier directly.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to Crunchbase at request time; nothing is served from a
+    stale archive. Records carry their own dates, and the deleted-entities
+    tools let a local copy drop records Crunchbase has removed.
+  </Accordion>
+</AccordionGroup>

@@ -11,15 +11,15 @@ AgentKey replaces all of that with **one master key**.
 
 <CardGroup cols={2}>
   <Card title="Authentication" icon="lock">
-    One credential authorizes every category. No per-provider OAuth or API-key
-    juggling.
+    One credential authorizes every category, on both the MCP server and the
+    REST API. No per-provider OAuth or API-key juggling.
   </Card>
   <Card title="Routing" icon="route">
-    AgentKey routes each call to the right upstream provider — and to a backup if
-    one is down.
+    Scenario Methods pick the upstream provider for you and switch to a backup
+    when one fails. Catalog tools run the exact tool you name.
   </Card>
   <Card title="Billing" icon="receipt">
-    All usage is covered by one subscription and one invoice.
+    All usage is covered by one subscription and one invoice, in credits.
   </Card>
   <Card title="Management" icon="sliders">
     Create, rotate, and monitor keys from a single dashboard.
@@ -29,12 +29,17 @@ AgentKey replaces all of that with **one master key**.
 ## The "before and after"
 
 **Before AgentKey** — your agent is smart but can't reach anything: no live
-Twitter data, only surface-web search, no crypto context.
+social data, only surface-web search, no market or on-chain context.
 
 **After AgentKey** — one key, and the agent gets real-time social data, deep web
-scraping, market feeds, and more, with automatic failover when a provider goes
-down.
+scraping, e-commerce catalogs, market feeds, filings, weather, travel and
+academic search, with provider failover built into the fixed-contract methods.
 
-<Card title="Auto Failover" icon="shuffle" href="/concepts/auto-failover">
-  How AgentKey keeps your agent running when a provider goes offline.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Two Ways to Call" icon="code-xml" href="/concepts/two-ways-to-call">
+    Scenario Methods for code, the tool catalog for agents.
+  </Card>
+  <Card title="Provider Failover" icon="shuffle" href="/concepts/auto-failover">
+    How Scenario Methods keep running when a provider goes offline.
+  </Card>
+</CardGroup>

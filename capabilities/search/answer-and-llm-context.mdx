@@ -1,0 +1,98 @@
+---
+title: "Answer engines and LLM context for AI agents"
+sidebarTitle: "Answers & LLM context"
+description: "Grounded answers and model-ready web context from Perplexity, Brave's LLM context and summarizer, and Tavily's answers, extract, crawl and map."
+---
+
+Sometimes an agent does not want ten blue links — it wants the answer, or it
+wants the relevant passages already cut to fit its context window. Through
+AgentKey your agent gets both with the same three calls — `find_tools`,
+`describe_tool`, `execute_tool` — from Perplexity's search with page
+contents, Brave's LLM-context chunks and summarizer, and Tavily's generated
+answers, URL extraction, site crawl and site map.
+
+## What you can ask
+
+- *"Answer with citations: what changed in Python 3.14's free-threading support?"*
+- *"Give me about 8,000 tokens of grounded web context on the EU Digital Markets Act, from the last month."*
+- *"Pull the page contents for the top results on 'Rust async cancellation safety', capped at 4,000 tokens per page."*
+- *"Extract these three URLs as markdown and rank the passages by relevance to 'pricing changes'."*
+- *"Only use docs.python.org and peps.python.org as sources."*
+- *"Summarize what the web says about this startup, with the source URLs."*
+- *"Map the structure of docs.example.com, then crawl the API section."*
+
+## What's covered
+
+**Direct answers**
+- A grounded answer to a question with optional citations and entity
+  metadata, in a chosen country backend and language, from Brave
+- A quick or more detailed generated answer returned alongside Tavily search
+  results
+- A summary of the web results for a query from Brave's summarizer, requested
+  as part of a web search
+
+**Context shaped for a model**
+- Brave LLM context: web-content chunks with budgets for the number of URLs,
+  snippets per URL, tokens per URL and total tokens; a strict, lenient or
+  balanced relevance threshold; freshness, country and language; optional
+  source metadata and local results
+- Perplexity search with relevant page contents: result count, total and
+  per-page token limits, country, language filters, a domain allow-list,
+  recency from the past hour to the past year, and publish or last-updated
+  date windows
+- Tavily search with each page's cleaned content as markdown or text, and
+  relevance-ranked chunks per source at advanced depth
+
+**Content from URLs you already have**
+- Tavily extract: one or more URLs returned as markdown or plain text, at
+  basic or advanced depth for tables and embedded content, optionally with
+  images and with passages re-ranked against a query
+- Tavily crawl: traverse a site from a base URL, exploring many paths in
+  parallel with built-in extraction
+- Tavily map: the structure of a site from a base URL
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="answer with sources: what changed in Python 3.14 free-threading")
+find_tools(q="web context chunks about the EU Digital Markets Act for my prompt")
+find_tools(prefix="search/perplexity")
+find_tools(prefix="search/brave")         # LLM context, summarizer
+find_tools(prefix="search/tavily")        # answers, extract, crawl, map
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — Tavily's answer rides on its
+search call, Brave's LLM context takes a query with token budgets, Perplexity
+takes `max_tokens` and `max_tokens_per_page`, and per-call costs differ.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover: [`web.answer`](/api-reference/scenario/methods/web-answer) answers
+  a question from live web search results and returns the sources the answer
+  was grounded in. For a single page's text use
+  [`web.scrape`](/api-reference/scenario/methods/web-scrape).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Are the answers grounded?">
+    Yes — every answer tool here searches the live web first and returns the
+    sources it used, so your agent can cite or verify them. Treat the answer
+    text as a draft and the sources as the evidence.
+  </Accordion>
+  <Accordion title="How fresh is the context?">
+    Fetched at request time. Brave and Perplexity accept freshness or recency
+    filters; Perplexity also filters by publish and last-updated dates.
+  </Accordion>
+  <Accordion title="Which languages and regions?">
+    Brave's LLM context takes a country and a language; Perplexity takes a
+    country and ISO 639-1 language codes; Tavily is scoped by domain lists.
+    Questions can be asked in any language.
+  </Accordion>
+</AccordionGroup>

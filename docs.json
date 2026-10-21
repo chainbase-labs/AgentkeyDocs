@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "AgentKey",
-  "description": "One key that connects your AI agent to web search, scraping, social media, crypto/on-chain, finance, e-commerce and business data — one subscription, zero setup.",
+  "description": "One key that connects your AI agent to web search, scraping, social media, e-commerce, crypto, finance, business, jobs, travel, weather and academic data — one subscription, zero setup.",
   "colors": {
     "primary": "#5B5BD6",
     "light": "#8B8BF0",
@@ -63,6 +63,7 @@
             "group": "Core Concepts",
             "pages": [
               "concepts/unified-key",
+              "concepts/two-ways-to-call",
               "concepts/discover-describe-execute",
               "concepts/subscription",
               "concepts/auto-failover"
@@ -72,13 +73,161 @@
             "group": "Capabilities",
             "pages": [
               "capabilities/overview",
-              "capabilities/search",
-              "capabilities/scrape",
-              "capabilities/social",
-              "capabilities/crypto",
-              "capabilities/finance",
-              "capabilities/business",
-              "capabilities/ecommerce"
+              {
+                "group": "Search",
+                "pages": [
+                  "capabilities/search",
+                  "capabilities/search/web-search",
+                  "capabilities/search/news-search",
+                  "capabilities/search/image-and-video-search",
+                  "capabilities/search/places-and-local",
+                  "capabilities/search/answer-and-llm-context",
+                  "capabilities/search/scholar-search"
+                ]
+              },
+              {
+                "group": "Scrape",
+                "pages": [
+                  "capabilities/scrape",
+                  "capabilities/scrape/url-to-markdown",
+                  "capabilities/scrape/anti-bot-pages"
+                ]
+              },
+              {
+                "group": "Social",
+                "pages": [
+                  "capabilities/social",
+                  {
+                    "group": "Global platforms",
+                    "pages": [
+                      "capabilities/social/x",
+                      "capabilities/social/reddit",
+                      "capabilities/social/youtube",
+                      "capabilities/social/instagram",
+                      "capabilities/social/tiktok",
+                      "capabilities/social/linkedin",
+                      "capabilities/social/threads"
+                    ]
+                  },
+                  {
+                    "group": "China platforms",
+                    "pages": [
+                      "capabilities/social/xiaohongshu",
+                      "capabilities/social/douyin",
+                      "capabilities/social/kuaishou",
+                      "capabilities/social/bilibili",
+                      "capabilities/social/weibo",
+                      "capabilities/social/zhihu",
+                      "capabilities/social/wechat-official-accounts",
+                      "capabilities/social/wechat-channels"
+                    ]
+                  },
+                  "capabilities/social/trending",
+                  "capabilities/social/more-platforms"
+                ]
+              },
+              {
+                "group": "E-commerce",
+                "pages": [
+                  "capabilities/ecommerce",
+                  {
+                    "group": "Global marketplaces",
+                    "pages": [
+                      "capabilities/ecommerce/amazon",
+                      "capabilities/ecommerce/shopee",
+                      "capabilities/ecommerce/aliexpress",
+                      "capabilities/ecommerce/tiktok-shop",
+                      "capabilities/ecommerce/temu"
+                    ]
+                  },
+                  {
+                    "group": "China marketplaces",
+                    "pages": [
+                      "capabilities/ecommerce/taobao-tmall",
+                      "capabilities/ecommerce/jd",
+                      "capabilities/ecommerce/1688",
+                      "capabilities/ecommerce/xianyu",
+                      "capabilities/ecommerce/douyin-shop",
+                      "capabilities/ecommerce/xiaohongshu-shop"
+                    ]
+                  },
+                  "capabilities/ecommerce/product-research"
+                ]
+              },
+              {
+                "group": "Crypto",
+                "pages": [
+                  "capabilities/crypto",
+                  "capabilities/crypto/market-data",
+                  "capabilities/crypto/tokens",
+                  "capabilities/crypto/on-chain-and-wallets",
+                  "capabilities/crypto/dex-and-derivatives",
+                  "capabilities/crypto/nfts",
+                  "capabilities/crypto/news-and-social-intelligence",
+                  "capabilities/crypto/prediction-markets",
+                  "capabilities/crypto/projects-and-funds"
+                ]
+              },
+              {
+                "group": "Finance",
+                "pages": [
+                  "capabilities/finance",
+                  "capabilities/finance/quotes-and-candles",
+                  "capabilities/finance/fundamentals-and-statements",
+                  "capabilities/finance/earnings-and-estimates",
+                  "capabilities/finance/sec-filings-and-ownership",
+                  "capabilities/finance/china-a-shares",
+                  "capabilities/finance/macro-economic-data",
+                  "capabilities/finance/fx-and-commodities"
+                ]
+              },
+              {
+                "group": "Business",
+                "pages": [
+                  "capabilities/business",
+                  "capabilities/business/company-profiles",
+                  "capabilities/business/funding-and-investors",
+                  "capabilities/business/people-and-executives",
+                  "capabilities/business/crypto-projects-and-vcs"
+                ]
+              },
+              {
+                "group": "Jobs",
+                "pages": [
+                  "capabilities/jobs",
+                  "capabilities/jobs/job-search",
+                  "capabilities/jobs/job-details-and-salaries"
+                ]
+              },
+              {
+                "group": "Travel",
+                "pages": [
+                  "capabilities/travel",
+                  "capabilities/travel/hotels",
+                  "capabilities/travel/flights",
+                  "capabilities/travel/car-rentals",
+                  "capabilities/travel/attractions"
+                ]
+              },
+              {
+                "group": "Weather",
+                "pages": [
+                  "capabilities/weather",
+                  "capabilities/weather/forecasts",
+                  "capabilities/weather/air-quality",
+                  "capabilities/weather/severe-weather",
+                  "capabilities/weather/astronomy-and-tides",
+                  "capabilities/weather/location-lookup"
+                ]
+              },
+              {
+                "group": "Academic",
+                "pages": [
+                  "capabilities/academic",
+                  "capabilities/academic/papers",
+                  "capabilities/academic/researchers-and-institutions"
+                ]
+              }
             ]
           },
           {
@@ -96,17 +245,383 @@
           {
             "group": "Overview",
             "pages": [
-              "api-reference/introduction",
-              "api-reference/errors"
+              "api-reference/introduction"
             ]
           },
           {
-            "group": "Tools",
+            "group": "Scenario Methods",
+            "pages": [
+              "api-reference/scenario/overview",
+              "api-reference/scenario/quickstart",
+              "api-reference/scenario/requests",
+              "api-reference/scenario/responses",
+              "api-reference/scenario/routing-and-pricing",
+              "api-reference/scenario/errors"
+            ]
+          },
+          {
+            "group": "Catalog & Describe",
+            "pages": [
+              "api-reference/scenario/methods/catalog",
+              "api-reference/scenario/methods/describe"
+            ]
+          },
+          {
+            "group": "Methods",
+            "pages": [
+              {
+                "group": "Web",
+                "pages": [
+                  "api-reference/scenario/methods/web-answer",
+                  "api-reference/scenario/methods/web-scrape",
+                  "api-reference/scenario/methods/web-search"
+                ]
+              },
+              {
+                "group": "Social",
+                "pages": [
+                  {
+                    "group": "X (Twitter)",
+                    "pages": [
+                      "api-reference/scenario/methods/social-x-post-search",
+                      "api-reference/scenario/methods/social-x-post-get",
+                      "api-reference/scenario/methods/social-x-post-comments",
+                      "api-reference/scenario/methods/social-x-user-search",
+                      "api-reference/scenario/methods/social-x-user-get",
+                      "api-reference/scenario/methods/social-x-user-posts",
+                      "api-reference/scenario/methods/social-x-trending"
+                    ]
+                  },
+                  {
+                    "group": "Reddit",
+                    "pages": [
+                      "api-reference/scenario/methods/social-reddit-post-search",
+                      "api-reference/scenario/methods/social-reddit-post-get",
+                      "api-reference/scenario/methods/social-reddit-post-comments",
+                      "api-reference/scenario/methods/social-reddit-user-search",
+                      "api-reference/scenario/methods/social-reddit-user-get",
+                      "api-reference/scenario/methods/social-reddit-user-posts",
+                      "api-reference/scenario/methods/social-reddit-topic-search",
+                      "api-reference/scenario/methods/social-reddit-topic-posts",
+                      "api-reference/scenario/methods/social-reddit-trending"
+                    ]
+                  },
+                  {
+                    "group": "YouTube",
+                    "pages": [
+                      "api-reference/scenario/methods/social-youtube-post-search",
+                      "api-reference/scenario/methods/social-youtube-post-get",
+                      "api-reference/scenario/methods/social-youtube-post-comments",
+                      "api-reference/scenario/methods/social-youtube-post-transcript",
+                      "api-reference/scenario/methods/social-youtube-user-search",
+                      "api-reference/scenario/methods/social-youtube-user-get",
+                      "api-reference/scenario/methods/social-youtube-user-posts",
+                      "api-reference/scenario/methods/social-youtube-link-resolve"
+                    ]
+                  },
+                  {
+                    "group": "Instagram",
+                    "pages": [
+                      "api-reference/scenario/methods/social-instagram-post-search",
+                      "api-reference/scenario/methods/social-instagram-post-get",
+                      "api-reference/scenario/methods/social-instagram-post-comments",
+                      "api-reference/scenario/methods/social-instagram-user-search",
+                      "api-reference/scenario/methods/social-instagram-user-get",
+                      "api-reference/scenario/methods/social-instagram-user-posts",
+                      "api-reference/scenario/methods/social-instagram-topic-posts",
+                      "api-reference/scenario/methods/social-instagram-link-resolve"
+                    ]
+                  },
+                  {
+                    "group": "TikTok",
+                    "pages": [
+                      "api-reference/scenario/methods/social-tiktok-post-search",
+                      "api-reference/scenario/methods/social-tiktok-post-get",
+                      "api-reference/scenario/methods/social-tiktok-post-comments",
+                      "api-reference/scenario/methods/social-tiktok-user-search",
+                      "api-reference/scenario/methods/social-tiktok-user-get",
+                      "api-reference/scenario/methods/social-tiktok-user-posts",
+                      "api-reference/scenario/methods/social-tiktok-topic-search",
+                      "api-reference/scenario/methods/social-tiktok-topic-posts",
+                      "api-reference/scenario/methods/social-tiktok-trending",
+                      "api-reference/scenario/methods/social-tiktok-link-resolve"
+                    ]
+                  },
+                  {
+                    "group": "LinkedIn",
+                    "pages": [
+                      "api-reference/scenario/methods/social-linkedin-post-get",
+                      "api-reference/scenario/methods/social-linkedin-user-get"
+                    ]
+                  },
+                  {
+                    "group": "Xiaohongshu (RedNote)",
+                    "pages": [
+                      "api-reference/scenario/methods/social-xiaohongshu-post-search",
+                      "api-reference/scenario/methods/social-xiaohongshu-post-get",
+                      "api-reference/scenario/methods/social-xiaohongshu-post-comments",
+                      "api-reference/scenario/methods/social-xiaohongshu-post-trending",
+                      "api-reference/scenario/methods/social-xiaohongshu-user-search",
+                      "api-reference/scenario/methods/social-xiaohongshu-user-get",
+                      "api-reference/scenario/methods/social-xiaohongshu-user-posts",
+                      "api-reference/scenario/methods/social-xiaohongshu-topic-posts"
+                    ]
+                  },
+                  {
+                    "group": "Douyin",
+                    "pages": [
+                      "api-reference/scenario/methods/social-douyin-post-search",
+                      "api-reference/scenario/methods/social-douyin-post-get",
+                      "api-reference/scenario/methods/social-douyin-post-comments",
+                      "api-reference/scenario/methods/social-douyin-user-search",
+                      "api-reference/scenario/methods/social-douyin-user-get",
+                      "api-reference/scenario/methods/social-douyin-user-posts",
+                      "api-reference/scenario/methods/social-douyin-topic-search",
+                      "api-reference/scenario/methods/social-douyin-trending",
+                      "api-reference/scenario/methods/social-douyin-link-resolve"
+                    ]
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "pages": [
+                      "api-reference/scenario/methods/social-kuaishou-post-search",
+                      "api-reference/scenario/methods/social-kuaishou-post-get",
+                      "api-reference/scenario/methods/social-kuaishou-post-comments",
+                      "api-reference/scenario/methods/social-kuaishou-user-search",
+                      "api-reference/scenario/methods/social-kuaishou-user-get",
+                      "api-reference/scenario/methods/social-kuaishou-user-posts",
+                      "api-reference/scenario/methods/social-kuaishou-topic-search",
+                      "api-reference/scenario/methods/social-kuaishou-trending"
+                    ]
+                  },
+                  {
+                    "group": "Bilibili",
+                    "pages": [
+                      "api-reference/scenario/methods/social-bilibili-post-search",
+                      "api-reference/scenario/methods/social-bilibili-post-get",
+                      "api-reference/scenario/methods/social-bilibili-post-comments",
+                      "api-reference/scenario/methods/social-bilibili-user-search",
+                      "api-reference/scenario/methods/social-bilibili-user-get",
+                      "api-reference/scenario/methods/social-bilibili-user-posts",
+                      "api-reference/scenario/methods/social-bilibili-trending"
+                    ]
+                  },
+                  {
+                    "group": "Weibo",
+                    "pages": [
+                      "api-reference/scenario/methods/social-weibo-post-search",
+                      "api-reference/scenario/methods/social-weibo-post-get",
+                      "api-reference/scenario/methods/social-weibo-post-comments",
+                      "api-reference/scenario/methods/social-weibo-user-search",
+                      "api-reference/scenario/methods/social-weibo-user-get",
+                      "api-reference/scenario/methods/social-weibo-user-posts",
+                      "api-reference/scenario/methods/social-weibo-topic-search",
+                      "api-reference/scenario/methods/social-weibo-trending"
+                    ]
+                  },
+                  {
+                    "group": "Zhihu",
+                    "pages": [
+                      "api-reference/scenario/methods/social-zhihu-post-search",
+                      "api-reference/scenario/methods/social-zhihu-post-get",
+                      "api-reference/scenario/methods/social-zhihu-user-search",
+                      "api-reference/scenario/methods/social-zhihu-user-get",
+                      "api-reference/scenario/methods/social-zhihu-user-posts",
+                      "api-reference/scenario/methods/social-zhihu-topic-search",
+                      "api-reference/scenario/methods/social-zhihu-trending"
+                    ]
+                  },
+                  {
+                    "group": "WeChat Official Accounts",
+                    "pages": [
+                      "api-reference/scenario/methods/social-wechat_mp-post-search",
+                      "api-reference/scenario/methods/social-wechat_mp-post-get",
+                      "api-reference/scenario/methods/social-wechat_mp-user-search",
+                      "api-reference/scenario/methods/social-wechat_mp-user-get",
+                      "api-reference/scenario/methods/social-wechat_mp-user-posts"
+                    ]
+                  },
+                  {
+                    "group": "WeChat Channels",
+                    "pages": [
+                      "api-reference/scenario/methods/social-wechat_channels-post-search",
+                      "api-reference/scenario/methods/social-wechat_channels-user-search",
+                      "api-reference/scenario/methods/social-wechat_channels-user-posts"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "E-commerce",
+                "pages": [
+                  {
+                    "group": "Amazon",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-amazon-product-search",
+                      "api-reference/scenario/methods/ecommerce-amazon-product-get",
+                      "api-reference/scenario/methods/ecommerce-amazon-product-reviews",
+                      "api-reference/scenario/methods/ecommerce-amazon-product-rank"
+                    ]
+                  },
+                  {
+                    "group": "AliExpress",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-aliexpress-product-search",
+                      "api-reference/scenario/methods/ecommerce-aliexpress-product-get"
+                    ]
+                  },
+                  {
+                    "group": "Shopee",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-shopee-product-search",
+                      "api-reference/scenario/methods/ecommerce-shopee-product-get"
+                    ]
+                  },
+                  {
+                    "group": "TikTok Shop",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-tiktok_shop-product-search",
+                      "api-reference/scenario/methods/ecommerce-tiktok_shop-product-get",
+                      "api-reference/scenario/methods/ecommerce-tiktok_shop-product-reviews",
+                      "api-reference/scenario/methods/ecommerce-tiktok_shop-product-rank",
+                      "api-reference/scenario/methods/ecommerce-tiktok_shop-shop-products"
+                    ]
+                  },
+                  {
+                    "group": "Temu",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-temu-product-rank"
+                    ]
+                  },
+                  {
+                    "group": "Taobao",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-taobao-product-search",
+                      "api-reference/scenario/methods/ecommerce-taobao-product-get",
+                      "api-reference/scenario/methods/ecommerce-taobao-product-reviews",
+                      "api-reference/scenario/methods/ecommerce-taobao-shop-products"
+                    ]
+                  },
+                  {
+                    "group": "JD.com",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-jd-product-search",
+                      "api-reference/scenario/methods/ecommerce-jd-product-get",
+                      "api-reference/scenario/methods/ecommerce-jd-product-reviews",
+                      "api-reference/scenario/methods/ecommerce-jd-shop-products"
+                    ]
+                  },
+                  {
+                    "group": "1688",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-1688-product-search",
+                      "api-reference/scenario/methods/ecommerce-1688-product-get"
+                    ]
+                  },
+                  {
+                    "group": "Xianyu",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-xianyu-product-search",
+                      "api-reference/scenario/methods/ecommerce-xianyu-product-get"
+                    ]
+                  },
+                  {
+                    "group": "Douyin Shop",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-douyin_shop-product-search",
+                      "api-reference/scenario/methods/ecommerce-douyin_shop-product-get",
+                      "api-reference/scenario/methods/ecommerce-douyin_shop-product-reviews",
+                      "api-reference/scenario/methods/ecommerce-douyin_shop-shop-products"
+                    ]
+                  },
+                  {
+                    "group": "Xiaohongshu Shop",
+                    "pages": [
+                      "api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-search",
+                      "api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-get",
+                      "api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-reviews"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Finance",
+                "pages": [
+                  "api-reference/scenario/methods/finance-company-profile",
+                  "api-reference/scenario/methods/finance-earnings",
+                  "api-reference/scenario/methods/finance-estimates",
+                  "api-reference/scenario/methods/finance-filings-get",
+                  "api-reference/scenario/methods/finance-filings-search",
+                  "api-reference/scenario/methods/finance-financials",
+                  "api-reference/scenario/methods/finance-macro-series",
+                  "api-reference/scenario/methods/finance-news",
+                  "api-reference/scenario/methods/finance-ownership",
+                  "api-reference/scenario/methods/finance-price-history",
+                  "api-reference/scenario/methods/finance-quote",
+                  "api-reference/scenario/methods/finance-symbol-search"
+                ]
+              },
+              {
+                "group": "Crypto",
+                "pages": [
+                  "api-reference/scenario/methods/crypto-derivatives-snapshot",
+                  "api-reference/scenario/methods/crypto-market-list",
+                  "api-reference/scenario/methods/crypto-news-search",
+                  "api-reference/scenario/methods/crypto-token-holders",
+                  "api-reference/scenario/methods/crypto-token-info",
+                  "api-reference/scenario/methods/crypto-token-price",
+                  "api-reference/scenario/methods/crypto-wallet-assets",
+                  "api-reference/scenario/methods/crypto-wallet-transactions"
+                ]
+              },
+              {
+                "group": "Business",
+                "pages": [
+                  "api-reference/scenario/methods/business-company-funding",
+                  "api-reference/scenario/methods/business-company-get",
+                  "api-reference/scenario/methods/business-company-search",
+                  "api-reference/scenario/methods/business-person-get"
+                ]
+              },
+              {
+                "group": "Jobs",
+                "pages": [
+                  "api-reference/scenario/methods/jobs-get",
+                  "api-reference/scenario/methods/jobs-search"
+                ]
+              },
+              {
+                "group": "Travel",
+                "pages": [
+                  "api-reference/scenario/methods/travel-flight-search",
+                  "api-reference/scenario/methods/travel-hotel-search",
+                  "api-reference/scenario/methods/travel-location-search"
+                ]
+              },
+              {
+                "group": "Weather",
+                "pages": [
+                  "api-reference/scenario/methods/weather-forecast",
+                  "api-reference/scenario/methods/weather-location-search"
+                ]
+              },
+              {
+                "group": "Academic",
+                "pages": [
+                  "api-reference/scenario/methods/academic-paper-get",
+                  "api-reference/scenario/methods/academic-paper-search"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Tool Catalog (MCP)",
             "pages": [
               "api-reference/find-tools",
               "api-reference/describe-tool",
               "api-reference/execute-tool",
-              "api-reference/account"
+              "api-reference/account",
+              "api-reference/errors"
             ]
           }
         ]

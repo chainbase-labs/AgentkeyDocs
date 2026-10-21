@@ -1,22 +1,24 @@
 ---
-title: "Errors"
-description: "Common error responses and how to resolve them."
+title: "Errors (MCP tools)"
+sidebarTitle: "Errors"
+description: "What the meta tools return when something goes wrong, and how to recover."
 ---
 
-| Symptom | Cause | Resolution |
-| --- | --- | --- |
-| `401` / unauthorized | Missing, revoked, or misconfigured master key | Re-create your `ak_...` key in the [console](https://console.agentkey.app) and re-run setup — see [Authentication](/authentication) |
-| Out-of-credits error | Monthly allowance exhausted and overage unavailable (e.g. overage disabled or its limit reached) | Upgrade your plan or adjust overage settings in the console — see [Subscription & Billing](/concepts/subscription) |
-| Unknown tool / fuzzy suggestions | Tool name typo or guessed name | Re-run [`find_tools`](/api-reference/find-tools) or read the suggestions from `describe_tool` |
-| Missing / invalid params | Skipped the describe step | Always [`describe_tool`](/api-reference/describe-tool) before executing |
-| Provider unavailable | Upstream outage | AgentKey auto-fails-over where possible; otherwise retry — see [Auto Failover](/concepts/auto-failover) |
+Errors from the catalog tools come back as the tool result, as JSON with
+`error`, `code` and `error_type`. For the REST surface see
+[Scenario Methods → Errors](/api-reference/scenario/errors).
+
+| Symptom | `error_type` / shape | Cause | Resolution |
+| --- | --- | --- | --- |
+| `401` | `unauthorized` | Missing, revoked or misconfigured master key | Re-create the `ak_...` key in the [console](https://console.agentkey.app) and re-run setup — see [Authentication](/authentication) |
+| `402` | `insufficient_credits` with `action` (`upgrade` or `topup_or_upgrade`) and a console URL | Monthly allowance and extra credits used up | Top up or upgrade in the console — see [Subscription & Billing](/concepts/subscription). No upstream call was made |
+| Unknown tool, with suggestions | fuzzy-match suggestions in the result | Typo or guessed name | Use a suggestion, or re-run [`find_tools`](/api-reference/find-tools). Don't retry blindly |
+| Missing / invalid params | `400` from the provider or a validation message | Skipped the describe step | Always [`describe_tool`](/api-reference/describe-tool) first and copy `execute_as` |
+| Rate limited | `429` / `rate_limit` | The provider throttled the call | Wait, then retry |
+| Provider failed | `5xx`, timeout, or an error inside the provider's payload | Upstream outage or a broken endpoint | Retry via a sibling surface or version, or another provider — see [Provider Failover](/concepts/auto-failover). Cap at two or three attempts; each is billed |
+| `disabled: true` in a `200` result | `{ "disabled": true, "category": "social", "message": "…", "reenable_at": "…" }` | You switched the category off in the console | Don't retry and don't route around it; re-enable under Marketplace if needed |
 
 <Tip>
-  When in doubt, run the free [`account`](/api-reference/account) tool to confirm
-  both your balance and upstream health.
+  When in doubt, run the free [`agentkey_account`](/api-reference/account) tool:
+  it confirms both your balance and every provider's health.
 </Tip>
-
-<Note>
-  Exact error codes and response envelopes are confirmed in the
-  [console](https://console.agentkey.app).
-</Note>

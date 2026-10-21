@@ -1,0 +1,58 @@
+---
+title: "Two Ways to Call"
+description: "Scenario Methods when you want a fixed contract; the tool catalog when you want everything."
+---
+
+AgentKey gives your agent the same providers through two surfaces. They share
+one key, one balance and one console; they differ in who decides which upstream
+tool runs and what the response looks like.
+
+## Side by side
+
+| | Scenario Methods | Tool catalog |
+| --- | --- | --- |
+| **What it is** | Methods with a fixed name, input schema and output schema, e.g. `social.x.post.search` | The full upstream catalog, named `Provider/operation`, e.g. `Sorsa/post_search_tweets` |
+| **How you call it** | REST: `POST /v2/ops/{method}` | MCP meta tools: `find_tools` → `describe_tool` → `execute_tool` |
+| **Who picks the provider** | AgentKey — with automatic failover to a second provider | You — `execute_tool` runs exactly the tool you name |
+| **Response shape** | Normalized objects (`Post`, `Product`, `Quote`, …) in a fixed envelope | The provider's own payload, passed through |
+| **Price** | One fixed price per method, charged once per successful call | The tool's own per-call price, shown by `describe_tool` |
+| **Changes over time** | Versioned; additions only within a version, breaking changes become a `.v2` method | Follows the provider; a provider renaming an endpoint renames the tool |
+| **Best for** | Developers and enterprise integrations: production code and typed SDKs that parse the result | Agents exploring the long tail, and anything the methods don't cover yet |
+
+Methods are deliberately fewer than catalog tools: one method aggregates every
+endpoint with the same capability, and only operations whose contract and
+normalized output can be kept stable are promoted. See
+[Why fewer methods than catalog tools](/api-reference/scenario/overview#why-fewer-methods-than-catalog-tools).
+
+## When to use which
+
+**Reach for a Scenario Method** when the capability is covered and you will
+parse the result in code: searching posts on a platform, fetching a product or
+a quote, scraping a page into markdown. You get one schema to code against,
+failover you don't have to build, and a price you can budget.
+
+**Reach for the catalog** when you need an operation the methods don't expose —
+a niche endpoint, a parameter only one provider has, a platform that has no
+method yet — or when the caller is an LLM that can read a tool description and
+adapt. The catalog is where every new provider appears first.
+
+<Tip>
+  Both surfaces can be mixed in one agent. A common pattern: Scenario Methods
+  for the hot paths your product depends on, `find_tools` for the rest.
+</Tip>
+
+## What's the same
+
+- **One key.** The `ak_...` master key authenticates both.
+- **One balance.** Credits are shared; `agentkey_account` reports it for both.
+- **One set of providers.** A Scenario Method is a contract on top of the same
+  catalog tools; describe shows which tool each provider binding calls.
+
+<CardGroup cols={2}>
+  <Card title="Scenario Methods" icon="layers" href="/api-reference/scenario/overview">
+    The REST surface: contract, routing, pricing, errors.
+  </Card>
+  <Card title="Discover → Describe → Execute" icon="route" href="/concepts/discover-describe-execute">
+    How agents use the catalog through MCP.
+  </Card>
+</CardGroup>

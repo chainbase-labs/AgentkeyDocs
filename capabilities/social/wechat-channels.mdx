@@ -1,0 +1,98 @@
+---
+title: "WeChat Channels (视频号) data for AI agents"
+sidebarTitle: "WeChat Channels"
+description: "WeChat Channels (视频号) video search, detail and metrics, comments, account profiles and video lists, collections, live detail and transcripts through AgentKey."
+---
+
+WeChat Channels (视频号) is the short-video feed inside WeChat, reaching the
+whole WeChat user base, and it is even more closed than the rest of the app:
+videos only open inside WeChat and there is no web presence to index. Through
+AgentKey your agent reads public Channels data the same way it reads everything
+else — `find_tools`, `describe_tool`, `execute_tool` — with several providers
+behind the scenes, so one route failing does not stop the task.
+
+## What you can ask
+
+- *"Find WeChat Channels videos about camping from the past week."*
+- *"这个视频号最近发了什么视频？"*
+- *"From the link I copied, pull this Channels video's title, metrics and comments."*
+- *"Which Channels account is bound to this Official Account?"*
+- *"Transcribe this Channels video."*
+- *"Is this account live right now, and what did its recent lives look like?"*
+- *"Search for Channels creators about home fitness."*
+- *"帮我看看这个视频号的合集里有哪些视频"*
+
+## What's covered
+
+**Videos**
+- Resolve a copied link, preview URL or short feed ID to the video; title; full
+  detail, including a realtime variant that takes the link directly
+- Interaction metrics for a video; a downloadable media URL; share-URL
+  generation
+- Keyword search with publish-time and sort controls; search within a single
+  channel
+- Conversion of an encrypted export ID from search results into a usable video
+  identity
+
+**Comments**
+- First-level comments, paginated; replies under a comment
+
+**Accounts**
+- Account info, profile and stats
+- The account's video feed; its collections (合集) and the videos in each
+- Account search by name or keyword
+- The Channels account bound to an Official Account; channel ID → finder
+  username
+
+**Live**
+- Live detail and live history for an account
+
+**Transcripts**
+- Video transcription as a submit-then-fetch task
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="WeChat Channels videos about camping from the past week")
+find_tools(q="这个视频号最近发了什么视频")
+find_tools(prefix="social/wechat_channels")   # browse everything for Channels
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs differ between providers, and several tools take
+Channels' own identifiers (object ID, nonce ID, v2Name) that earlier calls
+return.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.wechat_channels.post.search`](/api-reference/scenario/methods/social-wechat_channels-post-search),
+  [`social.wechat_channels.user.posts`](/api-reference/scenario/methods/social-wechat_channels-user-posts),
+  [`social.wechat_channels.user.search`](/api-reference/scenario/methods/social-wechat_channels-user-search).
+  Video detail, comments, live and transcripts are available through the
+  catalog tools above.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a WeChat account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="I only have a link copied from WeChat. Is that enough?">
+    Yes. A copied video link, preview URL or short feed ID resolves to the
+    video's basic info and identifiers, and from there the detail, metrics and
+    comment tools take over.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the platform at request time; the realtime detail route
+    in particular reads the video as it stands right now. Nothing is served
+    from a stale archive.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,114 @@
+---
+title: "Macroeconomic data for AI agents"
+sidebarTitle: "Macro data"
+description: "World Bank indicators, Eurostat datasets, US GDP, CPI, fed funds, Treasury yields, unemployment and payrolls, plus economic calendars for AI agents."
+---
+
+Macro data is public but awkward: every statistical office has its own codes,
+dimensions and file formats, and an agent that wants GDP for three countries,
+euro-area inflation and the latest payrolls number ends up learning three
+query languages. Through AgentKey your agent asks for the series in plain
+words — `find_tools`, `describe_tool`, `execute_tool` — with the World Bank,
+Eurostat, AlphaVantage and Finnhub behind the scenes, and Tushare for China.
+
+## What you can ask
+
+- *"GDP per capita for Vietnam, Indonesia and the Philippines since 2000."*
+- *"Compare euro-area and US inflation over the last five years."*
+- *"What is the effective federal funds rate right now, and the 10-year Treasury yield?"*
+- *"US nonfarm payrolls and the unemployment rate for the past three years."*
+- *"Which upper-middle-income economies in Sub-Saharan Africa does the World Bank list?"*
+- *"Germany's quarterly GDP from Eurostat, seasonally adjusted, in chained volumes."*
+- *"What economic releases are due this week?"*
+- *"中国最近两年的 CPI 和 PMI"*
+
+## What's covered
+
+**Global development indicators (World Bank)**
+- Time series for GDP, GDP growth, GDP per capita, population, inflation,
+  unemployment, exports and imports, FDI, government debt, exchange rates, life
+  expectancy, poverty, Gini, internet users and thousands more, for one or
+  several economies
+- Indicator definitions with unit, source and methodology notes; indicator
+  codes browsable by topic — Economy & Growth, Education, Energy & Mining,
+  Environment, Health, Poverty and others
+- Every economy and aggregate grouping with ISO codes, region, income level
+  and lending type, plus single-economy profiles
+- The list of underlying databases — World Development Indicators,
+  International Debt Statistics, Global Economic Monitor and more
+
+**European statistics (Eurostat)**
+- Dataset cells filtered by country, period and dimension — GDP, inflation,
+  unemployment, population, government debt, industrial production, trade,
+  energy, emissions, poverty and thousands more — for EU member states, EFTA
+  and candidate countries, returned as JSON-stat
+- Dataset descriptions with full title, structure id and last-update
+  timestamps
+- Code lists for dimensions such as national-accounts item, unit, frequency,
+  seasonal adjustment, sex and age
+
+**United States**
+- Real GDP (quarterly or annual) and real GDP per capita
+- CPI (monthly or semiannual) and the annual inflation rate
+- Effective federal funds rate; Treasury yields at daily, weekly or monthly
+  frequency
+- Unemployment rate, nonfarm payrolls, advance retail sales and durable goods
+  orders
+
+**Calendars and indicator feeds**
+- Recent and upcoming economic events; economic indicators by code; the list
+  of supported countries
+
+**China**
+- CPI, PPI, GDP, PMI, money supply, social financing, Shibor and LPR — see
+  [China A-shares](/capabilities/finance/china-a-shares)
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="GDP per capita for Vietnam since 2000")
+find_tools(q="欧元区最近五年的通胀率")
+find_tools(prefix="finance/worldbank")       # indicators, countries, topics, sources
+find_tools(prefix="finance/eurostat")        # datasets, dataflows, code lists
+find_tools(prefix="finance/alphavantage")    # US macro series
+find_tools(prefix="finance/finnhub")         # economic calendar and indicator data
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Name the source when you have a preference ("World Bank", "Eurostat") and the
+router ranks it first. Always `describe_tool` before executing — indicator and
+dataset codes, dimension filters and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`finance.macro.series`](/api-reference/scenario/methods/finance-macro-series).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I find the right indicator or dataset code?">
+    For the World Bank, browse the indicator codes under a topic, then read the
+    indicator's definition to confirm what it measures before pulling values.
+    For Eurostat, read the dataset's description and the code lists for its
+    dimensions to build the filter. The agent can do both steps itself from a
+    plain-language request.
+  </Accordion>
+  <Accordion title="What frequencies and units come back?">
+    Each series carries its own: US real GDP is quarterly or annual, CPI is
+    monthly or semiannual, Treasury yields are daily, weekly or monthly. World
+    Bank indicator metadata states the unit; Eurostat exposes unit and
+    frequency as dimensions you filter on.
+  </Accordion>
+  <Accordion title="Which countries are covered?">
+    The World Bank route covers every economy and aggregate it publishes;
+    Eurostat covers EU member states, EFTA and candidate countries; the US
+    series come from AlphaVantage; China's CPI, PPI, GDP, PMI, money supply and
+    policy rates come from Tushare.
+  </Accordion>
+</AccordionGroup>

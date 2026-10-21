@@ -1,0 +1,56 @@
+---
+title: "Academic"
+sidebarTitle: "Overview"
+description: "Papers, researchers, institutions, venues and patents."
+---
+
+The **Academic** category lets an agent do literature work: search and rank
+papers on a topic, open a paper's content and ask questions of its PDF, follow
+citations, profile a researcher or an institution, browse a venue's output, and
+look up patents — from two providers.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Papers" href="/capabilities/academic/papers">
+    arXiv and AMiner paper search and details.
+  </Card>
+  <Card title="Researchers and institutions" href="/capabilities/academic/researchers-and-institutions">
+    Scholars, institutions, venues and patents.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Provider | Coverage |
+| --- | --- |
+| **AMiner** | Papers: search by title or by title / keyword / abstract / author / institution / venue, paper detail, citation list, batch paper info, recommendations by topic or scholar. Scholars: search, detail, research profile (interests, fields, structured career and education), papers, patents, projects, statistics (paper count, citations, h-index, g-index). Organizations: search, name disambiguation, detail, papers, patents, scholars. Venues: search, detail, papers by year. Patents: search, detail, brief info |
+| **alphaxiv** | `discover_papers` ranks candidate papers for a research topic; `get_paper_content` and `answer_pdf_queries` return a paper's content or the pages relevant to a question (by id, URL or title); `find_researchers`, `resolve_researchers`, `get_researcher` and `get_researcher_papers` profile researchers; `read_files_from_github_repository` reads a paper's code repository |
+| **alphaxiv-api** | alphaXiv's public REST API, by arXiv id: paper metadata with authors, abstract, first submission date and links (`getPaperMetadata`); a compact record with the citation count alphaXiv tracks (`getPaper`); the resolved reference list with each cited paper's arXiv id and DOI where known (`getPaperReferences`) |
+
+AMiner tools return gateway-wrapped JSON with the payload under `data`; most
+detail tools take an AMiner id, so start from a `search_*` tool. AMiner
+summaries are in Chinese; `find_tools(q=...)` matches them in either language.
+The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** Developers and enterprise integrations can call this
+  category through [Scenario Methods](/api-reference/scenario/overview): fixed
+  REST contracts with a stable schema, a fixed price and automatic provider
+  failover. The methods are listed by platform in the API Reference sidebar.
+</Note>
+
+## Browse the catalog
+
+```text
+find_tools(prefix="academic")
+find_tools(q="recent papers on speculative decoding for LLM inference")
+describe_tool("alphaxiv/discover_papers")
+execute_tool("alphaxiv/discover_papers", { ...params })   # copy describe_tool's execute_as
+```
+
+<Tip>
+  Google Scholar results are also reachable through `Serper/searchScholar` in
+  the [Search](/capabilities/search) category, and patents through
+  `Serper/searchPatents`.
+</Tip>

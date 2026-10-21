@@ -7,11 +7,13 @@ This guide takes you from nothing to your agent's first live tool call.
 
 ## 1. Install AgentKey
 
-Pick whichever fits how you work — both take about a minute.
+Pick whichever fits how you work — each takes about a minute.
 
 <Tabs>
-  <Tab title="One-line install">
-    Run the installer for your OS:
+  <Tab title="One-line install (recommended)">
+    Run the installer for your OS. It detects the agents on your machine,
+    installs the AgentKey skill into each one, and opens a browser tab to sign
+    in — no key to copy, no JSON to edit:
 
     <CodeGroup>
     ```bash macOS / Linux
@@ -22,6 +24,14 @@ Pick whichever fits how you work — both take about a minute.
     irm https://agentkey.app/install.ps1 | iex
     ```
     </CodeGroup>
+  </Tab>
+  <Tab title="npx (manual two-step)">
+    The same thing the installer does, as two explicit steps: add the skill
+    with the `skills` CLI, then sign in and register the MCP server:
+
+    ```bash
+    npx skills add chainbase-labs/agentkey && npx -y @agentkey/cli --auth-login
+    ```
   </Tab>
   <Tab title="Let your agent install it">
     Paste this prompt into your coding agent (Claude Code, Cursor, Windsurf, …):
@@ -41,7 +51,7 @@ Pick whichever fits how you work — both take about a minute.
 </Card>
 
 <Note>
-  AgentKey supports **22 agents**. The
+  AgentKey works with many agents. The
   [console get-started flow](https://console.agentkey.app/get-started) matches your
   agent and gives you the exact command; see
   [Supported Agents](/connect/supported-agents) for the full list.
@@ -62,12 +72,15 @@ Pick whichever fits how you work — both take about a minute.
   </Step>
   <Step title="Pick a plan">
     AgentKey is **subscription-based**. Choose a plan from the console — each plan
-    includes a monthly credit allowance shared across every service, with overage
-    billing beyond it. No per-provider signups.
+    includes a monthly credit allowance shared across every service; add extra
+    credits or upgrade when you need more. No per-provider signups. Plans and
+    prices are on the [pricing page](https://agentkey.app/pricing.html).
   </Step>
-  <Step title="Provide the key">
-    Follow the prompts from the installer (or the skill's setup steps) to supply
-    your key. See [Authentication](/authentication).
+  <Step title="Sign in">
+    The installer (and the npx path) opens a browser tab to sign in to
+    AgentKey — that is the authentication. Only clients that cannot do MCP OAuth
+    need an API key pasted into their config. See
+    [Authentication](/authentication).
   </Step>
 </Steps>
 
@@ -99,6 +112,12 @@ Every AgentKey workflow follows the same pattern: **discover → describe → ex
   *"Search X/Twitter for what people are saying about AgentKey today."*
 </Tip>
 
+<Note>
+  Calling AgentKey from code instead of an agent? Skip the install: the
+  [Scenario Methods](/api-reference/scenario/quickstart) REST API takes your key
+  as a bearer token and returns fixed-schema results.
+</Note>
+
 <Card title="Understand the model" icon="route" href="/concepts/discover-describe-execute">
   Why AgentKey uses discover → describe → execute, and how to use it well.
 </Card>
@@ -113,7 +132,7 @@ Every AgentKey workflow follows the same pattern: **discover → describe → ex
     See everything your agent can reach.
   </Card>
   <Card title="API reference" icon="code" href="/api-reference/introduction">
-    The four core tools, in detail.
+    Scenario Methods over REST, and the four MCP tools.
   </Card>
   <Card title="FAQ" icon="circle-question" href="/faq">
     Common questions about cost, platforms, and setup.

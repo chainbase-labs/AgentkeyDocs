@@ -1,65 +1,197 @@
 ---
 title: "Supported Agents"
-description: "The 22 agents AgentKey supports, and how each one installs."
+description: "Every agent AgentKey connects to, with a link to its exact setup steps in the console."
 ---
 
-AgentKey works with **22 agents** across CLIs, IDEs, chat clients, and the desktop
-app. Each falls into one of three install methods.
+AgentKey works with the agents below, plus any client that speaks MCP. Each card
+opens the [console get-started flow](https://console.agentkey.app/get-started),
+which detects your OS and gives you the exact command or steps for that agent.
 
 <Tip>
-  Not sure which applies to you? The [console get-started flow](https://console.agentkey.app/get-started)
-  matches your agent and gives you the exact command. See
-  [Installation](/connect/install) for the full steps.
+  Not sure which install method applies to you? [Installation](/connect/install)
+  explains the methods — the one-line installer, plugin marketplaces, prompt
+  install and desktop config — and the get-started flow picks the right one
+  for your agent.
 </Tip>
 
-## One-line command — CLI & IDE (14)
+<div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "16px", margin: "24px 0"}}>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/chatgpt.png" alt="ChatGPT Desktop logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>ChatGPT Desktop</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>OpenAI's versatile assistant for writing, coding, research, and daily tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/codex.png" alt="Codex CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Codex CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>OpenAI's coding agent for editing, running, and understanding software projects.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/claude.png" alt="Cowork / Claude Code Desktop logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Cowork / Claude Code Desktop</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Anthropic's desktop AI assistant for collaborative work and shared tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/claude.png" alt="Claude Code CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Claude Code CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Anthropic's terminal cli agent for editing, testing, and understanding codebases.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/workbuddy.png" alt="WorkBuddy logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>WorkBuddy</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI assistant for workplace productivity and everyday team tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/deepseek.svg" alt="DeepSeek Harness (DSH) logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>DeepSeek Harness (DSH)</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>DeepSeek's open-source agent harness for composable, traceable command-line workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/gemini.png" alt="Gemini CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Gemini CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Google's command-line AI assistant for coding, research, and developer workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/grok.svg" alt="Grok logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Grok</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>xAI's assistant on grok.com and X, with real-time search and custom connectors.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/grok.svg" alt="Grok Bot logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Grok Bot</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>xAI's always-on cloud agents that run tasks and routines on their own machine.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/grok.svg" alt="Grok Build logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Grok Build</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>xAI's open-source terminal coding agent (the grok CLI).</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/meta-muse.svg" alt="Meta Muse logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Meta Muse</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Meta's personal AI agent on the web, in the Meta AI app and on WhatsApp.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/hermes.png" alt="Hermes logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Hermes</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A conversational AI assistant for reasoning, writing, and task support.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/openclaw.png" alt="OpenClaw logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>OpenClaw</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A chat-based agent for coding, automation, and developer task workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/cursor.png" alt="Cursor logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Cursor</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI code editor built for fast, context-aware software development.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/opencode.png" alt="OpenCode logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>OpenCode</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A terminal coding agent that understands natural language project requests.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/doubao-work.png" alt="豆包工作 (Doubao Work) logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>豆包工作 (Doubao Work)</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI assistant for workplace productivity and everyday team tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/qwenwork.svg" alt="千问办公 (Qwen Work) logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>千问办公 (Qwen Work)</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI office assistant for documents, presentations, spreadsheets, and everyday workplace tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/replit.svg" alt="Replit logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Replit</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A browser-based development platform with an AI agent for building and deploying apps.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/windsurf.png" alt="Windsurf logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Windsurf</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI development environment that helps developers build software collaboratively.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/antigravity.png" alt="Antigravity logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Antigravity</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI workspace for planning, exploring, and completing complex tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/cursor.png" alt="Cursor CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#F4F4F5", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Cursor CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Cursor's command-line tool for AI-assisted coding inside terminal workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/warp.png" alt="Warp logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Warp</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A modern terminal with AI assistance for developer productivity work.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/trae.png" alt="Trae logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Trae</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI coding assistant built around chat-based development workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/kimi.png" alt="Kimi CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Kimi CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A command-line assistant for coding, search, and practical task execution.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/qwen-code.png" alt="Qwen Code logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Qwen Code</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Qwen's coding agent for building, editing, and understanding software projects.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/kiro.png" alt="Kiro CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Kiro CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A CLI agent for structured coding and developer task automation.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/zcode.webp" alt="Zcode logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Zcode</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI coding workspace for planning, coding, reviewing, and deploying software.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/amp.png" alt="Amp logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Amp</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI coding agent for navigating and improving large codebases.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/crush.png" alt="Crush logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Crush</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A terminal-based AI assistant for quick coding and project work.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/iflow.png" alt="iFlow CLI logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>iFlow CLI</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A command-line agent for coding, workflows, and task execution.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/accio.webp" alt="Accio logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Accio</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>Alibaba's AI agent for sourcing, product research, and business workflows.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/qoder.png" alt="Qoder logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#FFFFFF", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Qoder</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>An AI assistant for coding, reasoning, and solving developer tasks.</div>
+  </a>
+  <a href="https://console.agentkey.app/get-started" target="_blank" rel="noreferrer" style={{display: "block", padding: "20px", border: "1px solid rgba(128, 128, 128, 0.28)", borderRadius: "16px", textDecoration: "none", color: "inherit"}}>
+    <img src="https://console.agentkey.app/logos/agents/pi.png" alt="Pi logo" width="64" height="64" style={{display: "block", width: "64px", height: "64px", objectFit: "contain", padding: "8px", borderRadius: "14px", background: "#000000", border: "1px solid rgba(128, 128, 128, 0.18)", marginBottom: "16px"}} />
+    <div style={{fontWeight: 600, fontSize: "17px", lineHeight: 1.3, marginBottom: "6px"}}>Pi</div>
+    <div style={{fontSize: "14px", lineHeight: 1.5, opacity: 0.72}}>A conversational AI companion for personal questions and everyday support.</div>
+  </a>
+</div>
 
-Install with a single command that detects your agent, registers the MCP server,
-and writes your API key. See [One-line install](/connect/install#one-line-install-cli-ide).
+## Any other MCP client
 
-| Agent | Type |
-| --- | --- |
-| Claude Code | CLI |
-| Cursor | IDE |
-| Windsurf | IDE |
-| Gemini CLI | CLI |
-| OpenCode | CLI |
-| Codex | CLI |
-| Cursor CLI | CLI |
-| Warp | CLI |
-| Kimi CLI | CLI |
-| Qwen Code | CLI |
-| Kiro CLI | CLI |
-| Amp | CLI |
-| Crush | CLI |
-| iFlow CLI | CLI |
+Agents that can add a custom MCP server connect with the server URL
+`https://api.agentkey.app/v1/mcp`. Clients that support OAuth sign in to
+AgentKey in the browser; clients that take a header use
+`Authorization: Bearer <your API key>` with a key from the
+[console](https://console.agentkey.app/api-keys).
 
-## Prompt install — chat agents (7)
-
-Paste a prompt and let the agent install the skill from ClawHub. See
-[Prompt install](/connect/install#prompt-install-chat-agents).
-
-| Agent | Type |
-| --- | --- |
-| OpenClaw | Chat |
-| Hermes | Chat |
-| Antigravity | Chat |
-| Trae | Chat |
-| Qoder | Chat |
-| WorkBuddy | Chat |
-| Cowork | Chat |
-
-## Desktop config (1)
-
-| Agent | Type |
-| --- | --- |
-| Claude Desktop | Desktop |
-
-Claude Desktop needs the MCP server configured plus the skill file imported. See
-[Claude Desktop](/connect/install#claude-desktop-desktop-config).
-
-<Note>
-  Don't see your client? The console get-started page has a “tell us” option, and
-  any MCP- or Skills-compatible client can generally be wired up manually. The
-  list above grows over time.
-</Note>
+<Card title="More agents and the exact steps" icon="external-link" href="https://console.agentkey.app/get-started">
+  The console get-started page is the source of truth: it lists every supported
+  agent, is updated as new ones are added, and has a "tell us" option if yours
+  is missing.
+</Card>

@@ -1,0 +1,90 @@
+---
+title: "NFT data for AI agents"
+sidebarTitle: "NFTs"
+description: "NFT collection metadata, items, owners and ownership history, token metadata and transfers, plus the NFTs a wallet holds, through AgentKey."
+---
+
+NFT ownership is public, but following it means decoding contract events across
+collections and token ids — a job for an indexer, not an RPC call — and the
+question an agent actually gets ("who owns this, and who held it before?")
+spans a collection, one token and a wallet at once. Through AgentKey your agent
+reads collections, individual tokens, owners and transfers the same way it
+reads everything else — `find_tools`, `describe_tool`, `execute_tool` — with
+Chainbase behind the scenes.
+
+## What you can ask
+
+- *"Who owns token #4821 in this collection, and who owned it before?"*
+- *"List every item in this collection with its metadata."*
+- *"How many distinct owners does this collection have?"*
+- *"Show the most recent transfers in this collection."*
+- *"Which NFTs does this wallet hold?"*
+- *"Has this token changed hands more than once this year?"*
+- *"Which wallets hold the most items in this collection?"*
+- *"这个 NFT 合约的名称、符号和基本信息是什么？"*
+
+## What's covered
+
+**Collections**
+- Collection metadata for a contract address
+- The items in a collection, with their metadata
+- Every current owner of a collection — the basis for owner counts and
+  concentration, since the full list is returned rather than a summary
+- Historical transfer transactions for a collection contract
+
+**Individual NFTs**
+- Metadata of a specific token
+- Current owner of a token, and the full list of its historical owners
+
+**Wallets**
+- The NFTs owned by an address — see also
+  [on-chain and wallets](/capabilities/crypto/on-chain-and-wallets), where the
+  cross-chain portfolio view can include a wallet's NFTs
+- Entity labels for owner addresses, through the wallet tools, to tell an
+  exchange or fund wallet from an individual collector
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="owner history of token 4821 in NFT collection 0xabc...")
+find_tools(q="这个钱包持有哪些 NFT")
+find_tools(prefix="crypto/nft")           # browse everything for NFTs
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — lookups take a contract address, a token id and a chain parameter,
+and the per-call cost is shown there. A typical flow is collection metadata
+first, then items or owners, then the owner history of one token. For a
+wallet-first question, start from the wallet tools instead — they return the
+NFTs an address holds alongside its balances.
+
+<Note>
+  **Building with code?** NFT data is available through the catalog today;
+  there is no dedicated Scenario Method yet. See
+  [Scenario Methods](/api-reference/scenario/overview) for the fixed-contract
+  API and the methods that exist.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it include floor prices or marketplace listings?">
+    Not today. The coverage is on-chain: metadata, ownership and transfers.
+    Marketplace pricing is not part of this group.
+  </Accordion>
+  <Accordion title="Which chains are supported?">
+    Lookups take a chain parameter alongside the contract address and token
+    id, so the same tool serves any network the provider indexes.
+    `describe_tool` lists the networks each tool accepts.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Yes for ownership and movement — the owner history of a token and the
+    transfer history of a collection are lists of past events. Metadata and
+    current owners reflect the chain at request time; nothing is served from a
+    stale archive.
+  </Accordion>
+</AccordionGroup>

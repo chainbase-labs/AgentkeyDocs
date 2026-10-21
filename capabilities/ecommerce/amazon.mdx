@@ -1,0 +1,92 @@
+---
+title: "Amazon product data for AI agents"
+sidebarTitle: "Amazon"
+description: "Search Amazon by keyword or ASIN, read product details and top reviews, and pull Best Sellers and category listings per country marketplace through AgentKey."
+---
+
+Amazon is the reference catalog for most product research, and one of the
+harder ones for an agent to read: the official Product Advertising API needs an
+approved associate account that keeps selling, and the storefront blocks
+automated browsing. Through AgentKey your agent reads public Amazon listings the
+same way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool` — choosing the country marketplace on every call.
+
+## What you can ask
+
+- *"Find wireless earbuds under 50 dollars on Amazon US, Prime-eligible only, sorted by rating."*
+- *"Pull the listing for this ASIN on Amazon Germany and give me the price and rating."*
+- *"What do the top reviews of this product say? Summarize the recurring complaints."*
+- *"Show me the current Best Sellers in Home & Kitchen on Amazon UK."*
+- *"List the products under this category node on Amazon Japan, newest first."*
+- *"Is the same ASIN cheaper on amazon.com or amazon.co.uk right now?"*
+- *"Are there any deals on standing desks on Amazon today?"*
+- *"Search Amazon for used copies of this camera body."*
+
+## What's covered
+
+**Search**
+- Keyword or ASIN search inside a chosen country marketplace
+- Sort order, item condition, Prime-only and deals filters, page controls
+
+**Product details**
+- Listing details for a known ASIN in a selected marketplace — for catalog
+  review, side-by-side comparison or downstream analysis
+
+**Reviews**
+- The top reviews of a product by ASIN — the prominent customer feedback,
+  ready for sentiment or quality analysis
+
+**Rankings & categories**
+- Best Sellers for a category path, paginated, in the marketplace you choose
+- Products under a numeric category node with configurable sorting — browse
+  an assortment or collect a whole category's listings
+
+**Marketplaces**
+- Every operation takes a country, so the same ASIN, keyword or category can
+  be checked across Amazon's regional sites one call at a time
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="best sellers in home and kitchen on Amazon UK")
+find_tools(q="亚马逊上搜降噪耳机，只看 Prime 商品")
+find_tools(prefix="ecommerce/amazon")       # browse everything for Amazon
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in the currency of the marketplace you selected, not
+converted. Always `describe_tool` before executing: it shows the country field
+and its accepted values, the sort and filter options, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.amazon.product.search`](/api-reference/scenario/methods/ecommerce-amazon-product-search),
+  [`ecommerce.amazon.product.get`](/api-reference/scenario/methods/ecommerce-amazon-product-get),
+  [`ecommerce.amazon.product.reviews`](/api-reference/scenario/methods/ecommerce-amazon-product-reviews),
+  [`ecommerce.amazon.product.rank`](/api-reference/scenario/methods/ecommerce-amazon-product-rank).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an Amazon seller, associate or developer account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Which Amazon marketplaces can I query?">
+    Every operation takes a country parameter that selects the regional site.
+    Run `describe_tool` on the operation to see the accepted values rather than
+    assuming a country is supported.
+  </Accordion>
+  <Accordion title="How fresh are prices, rankings and reviews?">
+    Every call goes to Amazon at request time; nothing is served from a stale
+    archive. A price is what the listing shows at that moment, in the
+    marketplace's own currency. AgentKey does not keep a price history — to
+    track a price, call again on your own schedule.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,97 @@
+---
+title: "Reddit data for AI agents"
+sidebarTitle: "Reddit"
+description: "Search Reddit posts, read full comment trees, browse subreddit feeds and rules, profile users and see trending searches through AgentKey — no API key needed."
+---
+
+Reddit is where candid product opinions, niche expertise and early signals live,
+and since the official API moved behind paid access it has become hard for an
+agent to reach: quotas are tight and the site blocks unauthenticated scraping.
+Through AgentKey your agent reads public Reddit data the same way it reads
+everything else — `find_tools`, `describe_tool`, `execute_tool` — with more
+than one provider behind the scenes, so one route failing does not stop the
+task.
+
+## What you can ask
+
+- *"What is r/LocalLLaMA saying about the new Llama release this week?"*
+- *"Pull the full comment tree of this thread and summarize the strongest arguments on each side."*
+- *"Find the most upvoted posts mentioning our product across Reddit."*
+- *"What are the rules and posting guidelines of r/startups?"*
+- *"Show me what u/spez has posted and commented on recently."*
+- *"What are people searching for on Reddit right now?"*
+- *"Which subreddits is this user most active in?"*
+- *"Give me today's popular feed and the pinned highlights of r/MachineLearning."*
+
+## What's covered
+
+**Posts**
+- Keyword search for posts, with a continuation token to page through results
+- Post detail by ID, single or in batches
+- Comment trees with pagination, and the replies hidden under a collapsed
+  comment
+- Community highlights — featured posts and announcements for a subreddit
+
+**Subreddits**
+- Subreddit info, rules and style, settings and post channels
+- The subreddit feed, and topic feeds that group several communities
+- Home, popular, explore, news and games feeds as the app shows them
+- Muted-status check for a subreddit
+
+**Users**
+- Profile, submitted posts and comment history
+- The subreddits a user is active in, and their public trophies
+
+**Search and discovery**
+- Dynamic search across posts, communities, comments, media and users
+- Typeahead suggestions and today's trending searches
+- Reddit Answers — the AI-generated posts and comments Reddit builds for a
+  question
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what r/LocalLLaMA thinks about the new Llama release")
+find_tools(prefix="social/reddit")         # browse everything for Reddit
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing —
+parameters and per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.reddit.post.search`](/api-reference/scenario/methods/social-reddit-post-search),
+  [`social.reddit.post.get`](/api-reference/scenario/methods/social-reddit-post-get),
+  [`social.reddit.post.comments`](/api-reference/scenario/methods/social-reddit-post-comments),
+  [`social.reddit.topic.search`](/api-reference/scenario/methods/social-reddit-topic-search),
+  [`social.reddit.topic.posts`](/api-reference/scenario/methods/social-reddit-topic-posts),
+  [`social.reddit.user.get`](/api-reference/scenario/methods/social-reddit-user-get),
+  [`social.reddit.user.posts`](/api-reference/scenario/methods/social-reddit-user-posts),
+  [`social.reddit.user.search`](/api-reference/scenario/methods/social-reddit-user-search),
+  [`social.reddit.trending`](/api-reference/scenario/methods/social-reddit-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Reddit account or API key?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read private or quarantined subreddits?">
+    No. Only publicly visible posts, comments, subreddits and profiles are
+    available.
+  </Accordion>
+  <Accordion title="How do very long comment threads work?">
+    Comments are paginated, and replies that Reddit collapses behind a "more"
+    cursor come from a separate call for that comment. Plan on several calls
+    for a thread with thousands of comments, and check the per-call cost with
+    `describe_tool` first.
+  </Accordion>
+</AccordionGroup>

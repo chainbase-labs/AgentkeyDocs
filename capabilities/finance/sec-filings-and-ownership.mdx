@@ -1,0 +1,123 @@
+---
+title: "SEC filings and ownership data for AI agents"
+sidebarTitle: "SEC filings & ownership"
+description: "EDGAR filing search and full text, 10-K sections, XBRL statements, insider trades, 13F and 13D/13G holdings, executive pay and enforcement for AI agents."
+---
+
+Everything a US public company must disclose is on EDGAR, but EDGAR is built
+for humans with a browser: no structured search across forms, no clean way to
+pull one section of a 10-K, no normalized insider or 13F tables. Through
+AgentKey your agent queries the filings as data — `find_tools`,
+`describe_tool`, `execute_tool` — with sec-api's structured datasets, the
+SEC's own EDGAR endpoints, and Finnhub and AlphaVantage ownership feeds behind
+the scenes.
+
+## What you can ask
+
+- *"Find Apple's latest 10-K and give me the Risk Factors section as plain text."*
+- *"Which companies mentioned 'generative AI' in an 8-K this year?"*
+- *"List every Form 4 insider sale at Nvidia in the last 90 days."*
+- *"What did Berkshire Hathaway hold at the end of last quarter, per its 13F?"*
+- *"Who has crossed 5% ownership in this small cap recently?"*
+- *"How much was each named executive at Tesla paid last year?"*
+- *"Who sits on Boeing's board, and which committees are they on?"*
+- *"Has the SEC brought enforcement actions against this investment adviser?"*
+
+## What's covered
+
+**Filings search and documents**
+- Search every EDGAR filing from 1993 to present by ticker, CIK, form type,
+  filing date and more; results carry accession number, period of report,
+  primary-document and exhibit URLs
+- Full-text search across filings and their exhibits (10-K, 10-Q, 8-K, 20-F,
+  S-1 and more) since 2001, narrowable by form type, filer, SIC code and date
+- Extract one section — Risk Factors, MD&A, Business — from a 10-K, 10-Q or
+  8-K as plain text or the original HTML
+- Structured 8-K material events with item numbers and event descriptions
+- Company EDGAR profile and filing history by CIK; CIK lookup by name or
+  ticker; cross-mapping of CIK, ticker, CUSIP and name; the EDGAR entity master
+
+**XBRL financial data**
+- XBRL from a 10-K or 10-Q converted into normalized JSON statements —
+  income statement, balance sheet, cash flow and disclosures
+- Every reported value of one XBRL concept for a company across its filings;
+  one concept across every filer for a calendar period, for screening
+
+**Insider and institutional ownership**
+- Insider transactions from Forms 3, 4 and 5 — one route covers US, UK,
+  Canada, Australia, India and major EU markets; another covers Form 4 for
+  US-traded companies
+- Insider sentiment for US companies; Form 144 intent-to-sell notices
+- Form 13F institutional holdings and cover pages; institutional holders of a
+  US-traded company
+- Schedule 13D / 13G beneficial-ownership filings at the 5% threshold
+- Fund portfolio holdings (N-PORT), fund census (N-CEN) and proxy-voting
+  records (N-PX)
+- Congressional trading activity for a company
+
+**Governance and compensation**
+- Executive compensation — salary, bonus, stock and option awards, non-equity
+  incentive, total — by search or by ticker; director compensation where
+  reported
+- Directors and board members with roles, committees, independence status and
+  term dates
+- Auditor and audit-fee disclosures; Exhibit 21 subsidiaries with
+  jurisdictions; public float and share count
+
+**Offerings and registrations**
+- S-1 / 424B4 prospectuses for IPOs and follow-ons; Form D private placements;
+  Form C crowdfunding; Regulation A offerings and their 1-A, 1-K and 1-Z forms
+- Investment adviser registrations (Form ADV firms, individuals, brochures and
+  ownership schedules); broker-dealer FOCUS reports
+
+**Enforcement**
+- SEC enforcement actions, litigation releases, administrative proceedings,
+  accounting-and-auditing enforcement releases and SRO rule filings
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="risk factors section of Apple's latest 10-K")
+find_tools(q="伯克希尔最新的 13F 持仓")
+find_tools(prefix="finance/secapi")          # structured EDGAR datasets, section extractor, XBRL
+find_tools(prefix="finance/sec")             # EDGAR submissions, XBRL concepts and frames, full text
+find_tools(prefix="finance/finnhub")         # filings list, insider transactions and sentiment
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Name the form ("10-K", "13F", "Form D") and the router ranks the matching
+dataset first. Always `describe_tool` before executing — several datasets take
+a Lucene query string, and field names and per-call costs differ between
+providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`finance.filings.search`](/api-reference/scenario/methods/finance-filings-search),
+  [`finance.filings.get`](/api-reference/scenario/methods/finance-filings-get),
+  [`finance.ownership`](/api-reference/scenario/methods/finance-ownership).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a CIK?">
+    Not to start. Look a company up by name or ticker to get its CIK, or use
+    the identifier mapping to go from ticker, CUSIP or name to the full
+    identifier set. Many datasets also accept a ticker directly.
+  </Accordion>
+  <Accordion title="How far back do filings go?">
+    Filing metadata search covers 1993 to present; full-text search covers
+    filings and exhibits since 2001. XBRL-based data exists only for filings
+    that carry XBRL.
+  </Accordion>
+  <Accordion title="Is it only US companies?">
+    EDGAR includes foreign private issuers (20-F filers) and every registered
+    fund and adviser. Insider-transaction coverage on one route extends to the
+    UK, Canada, Australia, India and major EU markets.
+  </Accordion>
+</AccordionGroup>

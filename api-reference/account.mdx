@@ -1,15 +1,15 @@
 ---
-title: "account"
-description: "Check remaining credits and upstream health — always free."
+title: "agentkey_account"
+description: "Check remaining credits and upstream provider health — always free."
 ---
 
-Returns your remaining monthly credit allowance and the health of upstream
-providers in one call. This tool is **free** — calling it never deducts credits.
+Returns your credit balance and the health of every upstream provider in one
+call. It is **free**: calling it never deducts credits. Run it before bulk or
+expensive work, and when a provider seems to be failing.
 
-<Info>
-  Run `account` before any bulk or expensive work to confirm you have enough
-  balance.
-</Info>
+```text
+execute_tool("agentkey_account")
+```
 
 ### Parameters
 
@@ -17,21 +17,45 @@ None.
 
 ### Returns
 
-- **credits** — credits remaining in your plan's monthly allowance
-- **health** — upstream provider / skill health status
-
-## Example
-
-```text
-execute_tool("agentkey_account")
-```
-
 ```json
 {
-  "credits": { "remaining": 1240.5 },
-  "health": { "search": "healthy", "scrape": "healthy", "social": "degraded" }
+  "credits": {
+    "remaining": 1226.7,
+    "unit": "credits",
+    "plan": "pro",
+    "plan_credits": 9.3,
+    "extra_credits": 1217.4,
+    "extra_credits_enabled": true,
+    "plan_percent_used": 7
+  },
+  "services": [
+    {
+      "skill": "search",
+      "statuses": [
+        { "skill": "search", "provider": "brave",  "healthy": true,  "latency_ms": 784,  "checked_at": "2026-10-19T07:38:24Z" },
+        { "skill": "search", "provider": "serper", "healthy": true,  "latency_ms": 1530, "checked_at": "2026-10-19T07:38:25Z" },
+        { "skill": "search", "provider": "exa",    "healthy": false, "latency_ms": 212,  "checked_at": "2026-10-19T09:48:46Z" }
+      ]
+    },
+    { "skill": "social", "statuses": [ "…" ] }
+  ],
+  "disabled_categories": []
 }
 ```
+
+| Field | Meaning |
+| --- | --- |
+| `credits.remaining` | Total credits you can still spend: what is left of the plan allowance plus extra credits. |
+| `credits.plan`, `credits.plan_credits`, `credits.plan_percent_used` | Your plan, what is left of its monthly allowance, and how much of the allowance is used. |
+| `credits.extra_credits`, `credits.extra_credits_enabled` | Extra credits — one-time top-ups, paid plans only — available once the monthly allowance is used, and whether they are enabled. |
+| `services[]` | One entry per category (`skill`) with the last probe of each provider: `healthy`, `latency_ms`, `checked_at`. |
+| `disabled_categories` | Categories you switched off in the console. Tools in them are refused. |
+
+<Tip>
+  A provider marked `healthy: false` is still callable, but expect failures.
+  Scenario Methods skip unhealthy providers automatically; with catalog tools,
+  pick a tool from another provider.
+</Tip>
 
 <Card title="Subscription & Billing" icon="wallet" href="/concepts/subscription">
   How plans, monthly credits, and per-call costs work.

@@ -1,0 +1,89 @@
+---
+title: "Read anti-bot and challenge-gated pages for AI agents"
+sidebarTitle: "Anti-bot pages"
+description: "BrightData Web Unlocker fetches challenge-gated pages as raw HTML, markdown or a screenshot, with method, body and exit-country control — and when to use it."
+---
+
+Some pages do not want to be read: they answer a scraper with a JavaScript
+challenge, a CAPTCHA wall or a blank shell. For those, AgentKey carries
+BrightData's Web Unlocker alongside the ordinary scrapers, reached with the
+same three calls — `find_tools`, `describe_tool`, `execute_tool`. It is the
+fallback, not the default: it returns the target site's raw response rather
+than cleaned text, so use it when a normal scrape comes back blocked.
+
+## What you can ask
+
+- *"This page returns a bot-check wall when scraped — get me the real HTML."*
+- *"Fetch this listing as seen from the UK."*
+- *"Give me this page as markdown even though it sits behind a JavaScript challenge."*
+- *"POST this form body to the endpoint and return the response."*
+- *"Take a screenshot of this page once it has loaded."*
+- *"Check whether this URL is reachable with a HEAD request from a German IP."*
+- *"Retry the scrape that just failed through the unlocker and compare the result."*
+
+## What's covered
+
+**Unlocking a page**
+- A single URL fetched through the Web Unlocker, with the target site's
+  response returned wrapped in a JSON object
+- Only the URL is required; the unlocker zone is configured on the server
+
+**Request shaping**
+- GET by default, or POST, PUT, PATCH, DELETE, HEAD and OPTIONS
+- A raw request body for POST, PUT and PATCH — a JSON string or a URL-encoded
+  form
+- A two-letter country code for the exit IP, for region-restricted content;
+  omit it to let the provider choose
+
+**Output**
+- The page's HTML by default
+- The HTML converted to markdown for model input
+- A PNG screenshot of the rendered page
+
+**When to reach for it**
+- Start with Firecrawl or Jina Reader for ordinary pages — Firecrawl's
+  automatic proxy escalation and Jina's browser engine already get through
+  most protection
+- Fall back to the unlocker when a scrape returns a challenge page, an empty
+  shell or a block, and clean the HTML yourself or ask for markdown
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="fetch a page that blocks scrapers with a bot challenge")
+find_tools(prefix="scrape/brightdata")
+find_tools(prefix="scrape/firecrawl")     # try the ordinary scrapers first
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { url: "https://example.com/listing" })
+```
+
+Always `describe_tool` before executing — the unlocker's `data_format`,
+`method`, `body` and `country` options differ from Firecrawl's and Jina's,
+and per-call costs differ.
+
+<Note>
+  **Building with code?** The fixed-contract
+  [`web.scrape`](/api-reference/scenario/methods/web-scrape) Scenario Method
+  fetches one page as readable text and fails over across the scrapers,
+  including the unlocker; see
+  [Scenario Methods](/api-reference/scenario/overview).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it log in or get past paywalls?">
+    No credentials are involved: the page is fetched as an anonymous visitor
+    from the chosen country. What comes back is what the site serves to that
+    visitor once the challenge is handled.
+  </Accordion>
+  <Accordion title="Which countries can the request come from?">
+    Any two-letter ISO country code the provider supports as an exit
+    location; leave it unset to let the provider pick the best one.
+  </Accordion>
+  <Accordion title="How fresh is the page?">
+    Fetched live at request time; nothing is cached by AgentKey.
+  </Accordion>
+</AccordionGroup>

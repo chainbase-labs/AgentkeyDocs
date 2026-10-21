@@ -1,11 +1,11 @@
 ---
 title: "Authentication"
-description: "How AgentKey authenticates usage with your master key."
+description: "How AgentKey authenticates usage with your master key — in agents and in code."
 ---
 
 AgentKey authenticates with a single **master key**. The same key authorizes all
-categories — search, scrape, social, crypto, and more — and is tied to your
-subscription.
+categories — search, scrape, social, crypto, and more — on both the MCP server
+and the REST API, and is tied to your subscription.
 
 ## Your master key
 
@@ -17,33 +17,72 @@ Keys look like `ak_...`. Create and manage them from the
   it to source control, embed it in client-side code, or paste it into a chat.
 </Warning>
 
-## Providing your key
+## In an agent (MCP)
 
-You don't wire the key in by hand. After you [install AgentKey](/connect/install),
-the installer (or the skill's setup steps) prompts you to supply your key and
-stores it for you. Provide the key exactly as the setup flow instructs.
+By default you never handle the key at all. The AgentKey MCP server at
+`https://api.agentkey.app/v1/mcp` supports OAuth: the
+[installer](/connect/install) registers the server with no credentials and your
+client opens a browser tab to sign in on first use. Claude Code, Cursor, Claude
+Desktop, Codex, Gemini CLI and most other MCP clients work this way.
 
 <Steps>
-  <Step title="Create a key">
-    Generate a key in the [console](https://console.agentkey.app).
+  <Step title="Install">
+    Run the one-line installer, a plugin marketplace install, or add the server
+    URL in your client's MCP settings — see [Installation](/connect/install).
+  </Step>
+  <Step title="Sign in">
+    Complete the sign-in prompt your client shows (typically an **Authenticate**
+    action in its MCP panel, or a browser tab that opens on its own).
   </Step>
   <Step title="Pick a plan">
-    Subscribe to a plan — see [Subscription & Billing](/concepts/subscription).
-  </Step>
-  <Step title="Complete setup">
-    Follow the post-install prompts to provide the key. Confirm any remaining
-    setup details from the skill's metadata or the console.
+    Subscribe in the [console](https://console.agentkey.app) — see
+    [Subscription & Billing](/concepts/subscription).
   </Step>
 </Steps>
 
+### API key fallback
+
+Some clients cannot run MCP OAuth (DeepSeek Harness today, and any client that
+only takes a static header). For those, create a key in the
+[console](https://console.agentkey.app/api-keys) and register the same URL with
+a bearer header. The exact file differs per client, but the entry looks like:
+
+```json
+{
+  "mcpServers": {
+    "agentkey": {
+      "type": "http",
+      "url": "https://api.agentkey.app/v1/mcp",
+      "headers": { "Authorization": "Bearer ak_..." }
+    }
+  }
+}
+```
+
+Restart the client afterwards. The AgentKey skill prefers OAuth and only falls
+back to a key when the client can't do better.
+
+## In code (REST)
+
+The REST API has no OAuth flow: create a key in the
+[console](https://console.agentkey.app/api-keys) and send it as a bearer token
+on every `POST /v2/ops/{method}` call. The catalog, describe and OpenAPI
+endpoints are public and need no key.
+
+```bash
+curl https://api.agentkey.app/v2/ops/web.search \
+  -H "Authorization: Bearer $AGENTKEY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "AgentKey"}'
+```
+
+A missing or invalid key returns `401` with `error_type: "unauthorized"`. See
+[Scenario Methods → Requests](/api-reference/scenario/requests).
+
 ## Storing keys safely
 
-- Let the setup flow store the key; don't hard-code it into projects.
+- Prefer the OAuth sign-in in agents; use a key only where you must. In code,
+  read it from an environment variable or a secret manager, never from source.
 - Use separate keys per environment (development, staging, production) so you can
   rotate one without disrupting the others.
 - Rotate immediately from the console if a key is ever exposed.
-
-<Note>
-  Exact key-provisioning steps are confirmed during install and in the
-  [console](https://console.agentkey.app). This page describes the general model.
-</Note>

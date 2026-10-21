@@ -1,0 +1,93 @@
+---
+title: "Kuaishou data for AI agents"
+sidebarTitle: "Kuaishou"
+description: "Kuaishou video search, detail and comments, creator profiles and video lists, hot lists, live and shopping rankings, and video transcripts through AgentKey."
+---
+
+Kuaishou (快手) is China's second short-video platform and the strongest one
+outside the big cities, which makes it essential for consumer and live-commerce
+research — and like Douyin it exposes no public API. Through AgentKey your agent
+reads public Kuaishou data the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — with several providers behind
+the scenes, so one route failing does not stop the task.
+
+## What you can ask
+
+- *"Find Kuaishou videos about rural cooking with the most likes."*
+- *"快手热榜上现在有什么？"*
+- *"Pull this Kuaishou video's details and comments."*
+- *"List this creator's recent videos and their engagement."*
+- *"Who is on the Kuaishou live ranking right now?"*
+- *"Which brands lead the Kuaishou brand list this week?"*
+- *"帮我把这条快手视频转成文字"*
+
+## What's covered
+
+**Videos**
+- Keyword search; video detail by ID or by URL; batch lookup by IDs
+- A creator's hottest works
+- Comments and sub-comments, paginated
+
+**Creators**
+- Profile by user ID; user ID from a profile; account search by name
+- Published videos; collections
+- Live info for a creator, and their live replays
+
+**Search**
+- Comprehensive search, plus dedicated image, live, music, tag and user search
+- Tag feed and the selection (recommended) feed
+
+**Trending**
+- Hot list with categories and board detail; the hot-search person board
+- Brand, live, shopping and music rankings
+
+**Transcripts and links**
+- Video transcription as a submit-then-fetch task
+- Short share-link resolution; share link and short-URL generation
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="Kuaishou videos about rural cooking with the most likes")
+find_tools(q="快手热榜上现在有什么")
+find_tools(prefix="social/kuaishou")       # browse everything for Kuaishou
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work, and the platform's usual English and Chinese names all land here. Always `describe_tool` before executing — parameters and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.kuaishou.post.search`](/api-reference/scenario/methods/social-kuaishou-post-search),
+  [`social.kuaishou.post.get`](/api-reference/scenario/methods/social-kuaishou-post-get),
+  [`social.kuaishou.post.comments`](/api-reference/scenario/methods/social-kuaishou-post-comments),
+  [`social.kuaishou.topic.search`](/api-reference/scenario/methods/social-kuaishou-topic-search),
+  [`social.kuaishou.user.get`](/api-reference/scenario/methods/social-kuaishou-user-get),
+  [`social.kuaishou.user.posts`](/api-reference/scenario/methods/social-kuaishou-user-posts),
+  [`social.kuaishou.user.search`](/api-reference/scenario/methods/social-kuaishou-user-search),
+  [`social.kuaishou.trending`](/api-reference/scenario/methods/social-kuaishou-trending).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Kuaishou account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="How does transcription work?">
+    It is a two-step task: one call submits the video and returns a task ID,
+    a second call fetches the finished transcript. Allow a short wait between
+    the two for longer videos.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the platform at request time; hot lists, live rankings
+    and search results reflect what Kuaishou returns at that moment.
+  </Accordion>
+</AccordionGroup>

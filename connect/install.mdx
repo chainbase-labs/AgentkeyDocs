@@ -1,24 +1,25 @@
 ---
 title: "Installation"
-description: "Install AgentKey into any of 22 supported agents — by one-line command, a prompt, or desktop config."
+description: "Install AgentKey into your agent — one-line installer by default, or a plugin marketplace, a prompt, or your client's MCP settings."
 ---
 
-AgentKey supports **22 agents**. How you install depends on your agent type:
+The default is the one-line installer: it finds the agents on your machine,
+installs the AgentKey skill into each one, registers the hosted MCP server and
+opens a browser tab to sign in. No API key to copy, no JSON to edit.
 
-- **One-line command** — CLI and IDE clients (Claude Code, Cursor, Windsurf, …)
-- **Prompt install** — chat agents (OpenClaw, Trae, Qoder, …)
-- **Desktop config** — Claude Desktop
+- **One-line installer (recommended)** — any agent the `skills` CLI supports
+- **Plugin marketplace** — Claude Code, Codex, Gemini CLI, Kimi CLI, OpenClaw
+- **Prompt install** — chat agents that can install a skill from ClawHub
+- **Desktop config** — Claude Desktop / Cowork
+- **Manual MCP entry** — any other client that speaks MCP
 
 <Tip>
-  The fastest path is the [console get-started flow](https://console.agentkey.app/get-started):
-  pick your agent and it gives you the exact command for your OS. The full list of
-  agents is on [Supported Agents](/connect/supported-agents).
+  The [console get-started flow](https://console.agentkey.app/get-started) picks
+  the method for your agent and gives you the exact command for your OS. The
+  full list is on [Supported Agents](/connect/supported-agents).
 </Tip>
 
-## One-line install (CLI & IDE)
-
-Run the installer for your operating system. It **detects your agent, registers
-the MCP server, and writes your API key** automatically.
+## One-line install (recommended)
 
 <CodeGroup>
 ```bash macOS / Linux
@@ -30,8 +31,11 @@ irm https://agentkey.app/install.ps1 | iex
 ```
 </CodeGroup>
 
-Works for: **Claude Code, Cursor, Windsurf, Gemini CLI, OpenCode, Codex, Cursor
-CLI, Warp, Kimi CLI, Qwen Code, Kiro CLI, Amp, Crush, iFlow CLI**.
+The installer probes well-known config directories and binaries to detect the
+agents you have — Claude Code, Codex, Gemini CLI, Cursor and
+[every other agent the `skills` CLI supports](https://github.com/vercel-labs/skills#available-agents)
+— installs the skill into each, then authenticates with AgentKey in the browser.
+Restart your agent afterwards and ask it something that needs the internet.
 
 <Warning>
   These commands download a script and run it immediately. To review it first,
@@ -44,23 +48,107 @@ CLI, Warp, Kimi CLI, Qwen Code, Kiro CLI, Amp, Crush, iFlow CLI**.
   ```
 </Warning>
 
+<AccordionGroup>
+  <Accordion title="Installer flags (CI, specific agents, skill-only)">
+    ```bash
+    # Non-interactive (CI / unattended): every detected agent, no prompts
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --yes
+
+    # Show which agents would be selected on this machine, then exit
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --list-agents
+
+    # Only these agents (overrides detection)
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --only claude-code,cursor
+
+    # Let the skills CLI install for every agent it finds
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --all-agents
+
+    # Only the skill, or only the MCP sign-in
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --skip-mcp
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --skip-skill
+
+    # Opt out of anonymous telemetry at install time
+    curl -fsSL https://agentkey.app/install.sh | bash -s -- --no-telemetry
+    ```
+
+    PowerShell equivalents: `-Yes`, `-ListAgents`, `-Only`, `-AllAgents`,
+    `-SkipMcp`, `-SkipSkill`.
+  </Accordion>
+  <Accordion title="Manual two-step (npx)">
+    The installer runs two commands under the hood. Run them yourself if you
+    prefer, or if the installer cannot reach your machine:
+
+    ```bash
+    # 1. Install the skill into every detected agent
+    npx skills add chainbase-labs/agentkey
+
+    # 2. Sign in and register the hosted MCP server
+    npx -y @agentkey/cli --auth-login
+    ```
+
+    On a headless machine (SSH, Docker) the sign-in step prints the URL as well
+    as trying to open a browser — finish it from any device. To paste a key
+    instead, `npx -y @agentkey/cli --setup` opens an interactive wizard.
+  </Accordion>
+</AccordionGroup>
+
+## Plugin marketplaces
+
+Agents with a plugin system can install AgentKey from their own marketplace.
+Each plugin bundles the MCP server entry; complete the sign-in your client
+shows afterwards.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude plugin marketplace add chainbase-labs/agentkey
+    claude plugin install agentkey@agentkey
+    claude mcp login plugin:agentkey:agentkey
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex plugin marketplace add chainbase-labs/agentkey
+    codex plugin install agentkey@agentkey
+    codex mcp login agentkey
+    ```
+  </Tab>
+  <Tab title="Gemini CLI">
+    ```bash
+    gemini extensions install https://github.com/chainbase-labs/agentkey --ref=main
+    ```
+
+    The extension requests OAuth on its own; if Gemini only reports that
+    authentication is required, run `/mcp auth agentkey`, then `/mcp reload`.
+  </Tab>
+  <Tab title="Kimi CLI">
+    ```text
+    /plugins install https://github.com/chainbase-labs/agentkey
+    ```
+  </Tab>
+  <Tab title="OpenClaw">
+    ```bash
+    openclaw skills install @chainbase/agentkey
+    ```
+  </Tab>
+</Tabs>
+
+Cursor and ChatGPT Desktop install from their in-app marketplace UI; the
+[console get-started flow](https://console.agentkey.app/get-started) has the
+click path with a short video.
+
 ## Prompt install (chat agents)
 
-For chat-based agents, paste this prompt and let the agent install the skill from
-[ClawHub](https://clawhub.ai/chainbase/agentkey) and finish setup:
+For chat-based agents that can install skills, paste this prompt and let the
+agent install the skill from
+[ClawHub](https://clawhub.ai/chainbase/skills/agentkey) and finish setup:
 
 ```text
-Install the skill chainbase/agentkey from ClawHub: https://clawhub.ai/chainbase/agentkey
+Install the skill @chainbase/agentkey from ClawHub: https://clawhub.ai/chainbase/skills/agentkey
 Scope the work to this skill only. After install, read the skill's metadata and
 help me finish setup based only on what you can verify from that page — don't
 invent missing requirements. Ask before making any broader environment changes.
 ```
-
-Works for: **OpenClaw, Hermes, Antigravity, Trae, Qoder, WorkBuddy, Cowork**.
-
-<Card title="chainbase/agentkey on ClawHub" icon="puzzle" href="https://clawhub.ai/chainbase/agentkey">
-  The AgentKey skill page — source for install and setup details.
-</Card>
 
 <Note>
   The prompt deliberately scopes the agent to the AgentKey skill only and tells it
@@ -68,7 +156,7 @@ Works for: **OpenClaw, Hermes, Antigravity, Trae, Qoder, WorkBuddy, Cowork**.
   broader changes to your environment without asking.
 </Note>
 
-## Claude Desktop (desktop config)
+## Claude Desktop / Cowork (desktop config)
 
 Claude Desktop needs two pieces: the MCP server configured, then the skill file
 imported.
@@ -89,39 +177,42 @@ imported.
   </Step>
   <Step title="Download the AgentKey skill">
     Download [`agentkey.skill`](https://github.com/chainbase-labs/Agentkey/releases/latest/download/agentkey.skill).
-    The `/latest/` URL always points to the newest version — no version number to
+    The `/latest/` URL always points to the newest release — no version number to
     track.
   </Step>
   <Step title="Import the skill into Claude Desktop">
     Drag the `.skill` file into the Claude Desktop chat box (or double-click it
     while Claude Desktop is running). Claude confirms with **“Skill imported”**.
+    The skill then works in both the Chat tab and Cowork.
   </Step>
 </Steps>
 
-## Finish setup
+## Any other MCP client
 
-After installing, connect your **master key** so AgentKey can authenticate and
-bill usage. With the one-line installer, this happens automatically; otherwise
-follow the setup prompts.
+Add the hosted server in your client's MCP settings:
 
-<Steps>
-  <Step title="Create a key">
-    Sign in to the [console](https://console.agentkey.app) and create a key
-    (`ak_...`).
-  </Step>
-  <Step title="Pick a plan">
-    Subscribe once — your plan's monthly credits are shared across every service.
-  </Step>
-  <Step title="Provide the key">
-    The installer writes the key for you. For prompt/desktop installs, follow the
-    setup steps to supply it. Never paste it into a chat.
-  </Step>
-</Steps>
+- **Transport:** HTTP
+- **URL:** `https://api.agentkey.app/v1/mcp`
+- **Auth header:** none — leave it out
 
-<Warning>
-  Your master key is a secret tied to your subscription. Never commit it to
-  source control. See [Authentication](/authentication).
-</Warning>
+A client that supports MCP OAuth opens a browser to authorize on first connect.
+If yours only takes a static header, create a key in the
+[console](https://console.agentkey.app/api-keys) and add it:
+
+```json
+{
+  "mcpServers": {
+    "agentkey": {
+      "type": "http",
+      "url": "https://api.agentkey.app/v1/mcp",
+      "headers": { "Authorization": "Bearer ak_..." }
+    }
+  }
+}
+```
+
+Restart the client; the `find_tools`, `describe_tool` and `execute_tool` tools
+appear once it reconnects. See [Authentication](/authentication).
 
 ## Verify it works
 
@@ -129,15 +220,51 @@ Ask your agent to do something it couldn't before — for example:
 
 > *Search X/Twitter for what people are saying about AgentKey today.*
 
-It should discover the right tool, look up its parameters, and run it. See
-[Discover → Describe → Execute](/concepts/discover-describe-execute) for how that
-flow works.
+It should discover the right tool, look up its parameters, and run it. In
+clients with slash commands, `/agentkey status` checks the MCP connection,
+skill version and connectivity, and `/agentkey setup` re-runs setup. See
+[Discover → Describe → Execute](/concepts/discover-describe-execute) for how
+the flow works.
+
+## Update and uninstall
+
+The hosted MCP server is always current. The skill checks for a new version on
+the first call of a session and offers to upgrade; force it with:
+
+```bash
+npx skills update agentkey
+```
+
+Claude Desktop keeps its own copy of the skill: re-import the latest
+`agentkey.skill` to update it there.
+
+To remove AgentKey from every agent — skill, MCP entry, key and caches:
+
+<CodeGroup>
+```bash macOS / Linux
+curl -fsSL https://agentkey.app/uninstall.sh | bash
+```
+
+```powershell Windows (PowerShell)
+irm https://agentkey.app/uninstall.ps1 | iex
+```
+</CodeGroup>
+
+## Skill and source
+
+| | |
+| --- | --- |
+| Source, releases, issues | [github.com/chainbase-labs/Agentkey](https://github.com/chainbase-labs/Agentkey) |
+| `skills` CLI package | [skills.sh/chainbase-labs/agentkey](https://skills.sh/chainbase-labs/agentkey) — `npx skills add chainbase-labs/agentkey` |
+| ClawHub | [clawhub.ai/chainbase/skills/agentkey](https://clawhub.ai/chainbase/skills/agentkey) — `openclaw skills install @chainbase/agentkey` |
+| Claude Desktop skill file | [agentkey.skill (latest release)](https://github.com/chainbase-labs/Agentkey/releases/latest/download/agentkey.skill) |
+| Hosted MCP server | `https://api.agentkey.app/v1/mcp` |
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Supported agents" icon="grid-2x2" href="/connect/supported-agents">
-    All 22 agents and how each one installs.
+    Every supported agent, with a link to its exact setup steps.
   </Card>
   <Card title="Browse capabilities" icon="layers" href="/capabilities/overview">
     See everything your agent can reach.
