@@ -1,7 +1,7 @@
 ---
 title: "AliExpress product data for AI agents"
 sidebarTitle: "AliExpress"
-description: "Search AliExpress with category, brand, price and ship-to filters and read product details by item ID, in your chosen currency and locale, through AgentKey."
+description: "Search AliExpress by category, brand, price and ship-to in your currency and locale, and read item details from the US or global site through AgentKey."
 ---
 
 AliExpress is the cross-border storefront of the Alibaba group, and what a
@@ -17,8 +17,8 @@ IP address.
 
 - *"Find Bluetooth speakers on AliExpress under 20 dollars that ship to Brazil, cheapest first."*
 - *"Show AliExpress results for 'mechanical keyboard' from the Keychron brand, priced in euros."*
-- *"Open this AliExpress item for the US region in USD and summarize the listing."*
-- *"What does this AliExpress item cost in USD, EUR and BRL?"*
+- *"Open this AliExpress item on the US site and summarize the listing."*
+- *"Compare AliExpress search prices for 'USB-C hub' in USD and in EUR."*
 
 ## What's covered
 
@@ -28,12 +28,14 @@ IP address.
   range
 
 **Product details**
-- A listing by item ID — for catalog review, comparison or downstream analysis
+- A listing overview by item ID from the US site or the global site — for
+  catalog review, comparison or downstream analysis
 
 **Region, currency & language**
-- Both operations accept a region (the ship-to country), a currency and a
-  locale, so prices and titles come back the way a shopper in that market
-  would see them
+- Search accepts a region (the ship-to country), a currency and a locale, so
+  prices and titles come back the way a shopper in that market would see them
+- Product details choose between the US site and the global site only; they
+  take no currency or locale
 
 Not covered today: reviews, store pages and rankings for AliExpress. If you
 need review signal for a cross-border product, pair this page with
@@ -52,10 +54,10 @@ describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
-Prices come back in the currency you request through the currency control,
-not converted by AgentKey. Always `describe_tool` before executing: it shows
-the region, currency and locale fields with their accepted values, the search
-filters, and the per-call cost.
+Search prices come back in the currency you request through the currency
+control, not converted by AgentKey. Always `describe_tool` before executing:
+it shows each operation's region, currency, locale or site fields with their
+accepted values, the search filters, and the per-call cost.
 
 <Note>
   **Building with code?** The same capability is available as fixed-contract
@@ -73,9 +75,9 @@ filters, and the per-call cost.
     subscription.
   </Accordion>
   <Accordion title="Which countries and currencies can I query?">
-    Region, currency and locale are parameters on both operations. Run
-    `describe_tool` to see the accepted codes rather than assuming a
-    destination is supported.
+    Search takes region, currency and locale parameters; product details take
+    a site, US or global. Run `describe_tool` to see the accepted codes rather
+    than assuming a destination is supported.
   </Accordion>
   <Accordion title="How fresh are prices and availability?">
     Every call goes to AliExpress at request time; nothing is served from a

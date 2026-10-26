@@ -20,5 +20,4 @@ social.wechat_channels.post.get
 social.wechat_channels.user.get
 social.wechat_mp.post.comments
 social.xiaohongshu.link.resolve
-social.youtube.post.trending
 social.zhihu.post.comments

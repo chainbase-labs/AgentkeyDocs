@@ -136,8 +136,7 @@
                       "capabilities/ecommerce/amazon",
                       "capabilities/ecommerce/shopee",
                       "capabilities/ecommerce/aliexpress",
-                      "capabilities/ecommerce/tiktok-shop",
-                      "capabilities/ecommerce/temu"
+                      "capabilities/ecommerce/tiktok-shop"
                     ]
                   },
                   {
@@ -485,12 +484,6 @@
                       "api-reference/scenario/methods/ecommerce-tiktok_shop-product-reviews",
                       "api-reference/scenario/methods/ecommerce-tiktok_shop-product-rank",
                       "api-reference/scenario/methods/ecommerce-tiktok_shop-shop-products"
-                    ]
-                  },
-                  {
-                    "group": "Temu",
-                    "pages": [
-                      "api-reference/scenario/methods/ecommerce-temu-product-rank"
                     ]
                   },
                   {
