@@ -1,0 +1,97 @@
+---
+title: "Crypto projects and funds data for AI agents"
+sidebarTitle: "Projects & funds"
+description: "Crypto project profiles, coin categories, DeFi protocol TVL and revenue rankings, bridge volume, VC fund profiles and portfolios through AgentKey."
+---
+
+Behind every token is a project, and behind most projects a set of funds.
+Pulling a project's team, funding, contracts and protocol metrics together —
+then checking who invested and what else they back — usually means stitching a
+data room from several sites. Through AgentKey your agent gets project
+profiles, DeFi metrics and fund portfolios the same way it gets everything
+else — `find_tools`, `describe_tool`, `execute_tool` — with Surf and
+CoinMarketCap behind the scenes. For RootData's deeper fundraising and investor
+records, see
+[Crypto projects and VCs](/capabilities/business/crypto-projects-and-vc-data-for-ai-agents) under
+Business.
+
+## What you can ask
+
+- *"Give me a full profile of this project: team, funding, tokenomics and contracts."*
+- *"Which DeFi protocols have the highest TVL right now?"*
+- *"Plot Aave's daily TVL over the past year."*
+- *"Which bridges moved the most volume last month?"*
+- *"Who is in Paradigm's portfolio, and when did they invest?"*
+- *"Rank the top-tier crypto VC funds by number of portfolio projects."*
+- *"Which coins are in the AI category on CoinMarketCap?"*
+- *"这个项目拿过哪些融资，投资方是谁？"*
+
+## What's covered
+
+**Project profiles**
+- Aggregated project profile with selectable sections: overview (description,
+  chains, exchanges), token info (price, market cap, supply), tokenomics,
+  funding, team, contracts, social and TGE status
+- Project search by keyword, returning name, description, chains and logo
+- Coin categories — the full category list, and one category with its
+  paginated list of coins
+
+**DeFi protocol metrics**
+- Protocol leaderboard — Aave, Uniswap, Lido and the rest — ranked by TVL,
+  fees, revenue, volume or users
+- Historical time series for a single protocol metric: TVL, volume, fees,
+  revenue or users
+- Bridge protocols ranked by USD volume over a time range
+- Individual yield pools ranked by APY or TVL are on the
+  [DEX and derivatives](/capabilities/crypto/dex-and-derivatives-data-for-ai-agents) page
+
+**Funds**
+- Fund profile: description, jurisdiction, portfolio count, social links,
+  team members with roles and recent research
+- Fund portfolio as investment rounds, newest first — project, date, raise
+  amount and lead investor
+- Fund ranking by tier or portfolio count; fund search by keyword with each
+  fund's top invested projects
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="DeFi protocols ranked by TVL")
+find_tools(q="Paradigm 投资组合里有哪些项目")
+find_tools(prefix="crypto/project")       # browse projects, DeFi metrics, funds
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — profile tools look up by project UUID, name or symbol, and the
+selectable sections and per-call cost are listed there.
+
+<Note>
+  **Building with code?** Project and fund data is available through the
+  catalog today; there is no dedicated Scenario Method yet. See
+  [Scenario Methods](/api-reference/scenario/overview) for the fixed-contract
+  API and the methods that exist.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Is historical data available?">
+    Yes for protocol metrics and portfolios — each DeFi metric is a time
+    series, bridge rankings take a time range, and fund portfolios list rounds
+    by date. Profiles and leaderboards are fetched at request time.
+  </Accordion>
+  <Accordion title="How does this differ from the Business category's crypto data?">
+    This group is protocol- and token-centric: on-chain metrics, tokenomics
+    and fund portfolios. RootData, under Business, adds full fundraising-round
+    exports, investor and people profiles, ecosystem and tag dictionaries and
+    a crypto calendar.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call is fetched at request time from the provider; nothing is served
+    from a stale archive.
+  </Accordion>
+</AccordionGroup>

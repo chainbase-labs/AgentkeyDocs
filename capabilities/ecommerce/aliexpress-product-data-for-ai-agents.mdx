@@ -1,0 +1,87 @@
+---
+title: "AliExpress product data for AI agents"
+sidebarTitle: "AliExpress"
+description: "Search AliExpress by category, brand, price and ship-to in your currency and locale, and read item details from the US or global site through AgentKey."
+---
+
+AliExpress is the cross-border storefront of the Alibaba group, and what a
+shopper sees there depends on where they are: prices, availability and titles
+change with the destination country, the currency and the language. The
+affiliate API requires approval and the site blocks automated browsing.
+Through AgentKey your agent reads AliExpress listings the same way it reads
+everything else — `find_tools`, `describe_tool`, `execute_tool` — and sets
+the region, currency and locale explicitly instead of inheriting them from an
+IP address.
+
+## What you can ask
+
+- *"Find Bluetooth speakers on AliExpress under 20 dollars that ship to Brazil, cheapest first."*
+- *"Show AliExpress results for 'mechanical keyboard' from the Keychron brand, priced in euros."*
+- *"Open this AliExpress item on the US site and summarize the listing."*
+- *"Compare AliExpress search prices for 'USB-C hub' in USD and in EUR."*
+
+## What's covered
+
+**Search**
+- Keyword query with page and sort controls
+- Narrow by category, brand, seller location, product attribute and price
+  range
+
+**Product details**
+- A listing overview by item ID from the US site or the global site — for
+  catalog review, comparison or downstream analysis
+
+**Region, currency & language**
+- Search accepts a region (the ship-to country), a currency and a locale, so
+  prices and titles come back the way a shopper in that market would see them
+- Product details choose between the US site and the global site only; they
+  take no currency or locale
+
+Not covered today: reviews, store pages and rankings for AliExpress. If you
+need review signal for a cross-border product, pair this page with
+[Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) or
+[Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents).
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="bluetooth speakers on AliExpress shipping to Brazil under 20 dollars")
+find_tools(q="速卖通上搜机械键盘，欧元计价")
+find_tools(prefix="ecommerce/aliexpress")   # browse everything for AliExpress
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Search prices come back in the currency you request through the currency
+control, not converted by AgentKey. Always `describe_tool` before executing:
+it shows each operation's region, currency, locale or site fields with their
+accepted values, the search filters, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.aliexpress.product.search`](/api-reference/scenario/methods/ecommerce-aliexpress-product-search),
+  [`ecommerce.aliexpress.product.get`](/api-reference/scenario/methods/ecommerce-aliexpress-product-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an AliExpress account or affiliate approval?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Which countries and currencies can I query?">
+    Search takes region, currency and locale parameters; product details take
+    a site, US or global. Run `describe_tool` to see the accepted codes rather
+    than assuming a destination is supported.
+  </Accordion>
+  <Accordion title="How fresh are prices and availability?">
+    Every call goes to AliExpress at request time; nothing is served from a
+    stale archive. A price is what the listing shows at that moment for the
+    region and currency you passed.
+  </Accordion>
+</AccordionGroup>

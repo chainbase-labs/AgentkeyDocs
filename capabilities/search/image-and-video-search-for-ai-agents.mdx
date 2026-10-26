@@ -1,0 +1,87 @@
+---
+title: "Image and video search for AI agents"
+sidebarTitle: "Images & video"
+description: "Image and video search by keyword from Google via Serper and from Brave, with country, language, safe-search, recency and paging controls."
+---
+
+Agents increasingly work with media: finding a reference image, checking what
+a product looks like, locating a tutorial video, gathering visual sources for
+a report. Through AgentKey your agent searches images and videos with the same
+three calls — `find_tools`, `describe_tool`, `execute_tool` — using Google
+image and video results through Serper or Brave's own image and video search.
+
+## What you can ask
+
+- *"Find images of the Shanghai Tower at night."*
+- *"Show me product photos of the Sony WH-1000XM6 from the past month."*
+- *"Find videos explaining how transformers work, published this week."*
+- *"Get 100 images for 'minimalist logo design' with safe search on."*
+- *"Search for 'how to fix a bike chain' videos in German."*
+- *"Which videos about AgentKey have appeared in the last 24 hours?"*
+- *"Page through image results for 'Art Deco posters' and keep the ones hosted on museum sites."*
+
+## What's covered
+
+**Images**
+- Google image results by keyword with a country code, interface language,
+  free-text location, result count, page number and time filter
+- Brave image search from its own index with a country and result language,
+  spell correction, and up to 200 images in one call
+- Safe search on Brave images is strict by default and can be turned off
+
+**Videos**
+- Google video results by keyword with the same country, language, location,
+  count, paging and time-filter controls
+- Brave video search with a freshness filter — the last 24 hours, 7 days, 31
+  days or 365 days, or a custom date range — an offset for paging, and safe
+  search off, moderate or strict
+- A POST variant of Brave video search for long or multi-line queries
+
+**What comes back**
+- Each result as the engine serves it: title, the source page URL and a
+  thumbnail, with whatever media URL or embed reference the engine attaches
+- Results are links and metadata, not downloaded files
+
+## How to use it
+
+Pass the request in plain language and let the router pick the engine:
+
+```text
+find_tools(q="images of the Shanghai Tower at night")
+find_tools(q="videos explaining transformers from the past week")
+find_tools(prefix="search/serper")        # Google image and video results
+find_tools(prefix="search/brave")         # Brave images and videos
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — Google results use `gl` / `hl` and
+`tbs`, Brave uses `country` / `search_lang` and `freshness`, and per-call
+costs differ.
+
+<Note>
+  **Building with code?** Image and video search are available through the
+  catalog tools above. The fixed-contract
+  [`web.search`](/api-reference/scenario/methods/web-search) Scenario Method
+  covers web and news results today; see
+  [Scenario Methods](/api-reference/scenario/overview) for the full list.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which regions and languages?">
+    Google results take any Google country and interface-language code plus a
+    free-text location. Brave takes its own country and result-language codes.
+    Queries can be written in any language.
+  </Accordion>
+  <Accordion title="How fresh are the results?">
+    Every call goes to the engine at request time. Google results accept a
+    past-hour to past-year time filter; Brave video search accepts a freshness
+    window or a custom date range.
+  </Accordion>
+  <Accordion title="Does it download the images or videos?">
+    No. Results are URLs and metadata. To read the page a result points to,
+    pass the URL to a [scrape tool](/capabilities/scrape/url-to-markdown-for-ai-agents).
+  </Accordion>
+</AccordionGroup>

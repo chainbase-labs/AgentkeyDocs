@@ -1,0 +1,98 @@
+---
+title: "Car rental search for AI agents"
+sidebarTitle: "Car rentals"
+description: "Booking.com car rental search: pick-up locations, available cars by date and driver age, vehicle and supplier details, ratings, reviews and a full price recap."
+---
+
+Renting a car has more moving parts than a hotel night — pick-up and drop-off
+points and times, driver age, car category, supplier reputation, the fees that
+appear at the counter. Through AgentKey your agent works through all of them
+against Booking.com car-rental data with the same three calls — `find_tools`,
+`describe_tool`, `execute_tool` — up to and including the final price recap.
+It never places the reservation.
+
+## What you can ask
+
+- *"Rent a mid-size car at Lisbon airport, 12 to 15 November, pick-up at ten in the morning."*
+- *"Compare Avis and Budget prices for an SUV at JFK next weekend."*
+- *"What does this car cost in total with fees, and where exactly is the pick-up desk?"*
+- *"How is this supplier rated, and what do recent renters say?"*
+- *"Are automatic cars available in Palermo for a 24-year-old driver?"*
+- *"巴黎戴高乐机场租车三天，自动挡，大概多少钱？"*
+- *"Give me the final price recap for this offer before I decide."*
+
+## What's covered
+
+**Pick-up and drop-off locations**
+- Autocomplete search for cities and airports, and search by name, address,
+  city, state or country, returning the coordinates the rental search needs
+
+**Rental search**
+- Available cars for pick-up and drop-off coordinates, dates and 24-hour
+  times, and a driver age between 20 and 65
+- Filters by supplier, car category and the other facets the search itself
+  returns, applied together
+- Results as a feed of car cards with result counts and the available filter
+  facets; prices in a chosen currency and text in a chosen language
+- One of the search flows supports pick-up and drop-off at the same location
+  only
+
+**Vehicle and offer details**
+- The full detail page for one offer: specification, price breakdown, fees,
+  pick-up and drop-off depot information, and the link to the rental terms
+- Package options available for an offer
+
+**Supplier information**
+- Supplier details for an offer — rating breakdown, opening hours, pick-up
+  instructions, legal and contact information
+- Supplier ratings and the customer review list
+
+**Price recap**
+- The "confirm your deal" summary for an offer: vehicle, pick-up and
+  drop-off, and the full price breakdown — the last step before checkout,
+  which stays with the user
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="rent a mid-size car at Lisbon airport 12 to 15 November")
+find_tools(q="巴黎戴高乐机场租车三天 自动挡")
+find_tools(prefix="travel/booking")        # browse all Booking.com tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+The tools chain: location search gives coordinates, the rental search gives a
+search key plus a vehicle id for each car, and the vehicle, supplier and
+summary tools take that pair. Always `describe_tool` before executing — the
+search requires dates, times and both sets of coordinates.
+
+<Note>
+  **Building with code?** Car rentals are available through the catalog tools
+  above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for them yet. Hotel and
+  flight search do have methods — see [Hotels](/capabilities/travel/hotel-search-for-ai-agents)
+  and [Flights](/capabilities/travel/flight-search-for-ai-agents).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it reserve the car?">
+    No. Even the booking summary is a price recap, not a booking: it shows the
+    vehicle, pick-up, drop-off and the full price breakdown so the user can
+    decide. No reservation or payment is made.
+  </Accordion>
+  <Accordion title="How current are the prices?">
+    Fetched at request time for the dates, times and driver age you give. The
+    search key ties the detail tools to that search, so re-run the search if
+    a details call says the key is stale.
+  </Accordion>
+  <Accordion title="Which currencies, languages and locations?">
+    Prices in any currency on Booking.com's currency list and text in any
+    language on its language list; pick-up points anywhere its car-rental
+    partners operate, found through the location search.
+  </Accordion>
+</AccordionGroup>

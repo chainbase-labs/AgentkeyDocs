@@ -1,0 +1,85 @@
+---
+title: "Google Scholar and patent search for AI agents"
+sidebarTitle: "Scholar & patents"
+description: "Google Scholar and Google Patents results by keyword through Serper, with country, language, recency and paging — plus where to go for arXiv and AMiner."
+---
+
+Literature and prior-art questions come up in research, due diligence and
+product work alike, and both need an index that is current. Through AgentKey
+your agent searches Google Scholar and Google Patents results through Serper
+with the same three calls — `find_tools`, `describe_tool`, `execute_tool` —
+and can follow a hit into the [Academic](/capabilities/academic/academic-paper-search-for-ai-agents)
+category for arXiv and AMiner paper records.
+
+## What you can ask
+
+- *"Search Google Scholar for 'protein language model' papers from the past year."*
+- *"Find scholarly articles on graph neural networks for traffic forecasting, second page."*
+- *"Which patents mention 'solid-state battery electrolyte'? List titles and links."*
+- *"Are there patents on foldable display hinges that name Samsung?"*
+- *"Give me 20 Scholar results for 'LLM evaluation benchmark' with a Chinese interface."*
+- *"Find prior art for a drone package-delivery latch published in the past year."*
+- *"Find the arXiv version of this paper and its abstract."*
+
+## What's covered
+
+**Scholarly literature**
+- Keyword search over Google Scholar results — articles, theses, books and
+  preprints as Scholar indexes them
+- A country code, interface language and free-text location to bias results
+- A time filter — past hour, day, week, month or year — plus result count and
+  page numbers
+- Autocorrect on by default, switchable
+
+**Patents**
+- Keyword search over Google Patents results
+- The same country, language, location, time-filter, count and paging
+  controls
+
+**Beyond Google**
+- Paper search and paper detail with normalized records from arXiv and
+  AMiner, plus researcher and institution lookups, live in
+  [Academic](/capabilities/academic/academic-paper-search-for-ai-agents)
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="Google Scholar results for protein language models from the past year")
+find_tools(q="patents mentioning solid-state battery electrolyte")
+find_tools(prefix="search/serper")        # scholar and patent search
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — recency is the `tbs` filter, paging
+is `page`, and the result fields differ between Scholar and Patents.
+
+<Note>
+  **Building with code?** Scholar results are one of the engines behind the
+  fixed-contract
+  [`academic.paper.search`](/api-reference/scenario/methods/academic-paper-search)
+  Scenario Method, which returns a normalized paper page with automatic
+  provider failover; see [Scenario Methods](/api-reference/scenario/overview).
+  Patent search is available through the catalog tool above.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I get the full paper or patent text?">
+    No. Results carry the title, link and snippet as Google returns them. To
+    read a PDF or a patent page, pass the link to a
+    [scrape tool](/capabilities/scrape/url-to-markdown-for-ai-agents); Firecrawl parses PDFs
+    into markdown.
+  </Accordion>
+  <Accordion title="Which regions and languages?">
+    Any Google country code and interface language, plus a free-text location.
+    Queries can be written in any language.
+  </Accordion>
+  <Accordion title="How fresh are the results?">
+    Fetched from Google at request time. The time filter narrows by Google's
+    own indexing date.
+  </Accordion>
+</AccordionGroup>

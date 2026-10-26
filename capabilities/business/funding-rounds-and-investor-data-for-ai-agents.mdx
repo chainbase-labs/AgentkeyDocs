@@ -1,0 +1,99 @@
+---
+title: "Funding rounds and investor data for AI agents"
+sidebarTitle: "Funding & investors"
+description: "Crunchbase funding rounds, investments, investors, funds, acquisitions and IPOs, plus funding, acquisition and IPO predictions, through AgentKey."
+---
+
+Who funded a company, at what stage, alongside whom, and what happened next —
+acquisition, IPO or quiet closure — is the core of venture research, and it
+lives in Crunchbase's funding, investment and transaction records. Through
+AgentKey your agent reads those records the same way it reads everything
+else — `find_tools`, `describe_tool`, `execute_tool` — from a single round to
+a filtered search across every deal.
+
+## What you can ask
+
+- *"Who led Anthropic's latest round, and how much did it raise?"*
+- *"List the Series A rounds in climate tech announced this quarter."*
+- *"Which investors most often co-invest with a16z?"*
+- *"Has this company been acquired, and by whom?"*
+- *"Which companies went public this year in Europe?"*
+- *"Is this startup likely to raise again soon?"*
+- *"Which funds has Sequoia raised, and who invested in them?"*
+- *"这家公司最近一轮融资的投资方有哪些？"*
+
+## What's covered
+
+**Funding rounds**
+- Funding round lookup, with cards for investments, investors, lead investors,
+  the funded organization, partners and press references
+- Search funding rounds with complex filters expressed in the request body
+
+**Investments and investors**
+- Individual investment lookup, with cards for the funding round, investor,
+  organization and partner
+- Search investments
+- Investor insights and investor matches — lookup and search
+
+**Funds**
+- Fund lookup, with cards for the fund's investors, its owner and press
+  references
+- Search funds
+
+**Acquisitions and IPOs**
+- Acquisition lookup, with cards for the acquiree, the acquirer and press
+  references; search acquisitions
+- IPO lookup, with cards for the organization and press references; search
+  IPOs
+
+**Predictions and insights**
+- Funding, acquisition, IPO, growth, closure, layoff and remain-private
+  predictions — lookup and search
+- Growth insights and research insights — lookup and search
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="funding rounds raised by Anthropic with lead investors")
+find_tools(q="今年欧洲上市的公司")
+find_tools(prefix="business/crunchbase")  # browse every Crunchbase entity type
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — search tools take a structured query body, card lookups take a
+card name, and the per-call cost is shown there. Resolve the organization or
+person identifier first.
+
+<Note>
+  **Building with code?** The same capability is available as a fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`business.company.funding`](/api-reference/scenario/methods/business-company-funding)
+  lists the funding rounds a company raised, newest first.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does this cover crypto fundraising?">
+    Crunchbase records crypto companies as it does any other. For token
+    projects, VC funds and rounds specific to Web3, see
+    [Crypto projects and VCs](/capabilities/business/crypto-projects-and-vc-data-for-ai-agents),
+    backed by RootData.
+  </Accordion>
+  <Accordion title="What are the prediction entities?">
+    Crunchbase-derived forward-looking signals — whether an organization is
+    likely to raise, be acquired, go public, grow, close, lay off staff or
+    remain private — exposed as entities you can look up for one company or
+    search across many.
+  </Accordion>
+  <Accordion title="Is historical data available?">
+    Yes. Funding rounds, investments, acquisitions and IPOs are dated
+    historical records, and the search tools filter on those dates.
+    Everything is fetched at request time.
+  </Accordion>
+</AccordionGroup>

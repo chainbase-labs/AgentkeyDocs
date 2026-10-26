@@ -1,0 +1,98 @@
+---
+title: "News search for AI agents"
+sidebarTitle: "News search"
+description: "Headlines and articles by keyword from Google News via Serper, Brave's news index and Tavily's news topic — filtered by recency, region and language."
+---
+
+News is where an agent most often needs something the model has never seen:
+what happened this morning, what a company announced an hour ago, how a story
+is being covered in another country. Through AgentKey your agent searches
+headlines with the same three calls it uses everywhere — `find_tools`,
+`describe_tool`, `execute_tool` — choosing between Google News results through
+Serper, Brave's own news index and Tavily's news topic, which can also return
+the article text.
+
+## What you can ask
+
+- *"What are the top headlines on the Fed rate decision in the last 24 hours?"*
+- *"Find news about lithium mining from UK sources this week."*
+- *"Any news on Anthropic published in the past hour?"*
+- *"Show me Japanese-language coverage of the Nikkei record high."*
+- *"Search news published between 1 and 15 September about the EU AI Act."*
+- *"Give me 50 recent news results about Tesla and group them by outlet."*
+- *"Pull this week's news on the typhoon in Guangdong with the article text, and a short summary."*
+- *"Get page two of the news results for this query."*
+
+## What's covered
+
+**Headlines by keyword**
+- Google News results with title, link, source, date and snippet
+- Brave news articles from its own index, with optional extra snippets and
+  Goggles re-ranking
+- Tavily's news topic, tuned for real-time updates, with each article's
+  cleaned content as markdown or plain text on request and an optional
+  generated answer
+
+**Recency**
+- Past hour, day, week, month or year on Google News
+- The last 24 hours, 7 days, 31 days or 365 days, or a custom date range, on
+  Brave
+- A relative time range or explicit start and end dates on Tavily
+
+**Region and language**
+- Country and interface-language codes, plus a free-text location, on Google
+  News
+- Country, result language and interface language on Brave, with optional
+  latitude / longitude, city or postal-code hints
+- Domain include and exclude lists on Tavily to pin or drop specific outlets
+
+**Volume and paging**
+- A per-call result count on every engine; page numbers on Google News and an
+  offset on Brave
+- A POST variant of Brave news for long or multi-line queries
+
+## How to use it
+
+Pass the request in plain language and let the router pick the engine:
+
+```text
+find_tools(q="latest news about Anthropic from the past week")
+find_tools(q="Japanese coverage of the Nikkei record high today")
+find_tools(prefix="search/serper")        # Google News results
+find_tools(prefix="search/brave")         # Brave news index
+find_tools(prefix="search/tavily")        # news topic with article text
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — the recency filter is `tbs` on
+Google News, `freshness` on Brave and `time_range` or dates on Tavily, and
+per-call costs differ.
+
+<Note>
+  **Building with code?** News search is part of the fixed-contract
+  [`web.search`](/api-reference/scenario/methods/web-search) Scenario Method:
+  set `type` to `news` and it returns a normalized result page with automatic
+  engine failover. See [Scenario Methods](/api-reference/scenario/overview).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How fresh are the headlines?">
+    Every call goes to the engine at request time. The recency filters narrow
+    by the engine's own publication or discovery date, down to the past hour
+    on Google News and the past 24 hours on Brave.
+  </Accordion>
+  <Accordion title="Which regions and languages?">
+    Google News takes any Google country and interface-language code; Brave
+    takes its country and language lists; Tavily is scoped by domain lists
+    rather than by country. Queries can be written in any language.
+  </Accordion>
+  <Accordion title="Do I get the full article?">
+    Google News and Brave return headline, source, date and snippet with the
+    link. Tavily can include each article's cleaned content. For any other
+    link, pass the URL to a [scrape tool](/capabilities/scrape/url-to-markdown-for-ai-agents)
+    to read the page.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,104 @@
+---
+title: "Hotel search for AI agents"
+sidebarTitle: "Hotels"
+description: "Booking.com hotel search: destinations, availability and prices for your dates, rooms, photos, facilities, policies, review scores and guest Q&A."
+---
+
+Finding a hotel is a conversation — a city, dates, who is travelling, a
+budget, then the questions a guest actually asks: what are the rooms like, is
+breakfast included, what do recent guests say, can children stay. Through
+AgentKey your agent runs that whole conversation against Booking.com data with
+the same three calls — `find_tools`, `describe_tool`, `execute_tool`. Every
+operation is a lookup: your agent searches, prices and reads, and never places
+a reservation.
+
+## What you can ask
+
+- *"Find hotels in Lisbon for two adults, 12 to 15 November, under 150 euros a night, sorted by review score."*
+- *"Which hotels within 5 km of the Colosseum are available 3 to 6 May?"*
+- *"Show me the room types and prices at this hotel for two adults and a three-year-old."*
+- *"What are the check-in times and the cancellation and pet policies here?"*
+- *"Pull the latest reviews and the score breakdown for this property."*
+- *"东京新宿附近，12 月 24 到 26 日，两大一小，有哪些酒店？"*
+- *"Does this hotel take cards, or is payment at the property?"*
+- *"Is there any night between 1 and 30 March with a room free at this hotel?"*
+
+## What's covered
+
+**Finding the destination**
+- Destination search by city, district, landmark, region or country name,
+  returning the destination id and type the hotel search needs
+- An address or place name turned into latitude and longitude; cities near a
+  coordinate for side trips
+
+**Hotel search**
+- By destination for check-in and check-out dates, number of adults, each
+  child's age and number of rooms
+- Around a coordinate with a radius from 10 to 500 km
+- Minimum and maximum price, category filters and sort orders, with the valid
+  filter and sort values available from their own lookups
+- Currency, response language, metric or imperial distances, Celsius or
+  Fahrenheit, and page numbers
+
+**Property details**
+- Full details for your dates and party; description and general
+  information; facilities; photos
+- Policies; payment features; children and extra-bed policies
+
+**Rooms and availability**
+- The room list, and the room list with live availability and prices for the
+  stay
+- Availability across a date range for a hotel, to find free nights
+
+**Reviews and Q&A**
+- The review-score breakdown; guest reviews and tips with sort options and
+  paging; the filter metadata for reviews
+- Questions guests have asked the property, with the answers
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="hotels in Lisbon for two adults, 12 to 15 November")
+find_tools(q="东京新宿附近 12 月 24 到 26 日的酒店")
+find_tools(prefix="travel/booking")        # browse all Booking.com tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+The tools chain: destination search gives a destination id, the hotel search
+gives hotel ids, and the detail, room, policy and review tools take a hotel
+id. Always `describe_tool` before executing — it shows which id each tool
+expects and the date format it wants.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview):
+  [`travel.hotel.search`](/api-reference/scenario/methods/travel-hotel-search)
+  searches hotels around a coordinate for dates and guests and returns a
+  normalized hotel page, and
+  [`travel.location.search`](/api-reference/scenario/methods/travel-location-search)
+  finds the destination first.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it book the room?">
+    No. Every operation is read-only — search, prices, availability, details
+    and reviews. No reservation, hold or payment is ever made.
+  </Accordion>
+  <Accordion title="Which currencies and languages?">
+    Prices can be requested in any currency on Booking.com's currency list and
+    text in any language on its language list; both lists are available as
+    lookups (see
+    [Attractions and local transport](/capabilities/travel/attractions-and-local-transport-for-ai-agents)).
+    Distances and temperatures can be metric or imperial.
+  </Accordion>
+  <Accordion title="How current are prices and availability?">
+    Fetched at request time for the dates and party you give. Rates and
+    availability change constantly, so re-run the search before quoting a
+    final price.
+  </Accordion>
+</AccordionGroup>

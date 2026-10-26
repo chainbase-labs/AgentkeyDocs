@@ -1,0 +1,95 @@
+---
+title: "Places and local search for AI agents"
+sidebarTitle: "Places & local"
+description: "Businesses, points of interest, addresses and map results via Google (Serper) and Brave, plus Brave's POI details and AI-written place descriptions."
+---
+
+"Where is the nearest…" and "what is the best… near…" are among the most common
+questions an assistant gets, and answering them needs a live business index,
+not a model's memory. Through AgentKey your agent searches places with the
+same three calls — `find_tools`, `describe_tool`, `execute_tool` — using
+Google Places and Maps results through Serper, or Brave's place search with
+its point-of-interest details and generated descriptions.
+
+## What you can ask
+
+- *"Find coffee shops near Shibuya station."*
+- *"List pharmacies within 2 km of this latitude and longitude."*
+- *"What are the top ramen places on Google Maps around this coordinate at zoom 14?"*
+- *"Give me the address, phone number and website of the Apple Store on Regent Street."*
+- *"Describe these three restaurants from the search results in one sentence each."*
+- *"Search for dentists around 'Austin, Texas, United States', second page."*
+- *"Which businesses, streets and addresses match 'Marienplatz' in Munich?"*
+
+## What's covered
+
+**Google Places and Maps results**
+- Places by keyword, biased by a country code, interface language and a
+  free-text location such as "New York, United States"
+- Maps results centred on a latitude, longitude and zoom level
+- Result count, page numbers and a time filter
+
+**Brave place search**
+- Places, businesses, cities, addresses and streets around a location, given
+  as a latitude / longitude with a radius or as a named location
+- A country and result language, metric or imperial units, and a per-call
+  count
+
+**Brave point-of-interest details**
+- Extra information for up to 20 points of interest in one request
+- AI-generated descriptions for places
+- Both take location ids from a Brave web search run with the locations
+  result filter; the ids are short-lived, so fetch and use them in the same
+  session
+
+**What comes back**
+- Each place as the engine serves it: name, address and position, with any
+  ratings, categories, hours or contact details the engine attaches
+
+## How to use it
+
+Pass the request in plain language and let the router pick the engine:
+
+```text
+find_tools(q="coffee shops near Shibuya station with ratings")
+find_tools(q="businesses and streets around this latitude and longitude")
+find_tools(prefix="search/serper")        # Google Places and Maps results
+find_tools(prefix="search/brave")         # Brave place search and POI details
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Always `describe_tool` before executing — Google Maps results take the centre
+as `ll` in the form `@lat,lng,zoomz`, Brave takes `latitude`, `longitude` and
+`radius`, and the POI tools need ids from an earlier Brave web search.
+
+<Note>
+  **Building with code?** Place and local search are available through the
+  catalog tools above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for them yet. For
+  weather-oriented POIs see
+  [Weather location lookup](/capabilities/weather/weather-location-lookup-for-ai-agents); for
+  attractions and taxis see
+  [Attractions and local transport](/capabilities/travel/attractions-and-local-transport-for-ai-agents).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which regions are covered?">
+    Google results accept any country code and a free-text location anywhere
+    Google Maps has coverage. Brave place search takes a fixed list of
+    countries across the Americas, Europe and Asia-Pacific, including China,
+    Hong Kong, Taiwan, Japan and Korea.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to the engine at request time. Brave POI ids are
+    short-lived and belong to the search that produced them, so do not store
+    them between sessions.
+  </Accordion>
+  <Accordion title="Can it give directions or travel times?">
+    No. These tools find and describe places; they do not route between them.
+    For taxi quotes between two places see
+    [Attractions and local transport](/capabilities/travel/attractions-and-local-transport-for-ai-agents).
+  </Accordion>
+</AccordionGroup>

@@ -77,20 +77,20 @@
                 "group": "Search",
                 "pages": [
                   "capabilities/search",
-                  "capabilities/search/web-search",
-                  "capabilities/search/news-search",
-                  "capabilities/search/image-and-video-search",
-                  "capabilities/search/places-and-local",
-                  "capabilities/search/answer-and-llm-context",
-                  "capabilities/search/scholar-search"
+                  "capabilities/search/web-search-for-ai-agents",
+                  "capabilities/search/news-search-for-ai-agents",
+                  "capabilities/search/image-and-video-search-for-ai-agents",
+                  "capabilities/search/places-and-local-search-for-ai-agents",
+                  "capabilities/search/answer-engines-and-llm-context-for-ai-agents",
+                  "capabilities/search/google-scholar-and-patent-search-for-ai-agents"
                 ]
               },
               {
                 "group": "Scrape",
                 "pages": [
                   "capabilities/scrape",
-                  "capabilities/scrape/url-to-markdown",
-                  "capabilities/scrape/anti-bot-pages"
+                  "capabilities/scrape/url-to-markdown-for-ai-agents",
+                  "capabilities/scrape/anti-bot-scraping-for-ai-agents"
                 ]
               },
               {
@@ -100,29 +100,29 @@
                   {
                     "group": "Global platforms",
                     "pages": [
-                      "capabilities/social/x",
-                      "capabilities/social/reddit",
-                      "capabilities/social/youtube",
-                      "capabilities/social/instagram",
-                      "capabilities/social/tiktok",
-                      "capabilities/social/linkedin",
-                      "capabilities/social/threads"
+                      "capabilities/social/x-twitter-data-for-ai-agents",
+                      "capabilities/social/reddit-data-for-ai-agents",
+                      "capabilities/social/youtube-data-for-ai-agents",
+                      "capabilities/social/instagram-data-for-ai-agents",
+                      "capabilities/social/tiktok-data-for-ai-agents",
+                      "capabilities/social/linkedin-data-for-ai-agents",
+                      "capabilities/social/threads-data-for-ai-agents"
                     ]
                   },
                   {
                     "group": "China platforms",
                     "pages": [
-                      "capabilities/social/xiaohongshu",
-                      "capabilities/social/douyin",
-                      "capabilities/social/kuaishou",
-                      "capabilities/social/bilibili",
-                      "capabilities/social/weibo",
-                      "capabilities/social/zhihu",
-                      "capabilities/social/wechat-official-accounts",
-                      "capabilities/social/wechat-channels"
+                      "capabilities/social/xiaohongshu-rednote-data-for-ai-agents",
+                      "capabilities/social/douyin-chinese-tiktok-data-for-ai-agents",
+                      "capabilities/social/kuaishou-data-for-ai-agents",
+                      "capabilities/social/bilibili-data-for-ai-agents",
+                      "capabilities/social/weibo-data-for-ai-agents",
+                      "capabilities/social/zhihu-data-for-ai-agents",
+                      "capabilities/social/wechat-official-accounts-data-for-ai-agents",
+                      "capabilities/social/wechat-channels-data-for-ai-agents"
                     ]
                   },
-                  "capabilities/social/trending",
+                  "capabilities/social/trending-topics-for-ai-agents",
                   "capabilities/social/more-platforms"
                 ]
               },
@@ -133,98 +133,98 @@
                   {
                     "group": "Global marketplaces",
                     "pages": [
-                      "capabilities/ecommerce/amazon",
-                      "capabilities/ecommerce/shopee",
-                      "capabilities/ecommerce/aliexpress",
-                      "capabilities/ecommerce/tiktok-shop"
+                      "capabilities/ecommerce/amazon-product-data-for-ai-agents",
+                      "capabilities/ecommerce/shopee-product-data-for-ai-agents",
+                      "capabilities/ecommerce/aliexpress-product-data-for-ai-agents",
+                      "capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents"
                     ]
                   },
                   {
                     "group": "China marketplaces",
                     "pages": [
-                      "capabilities/ecommerce/taobao-tmall",
-                      "capabilities/ecommerce/jd",
-                      "capabilities/ecommerce/1688",
-                      "capabilities/ecommerce/xianyu",
-                      "capabilities/ecommerce/douyin-shop",
-                      "capabilities/ecommerce/xiaohongshu-shop"
+                      "capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents",
+                      "capabilities/ecommerce/jd-product-data-for-ai-agents",
+                      "capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents",
+                      "capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents",
+                      "capabilities/ecommerce/douyin-shop-product-data-for-ai-agents",
+                      "capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents"
                     ]
                   },
-                  "capabilities/ecommerce/product-research"
+                  "capabilities/ecommerce/product-research-workflows-for-ai-agents"
                 ]
               },
               {
                 "group": "Crypto",
                 "pages": [
                   "capabilities/crypto",
-                  "capabilities/crypto/market-data",
-                  "capabilities/crypto/tokens",
-                  "capabilities/crypto/on-chain-and-wallets",
-                  "capabilities/crypto/dex-and-derivatives",
-                  "capabilities/crypto/nfts",
-                  "capabilities/crypto/news-and-social-intelligence",
-                  "capabilities/crypto/prediction-markets",
-                  "capabilities/crypto/projects-and-funds"
+                  "capabilities/crypto/crypto-market-data-for-ai-agents",
+                  "capabilities/crypto/token-analytics-for-ai-agents",
+                  "capabilities/crypto/on-chain-and-wallet-data-for-ai-agents",
+                  "capabilities/crypto/dex-and-derivatives-data-for-ai-agents",
+                  "capabilities/crypto/nft-data-for-ai-agents",
+                  "capabilities/crypto/crypto-news-and-social-intelligence-for-ai-agents",
+                  "capabilities/crypto/prediction-market-data-for-ai-agents",
+                  "capabilities/crypto/crypto-projects-and-funds-data-for-ai-agents"
                 ]
               },
               {
                 "group": "Finance",
                 "pages": [
                   "capabilities/finance",
-                  "capabilities/finance/quotes-and-candles",
-                  "capabilities/finance/fundamentals-and-statements",
-                  "capabilities/finance/earnings-and-estimates",
-                  "capabilities/finance/sec-filings-and-ownership",
-                  "capabilities/finance/china-a-shares",
-                  "capabilities/finance/macro-economic-data",
-                  "capabilities/finance/fx-and-commodities"
+                  "capabilities/finance/stock-quotes-and-price-history-for-ai-agents",
+                  "capabilities/finance/financial-statements-for-ai-agents",
+                  "capabilities/finance/earnings-estimates-and-analyst-data-for-ai-agents",
+                  "capabilities/finance/sec-filings-and-ownership-data-for-ai-agents",
+                  "capabilities/finance/china-a-share-and-hk-stock-data-for-ai-agents",
+                  "capabilities/finance/macroeconomic-data-for-ai-agents",
+                  "capabilities/finance/fx-and-commodities-data-for-ai-agents"
                 ]
               },
               {
                 "group": "Business",
                 "pages": [
                   "capabilities/business",
-                  "capabilities/business/company-profiles",
-                  "capabilities/business/funding-and-investors",
-                  "capabilities/business/people-and-executives",
-                  "capabilities/business/crypto-projects-and-vcs"
+                  "capabilities/business/company-data-for-ai-agents",
+                  "capabilities/business/funding-rounds-and-investor-data-for-ai-agents",
+                  "capabilities/business/people-and-executive-data-for-ai-agents",
+                  "capabilities/business/crypto-projects-and-vc-data-for-ai-agents"
                 ]
               },
               {
                 "group": "Jobs",
                 "pages": [
                   "capabilities/jobs",
-                  "capabilities/jobs/job-search",
-                  "capabilities/jobs/job-details-and-salaries"
+                  "capabilities/jobs/job-search-for-ai-agents",
+                  "capabilities/jobs/job-details-and-salary-data-for-ai-agents"
                 ]
               },
               {
                 "group": "Travel",
                 "pages": [
                   "capabilities/travel",
-                  "capabilities/travel/hotels",
-                  "capabilities/travel/flights",
-                  "capabilities/travel/car-rentals",
-                  "capabilities/travel/attractions"
+                  "capabilities/travel/hotel-search-for-ai-agents",
+                  "capabilities/travel/flight-search-for-ai-agents",
+                  "capabilities/travel/car-rental-search-for-ai-agents",
+                  "capabilities/travel/attractions-and-local-transport-for-ai-agents"
                 ]
               },
               {
                 "group": "Weather",
                 "pages": [
                   "capabilities/weather",
-                  "capabilities/weather/forecasts",
-                  "capabilities/weather/air-quality",
-                  "capabilities/weather/severe-weather",
-                  "capabilities/weather/astronomy-and-tides",
-                  "capabilities/weather/location-lookup"
+                  "capabilities/weather/weather-forecasts-for-ai-agents",
+                  "capabilities/weather/air-quality-data-for-ai-agents",
+                  "capabilities/weather/severe-weather-alerts-for-ai-agents",
+                  "capabilities/weather/astronomy-tides-and-solar-data-for-ai-agents",
+                  "capabilities/weather/weather-location-lookup-for-ai-agents"
                 ]
               },
               {
                 "group": "Academic",
                 "pages": [
                   "capabilities/academic",
-                  "capabilities/academic/papers",
-                  "capabilities/academic/researchers-and-institutions"
+                  "capabilities/academic/academic-paper-search-for-ai-agents",
+                  "capabilities/academic/researcher-and-institution-data-for-ai-agents"
                 ]
               }
             ]
@@ -625,6 +625,282 @@
     {
       "source": "/concepts/pay-as-you-go",
       "destination": "/concepts/subscription"
+    },
+    {
+      "source": "/capabilities/academic/papers",
+      "destination": "/capabilities/academic/academic-paper-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/academic/researchers-and-institutions",
+      "destination": "/capabilities/academic/researcher-and-institution-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/business/company-profiles",
+      "destination": "/capabilities/business/company-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/business/crypto-projects-and-vcs",
+      "destination": "/capabilities/business/crypto-projects-and-vc-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/business/funding-and-investors",
+      "destination": "/capabilities/business/funding-rounds-and-investor-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/business/people-and-executives",
+      "destination": "/capabilities/business/people-and-executive-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/dex-and-derivatives",
+      "destination": "/capabilities/crypto/dex-and-derivatives-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/market-data",
+      "destination": "/capabilities/crypto/crypto-market-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/news-and-social-intelligence",
+      "destination": "/capabilities/crypto/crypto-news-and-social-intelligence-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/nfts",
+      "destination": "/capabilities/crypto/nft-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/on-chain-and-wallets",
+      "destination": "/capabilities/crypto/on-chain-and-wallet-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/prediction-markets",
+      "destination": "/capabilities/crypto/prediction-market-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/projects-and-funds",
+      "destination": "/capabilities/crypto/crypto-projects-and-funds-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/crypto/tokens",
+      "destination": "/capabilities/crypto/token-analytics-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/1688",
+      "destination": "/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/aliexpress",
+      "destination": "/capabilities/ecommerce/aliexpress-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/amazon",
+      "destination": "/capabilities/ecommerce/amazon-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/douyin-shop",
+      "destination": "/capabilities/ecommerce/douyin-shop-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/jd",
+      "destination": "/capabilities/ecommerce/jd-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/product-research",
+      "destination": "/capabilities/ecommerce/product-research-workflows-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/shopee",
+      "destination": "/capabilities/ecommerce/shopee-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/taobao-tmall",
+      "destination": "/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/tiktok-shop",
+      "destination": "/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/xianyu",
+      "destination": "/capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/xiaohongshu-shop",
+      "destination": "/capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/china-a-shares",
+      "destination": "/capabilities/finance/china-a-share-and-hk-stock-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/earnings-and-estimates",
+      "destination": "/capabilities/finance/earnings-estimates-and-analyst-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/fundamentals-and-statements",
+      "destination": "/capabilities/finance/financial-statements-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/fx-and-commodities",
+      "destination": "/capabilities/finance/fx-and-commodities-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/macro-economic-data",
+      "destination": "/capabilities/finance/macroeconomic-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/quotes-and-candles",
+      "destination": "/capabilities/finance/stock-quotes-and-price-history-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/finance/sec-filings-and-ownership",
+      "destination": "/capabilities/finance/sec-filings-and-ownership-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/jobs/job-details-and-salaries",
+      "destination": "/capabilities/jobs/job-details-and-salary-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/jobs/job-search",
+      "destination": "/capabilities/jobs/job-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/scrape/anti-bot-pages",
+      "destination": "/capabilities/scrape/anti-bot-scraping-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/scrape/url-to-markdown",
+      "destination": "/capabilities/scrape/url-to-markdown-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/answer-and-llm-context",
+      "destination": "/capabilities/search/answer-engines-and-llm-context-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/image-and-video-search",
+      "destination": "/capabilities/search/image-and-video-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/news-search",
+      "destination": "/capabilities/search/news-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/places-and-local",
+      "destination": "/capabilities/search/places-and-local-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/scholar-search",
+      "destination": "/capabilities/search/google-scholar-and-patent-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/search/web-search",
+      "destination": "/capabilities/search/web-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/bilibili",
+      "destination": "/capabilities/social/bilibili-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/douyin",
+      "destination": "/capabilities/social/douyin-chinese-tiktok-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/instagram",
+      "destination": "/capabilities/social/instagram-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/kuaishou",
+      "destination": "/capabilities/social/kuaishou-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/linkedin",
+      "destination": "/capabilities/social/linkedin-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/reddit",
+      "destination": "/capabilities/social/reddit-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/threads",
+      "destination": "/capabilities/social/threads-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/tiktok",
+      "destination": "/capabilities/social/tiktok-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/trending",
+      "destination": "/capabilities/social/trending-topics-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/wechat-channels",
+      "destination": "/capabilities/social/wechat-channels-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/wechat-official-accounts",
+      "destination": "/capabilities/social/wechat-official-accounts-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/weibo",
+      "destination": "/capabilities/social/weibo-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/x",
+      "destination": "/capabilities/social/x-twitter-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/xiaohongshu",
+      "destination": "/capabilities/social/xiaohongshu-rednote-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/youtube",
+      "destination": "/capabilities/social/youtube-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/social/zhihu",
+      "destination": "/capabilities/social/zhihu-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/travel/attractions",
+      "destination": "/capabilities/travel/attractions-and-local-transport-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/travel/car-rentals",
+      "destination": "/capabilities/travel/car-rental-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/travel/flights",
+      "destination": "/capabilities/travel/flight-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/travel/hotels",
+      "destination": "/capabilities/travel/hotel-search-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/weather/air-quality",
+      "destination": "/capabilities/weather/air-quality-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/weather/astronomy-and-tides",
+      "destination": "/capabilities/weather/astronomy-tides-and-solar-data-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/weather/forecasts",
+      "destination": "/capabilities/weather/weather-forecasts-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/weather/location-lookup",
+      "destination": "/capabilities/weather/weather-location-lookup-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/weather/severe-weather",
+      "destination": "/capabilities/weather/severe-weather-alerts-for-ai-agents"
+    },
+    {
+      "source": "/capabilities/ecommerce/temu",
+      "destination": "/capabilities/ecommerce"
+    },
+    {
+      "source": "/api-reference/scenario/methods/ecommerce-temu-product-rank",
+      "destination": "/api-reference/scenario/overview"
     }
   ],
   "footer": {

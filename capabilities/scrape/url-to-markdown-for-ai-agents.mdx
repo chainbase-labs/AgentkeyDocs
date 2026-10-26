@@ -1,0 +1,110 @@
+---
+title: "Turn any URL into clean markdown for AI agents"
+sidebarTitle: "URL to markdown"
+description: "Firecrawl and Jina Reader turn any page or PDF into LLM-ready markdown — main content only, JSON extraction, page actions, caching, location and proxy control."
+---
+
+Half of what an agent does with the web is read a page it already has the
+address for — an article, a product page, a PDF, a changelog. Raw HTML wastes
+context; what the model needs is the main content as clean markdown. Through
+AgentKey your agent gets exactly that with the same three calls —
+`find_tools`, `describe_tool`, `execute_tool` — from Firecrawl or Jina Reader.
+
+## What you can ask
+
+- *"Read this article and give me the main text as markdown, without the navigation and footer."*
+- *"Scrape this PDF and return the text page by page."*
+- *"Fetch this page as a visitor from Germany would see it, in German."*
+- *"Extract the title, price and SKU from this product page as JSON."*
+- *"Click 'Load more' twice, then scrape the list."*
+- *"Give me the mobile version of this page and a screenshot."*
+- *"Return only the links on this page."*
+- *"Use a cached copy if you have one from today; otherwise fetch fresh."*
+
+## What's covered
+
+**Clean content**
+- Markdown, HTML, raw HTML or plain text from a URL; main content only by
+  default, with headers, navigation and footers removed by a deterministic
+  filter
+- An optional extra cleaning pass for residual boilerplate — cookie banners,
+  share widgets, related-article lists — keeping headings, tables and links
+- Include or exclude HTML tags; target or remove elements by CSS selector;
+  ad and cookie-popup blocking; base64 images stripped from the output
+- Summaries of a page's links and images, generated alt text for images, and
+  a token budget for the returned text
+
+**Formats and extraction**
+- Several output formats in one call, including structured JSON extracted by
+  an LLM against a schema you provide
+- Screenshots and full-page shots; mobile-device emulation and a custom
+  viewport
+
+**Documents**
+- PDFs parsed into markdown page by page, or returned whole as base64
+
+**Dynamic pages**
+- Page actions performed before scraping, a fixed wait, or a wait for a CSS
+  selector
+- A choice of fetch engine on Jina — direct, headless browser, Cloudflare
+  browser rendering or a reader model — plus iframe and shadow-DOM content
+- Custom headers and cookies, and a named browser profile that keeps cookies
+  and local storage between scrapes
+
+**Caching and freshness**
+- Accept a cached copy newer than a given age, insist on cache only, or run
+  in lockdown mode where the target is never contacted
+- Turn caching off for a request, or ask for zero data retention
+
+**Location and proxies**
+- A country and preferred languages — the matching proxy, locale and timezone
+  are emulated
+- Basic or enhanced proxies, or automatic escalation when the basic fetch
+  fails; a proxy country or your own proxy URL on Jina; timeouts and a custom
+  robots.txt user agent
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="get the main article text from https://example.com/post as markdown")
+find_tools(q="extract title, price and SKU from this product page as JSON")
+find_tools(prefix="scrape/firecrawl")
+find_tools(prefix="scrape/jina")
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { url: "https://example.com/post" })
+```
+
+Always `describe_tool` before executing — Firecrawl's options are body
+parameters, Jina's are `x-*` header options (its GET form takes the target URL
+as the path), and Firecrawl's cost is metered on what the page needs.
+
+<Note>
+  **Building with code?** The same capability is available as the
+  fixed-contract [`web.scrape`](/api-reference/scenario/methods/web-scrape)
+  Scenario Method: one URL in, readable markdown or plain text with title and
+  basic metadata out, with automatic failover across the scrapers above. See
+  [Scenario Methods](/api-reference/scenario/overview).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it handle JavaScript-heavy pages?">
+    Yes. Firecrawl renders the page and can wait or perform actions first;
+    Jina can be switched to a headless browser engine. If a site answers with
+    a bot challenge instead of content, see
+    [Anti-bot pages](/capabilities/scrape/anti-bot-scraping-for-ai-agents).
+  </Accordion>
+  <Accordion title="What about pages behind a login or paywall?">
+    A scrape returns what the page serves to the fetcher. These tools do not
+    unlock anything; if you hold a session you are entitled to, pass its
+    cookies or headers and the page is fetched as that session sees it.
+  </Accordion>
+  <Accordion title="How fresh is the content?">
+    Fetched at request time unless you ask for a cached copy. Firecrawl's
+    cache-age, cache-only and lockdown options, and Jina's cache tolerance,
+    let you trade freshness for speed explicitly.
+  </Accordion>
+</AccordionGroup>

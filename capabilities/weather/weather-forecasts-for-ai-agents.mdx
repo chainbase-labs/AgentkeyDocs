@@ -1,0 +1,108 @@
+---
+title: "Weather forecasts for AI agents"
+sidebarTitle: "Forecasts"
+description: "Current conditions, hourly and daily forecasts, grid-point weather for any coordinate, minute-level rain, recent history and life indices from QWeather."
+---
+
+Weather is the most asked-for piece of live data there is, and it is
+location-bound: an agent needs the forecast for this place, these hours.
+Through AgentKey your agent reads QWeather with the same three calls —
+`find_tools`, `describe_tool`, `execute_tool` — for current conditions,
+hourly and daily forecasts, grid forecasts at any coordinate, minute-level
+precipitation, the last few days of history and the everyday life indices.
+
+## What you can ask
+
+- *"What's the weather in Hangzhou right now?"*
+- *"Hour by hour for Shenzhen tomorrow — will it rain during the morning commute?"*
+- *"明天北京会下雨吗？几点开始？"*
+- *"Seven-day forecast for Tokyo with highs, lows and UV."*
+- *"Will it rain at this exact latitude and longitude in the next two hours?"*
+- *"What was the weather in Chengdu last Saturday?"*
+- *"Is tomorrow a good day to wash the car in Shanghai?"*
+- *"Give me the 15-day outlook for Lhasa."*
+
+## What's covered
+
+**Current conditions**
+- Real-time weather for Chinese cities, counties and districts and for cities
+  worldwide: temperature, feels-like temperature, wind force and direction,
+  humidity, pressure, precipitation, visibility, dew point and cloud cover
+- Each observation carries its observation time, since readings are
+  near-real-time rather than instantaneous
+
+**Hourly and daily forecasts**
+- Hourly forecasts for the next 24, 72 or 168 hours: temperature, condition,
+  wind, humidity, pressure, precipitation probability, dew point, cloud cover
+- Daily forecasts for 3, 7, 10, 15 or 30 days: sunrise and sunset, moonrise
+  and moonset, highs and lows, day and night conditions, wind, humidity,
+  pressure, precipitation, dew point, UV index and visibility
+
+**Grid-point forecasts for any coordinate**
+- Current, hourly (24 or 72 hours) and daily forecasts from a numerical
+  model at 3–5 km resolution, worldwide, in metric or imperial units
+- Times are expressed in UTC, and the model output is not meant to be
+  compared against station observations
+
+**Minute-level precipitation**
+- Rain nowcasts for China at 1 km resolution: the next two hours in
+  five-minute steps
+
+**Recent history**
+- Reanalysis weather for any of the last ten days, by date, in metric or
+  imperial units
+
+**Life indices**
+- For China: comfort, car washing, dressing, cold and flu, sport, travel, UV,
+  pollutant dispersion, air conditioning, allergy, sunglasses, makeup,
+  laundry drying, traffic, fishing and sunscreen, for one or three days
+- Elsewhere: sport, car washing, UV and fishing
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="hourly rain forecast for Shenzhen tomorrow")
+find_tools(q="明天北京会下雨吗")
+find_tools(prefix="weather/qweather")      # browse all weather tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { location: "<location id or lon,lat>", ...params })
+```
+
+City forecasts take a QWeather location id or a `longitude,latitude` pair —
+resolve a place name first with
+[location lookup](/capabilities/weather/weather-location-lookup-for-ai-agents). Grid tools take
+coordinates only. Tool summaries are in Chinese, but `find_tools` matches
+either language. Always `describe_tool` before executing: the hourly and
+daily tools require a range such as `72h` or `7d`, and responses can be
+localized through `lang`.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview):
+  [`weather.forecast`](/api-reference/scenario/methods/weather-forecast) for
+  a daily forecast by coordinate or location id, and
+  [`weather.location.search`](/api-reference/scenario/methods/weather-location-search)
+  to find the place first.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which places are covered?">
+    City weather covers Chinese cities, counties and districts, and cities
+    worldwide. Grid forecasts work for any coordinate
+    on Earth. Minute-level precipitation is China only.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Fetched from QWeather at request time. Observations are near-real-time and
+    stamped with their observation time; forecasts reflect the latest model
+    run available at the moment of the call.
+  </Accordion>
+  <Accordion title="Units and languages?">
+    Grid and historical tools take metric or imperial. Responses can be
+    localized through the `lang` parameter, and the daily forecast includes
+    sun and moon times for each day.
+  </Accordion>
+</AccordionGroup>
