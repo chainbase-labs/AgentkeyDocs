@@ -6,7 +6,7 @@ description: "Product search, details, reviews, SKUs, shop listings and rankings
 
 The **E-commerce** category lets agents read marketplaces the way a shopper
 does: search listings by keyword, open a product page, read its reviews and SKU
-options, list what a shop sells, and pull best-seller or homepage rankings —
+options, list what a shop sells, and pull best-seller rankings —
 across global and Chinese platforms.
 
 ## Platforms
@@ -15,29 +15,28 @@ Catalog tools in this category come from **JustOneAPI**, named
 `JustOneAPI/getApi<Platform><Operation>V<n>`; several platforms expose more
 than one version of the same operation. Global marketplaces are listed first,
 then the Chinese ones; each has its own page, and
-[Product research workflows](/capabilities/ecommerce/product-research) shows
+[Product research workflows](/capabilities/ecommerce/product-research-workflows-for-ai-agents) shows
 how to chain them.
 
 ### Global marketplaces
 
 | Platform | Operations |
 | --- | --- |
-| [Amazon](/capabilities/ecommerce/amazon) | Product search, product details, top reviews, best sellers, products by category |
-| [Shopee](/capabilities/ecommerce/shopee) | Item search and search facets; item details, display snapshot, SKU matrix and models, installments; item reviews, review tags and model distribution; shop profile, details, categories, item list and reviews |
-| [AliExpress](/capabilities/ecommerce/aliexpress) | Product search, product details |
-| [TikTok Shop](/capabilities/ecommerce/tiktok-shop) | Product search, product details |
-| [Temu](/capabilities/ecommerce/temu) | Homepage product feed |
+| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Product search, product details, top reviews, best sellers, products by category |
+| [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) | Item search and search facets; item details, display snapshot, SKU matrix and models, installments; item reviews, review tags and model distribution; shop profile, details, categories, item list and reviews |
+| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Product search, product details |
+| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Product search, product details; reviews, seller product lists and hot sellers from TikHub, filed under TikTok |
 
 ### China marketplaces
 
 | Platform | Operations |
 | --- | --- |
-| [Taobao / Tmall](/capabilities/ecommerce/taobao-tmall) | Product search, product details, product reviews, product Q&A, shop product list |
-| [JD.com](/capabilities/ecommerce/jd) | Product search, details, price, comments, shop product list |
-| [Douyin E-commerce](/capabilities/ecommerce/douyin-shop) | Product search, item details, SKU info, item comments, shop product list |
-| [1688](/capabilities/ecommerce/1688) | Product search, product details |
-| [Xianyu](/capabilities/ecommerce/xianyu) | Product search, product details |
-| [Xiaohongshu E-commerce](/capabilities/ecommerce/xiaohongshu-shop) | Product search |
+| [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents) | Product search, product details, product reviews, product Q&A, shop product list |
+| [JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents) | Product search, details, price, comments, shop product list |
+| [Douyin E-commerce](/capabilities/ecommerce/douyin-shop-product-data-for-ai-agents) | Product search, item details, SKU info, item comments, shop product list |
+| [1688](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | Product search, product details |
+| [Xianyu](/capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents) | Product search, product details |
+| [Xiaohongshu E-commerce](/capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents) | Product search |
 
 The per-call cost is shown by `describe_tool`. Prices come back in the
 platform's own currency, and several marketplaces take a `country` or site

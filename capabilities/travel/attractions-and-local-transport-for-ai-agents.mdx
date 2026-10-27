@@ -1,0 +1,92 @@
+---
+title: "Attractions and local transport for AI agents"
+sidebarTitle: "Attractions & transport"
+description: "Booking.com attractions and tours with reviews and availability, taxi quotes between two places, plus currencies, exchange rates, languages and geocoding."
+---
+
+Once the flight and the hotel are settled, the rest of the trip is what to do
+and how to get there — tours and tickets, their reviews and free dates, a taxi
+from the airport — plus the small facts every travel agent needs: which
+currencies and languages exist, today's exchange rate, the coordinates of an
+address. Through AgentKey your agent gets all of this from Booking.com with
+the same three calls — `find_tools`, `describe_tool`, `execute_tool`. Every
+operation is a lookup; nothing is booked.
+
+## What you can ask
+
+- *"What are the top-rated things to do in Barcelona next weekend?"*
+- *"Find museum tours in Kyoto sorted by lowest price."*
+- *"Show the details and recent reviews for this food tour."*
+- *"Which dates in May is this tour available?"*
+- *"What attractions are popular near this hotel?"*
+- *"How much is a taxi from Heathrow to King's Cross at nine on Friday morning?"*
+- *"罗马有哪些热门景点和一日游？"*
+- *"Convert this price to Japanese yen at today's rate."*
+
+## What's covered
+
+**Attractions and tours**
+- Location search by city, district or place name, returning destination ids
+  and product slugs
+- Attraction search for a destination, sorted by trending, booking score or
+  lowest price, with type, price, label and area filters discovered from the
+  search response, an optional date window, currency, language and paging
+- Attraction details by product slug; reviews with user ratings, comments and
+  review counts
+- Availability of a product on a date, and its availability calendar
+- Popular attractions near a hotel
+
+**Taxis**
+- Place search for pick-up and drop-off points, returning place ids
+- Taxi search between two places for a pick-up date and 24-hour time, priced
+  in a chosen currency and described in a chosen language
+
+**Reference data**
+- The list of available currencies; exchange rates for every currency against
+  a base currency
+- The list of response languages; the list of supported locations
+- Any address or place name turned into latitude and longitude
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="top-rated things to do in Barcelona this weekend")
+find_tools(q="罗马热门景点和一日游")
+find_tools(prefix="travel/booking")        # browse all Booking.com tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+The tools chain: attraction location search gives an id for the search and a
+slug for details, availability and reviews; taxi place search gives the place
+ids the taxi search takes. Always `describe_tool` before executing — the
+filter values for attractions come back inside the search response.
+
+<Note>
+  **Building with code?** Attractions, taxis and the reference lookups are
+  available through the catalog tools above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for them yet. Hotel and
+  flight search do have methods — see [Hotels](/capabilities/travel/hotel-search-for-ai-agents)
+  and [Flights](/capabilities/travel/flight-search-for-ai-agents).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it buy tickets or book the taxi?">
+    No. Attraction availability and taxi search return options and prices
+    only; no ticket is purchased and no ride is booked.
+  </Accordion>
+  <Accordion title="How current are prices and availability?">
+    Fetched at request time. Exchange rates are whatever Booking.com serves
+    when you call; attraction availability and taxi quotes should be
+    re-checked before the user commits.
+  </Accordion>
+  <Accordion title="Which languages and currencies?">
+    Any language and currency on Booking.com's own lists, which are
+    themselves available here as lookups — fetch them once and reuse the codes
+    across hotel, flight, car and attraction calls.
+  </Accordion>
+</AccordionGroup>

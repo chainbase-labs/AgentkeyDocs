@@ -1,0 +1,78 @@
+---
+title: "Xianyu second-hand listings for AI agents"
+sidebarTitle: "Xianyu"
+description: "Search Xianyu (Goofish) second-hand listings by keyword, sorted by price, recency, activity or seller credit, and read a listing's detail through AgentKey."
+---
+
+Xianyu (闲鱼, also branded Goofish) is China's largest second-hand
+marketplace, and it is app-first: there is no public API and the web view
+shows little without a login. Through AgentKey your agent reads public Xianyu
+listings the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — which makes it a quick source of real
+resale prices and supply for a product you are researching elsewhere.
+
+## What you can ask
+
+- *"闲鱼上搜 'iPad Air 5'，按价格从低到高，列出前 15 个。"*
+- *"Find Sony A7 III bodies listed on Xianyu recently, newest first."*
+- *"Which Xianyu listings for this lens come from the sellers with the best credit?"*
+- *"Open this Xianyu listing and tell me the asking price and what the seller wrote."*
+- *"What are used Switch OLED consoles going for on Xianyu right now?"*
+
+## What's covered
+
+**Search**
+- Keyword search of second-hand listings with page controls
+- Sort by activity, recency, seller credit, price or listing time
+
+**Listing details**
+- The public detail of a listing by item ID — inspect a known resale item
+  after search or link discovery
+
+Not covered today: seller profiles, messaging, bidding and anything behind a
+buyer login. For the new-item price to compare against, search the same
+product on [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents) or
+[JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents).
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="闲鱼上 iPad Air 5 按价格从低到高")
+find_tools(q="recently listed used camera bodies on Xianyu")
+find_tools(prefix="ecommerce/xianyu")       # browse everything for Xianyu
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in yuan, as the listing shows them, not converted. Aliases
+resolve (闲鱼, Xianyu and Goofish all land here). Always `describe_tool` before
+executing: it shows the sort options, the item ID the detail lookup expects,
+and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.xianyu.product.search`](/api-reference/scenario/methods/ecommerce-xianyu-product-search),
+  [`ecommerce.xianyu.product.get`](/api-reference/scenario/methods/ecommerce-xianyu-product-get).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Xianyu account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can the agent message a seller or make an offer?">
+    No. Access is read-only: search and listing detail. Negotiation happens in
+    the app, by a person.
+  </Accordion>
+  <Accordion title="How fresh are the listings?">
+    Every call goes to Xianyu at request time; nothing is served from a stale
+    archive. Second-hand listings disappear once sold, so a detail lookup on
+    an older ID may return nothing — search again for current supply.
+  </Accordion>
+</AccordionGroup>

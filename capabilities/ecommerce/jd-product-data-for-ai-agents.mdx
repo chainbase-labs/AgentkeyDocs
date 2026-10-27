@@ -1,0 +1,90 @@
+---
+title: "JD.com product data for AI agents"
+sidebarTitle: "JD.com"
+description: "Search JD.com by keyword, read product details and current prices, page through buyer comments and list a shop's products through AgentKey."
+---
+
+JD.com is China's largest direct retailer and the benchmark for electronics
+and appliance pricing there. Its open platform serves merchants only, and the
+storefront asks for a login almost immediately. Through AgentKey your agent
+reads public JD.com data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — including a lightweight price check for
+when the full listing is more than you need.
+
+## What you can ask
+
+- *"京东搜 'iPhone 16 128G'，列出前 10 个结果和价格。"*
+- *"这个京东商品现在多少钱？"*
+- *"Pull the details of this JD item and summarize the listing."*
+- *"Summarize the buyer comments on this JD product — what do people complain about most?"*
+- *"List the products in this JD shop and collect their item IDs."*
+- *"Check the current JD price of these five items and tell me which ones changed since my last check."*
+
+## What's covered
+
+**Search**
+- Keyword search with page-based pagination — discover products and collect
+  item IDs for follow-up lookups
+
+**Product details & price**
+- Details for a known item ID — inspect an individual product after finding
+  its identifier
+- A separate current-price lookup by item ID, for a quick check before
+  comparison or purchase analysis
+- The description images and product attributes for an item ID — the
+  listing's long-form introduction
+
+**Comments**
+- Paginated customer comments for a product by item ID — buyer feedback for a
+  known product
+
+**Shops**
+- A page of products from a shop by shop ID — browse a seller's catalog and
+  collect item IDs
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="京东上这个商品现在的价格")
+find_tools(q="buyer comments on this JD.com product")
+find_tools(prefix="ecommerce/jd")           # browse everything for JD.com
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in yuan, as JD shows them, not converted. Aliases resolve
+(京东, JD and JD.com all land here). Always `describe_tool` before executing:
+several operations are listed in more than one version, and it shows the exact
+parameters, the identifier expected (item ID or shop ID) and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`ecommerce.jd.product.search`](/api-reference/scenario/methods/ecommerce-jd-product-search),
+  [`ecommerce.jd.product.get`](/api-reference/scenario/methods/ecommerce-jd-product-get),
+  [`ecommerce.jd.product.reviews`](/api-reference/scenario/methods/ecommerce-jd-product-reviews),
+  [`ecommerce.jd.shop.products`](/api-reference/scenario/methods/ecommerce-jd-shop-products).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a JD.com account or merchant access?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Is there a way to check only the price?">
+    Yes. A dedicated price lookup returns the current price for an item ID
+    without the rest of the listing. `describe_tool` shows what it costs
+    compared with the full detail lookup.
+  </Accordion>
+  <Accordion title="How fresh are prices and comments?">
+    Every call goes to JD.com at request time; nothing is served from a stale
+    archive. A price is what the product shows at that moment, in yuan.
+    AgentKey does not keep a price history — to track a price, call again on
+    your own schedule.
+  </Accordion>
+</AccordionGroup>

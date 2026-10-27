@@ -1,0 +1,103 @@
+---
+title: "FX and commodities data for AI agents"
+sidebarTitle: "FX & commodities"
+description: "Live exchange rates, daily to monthly FX and crypto series, WTI, Brent, natural gas, metals, grains and softs, Shanghai Gold and China futures for AI agents."
+---
+
+Currency and commodity prices turn up in almost every analysis — converting a
+revenue line, pricing an input cost, hedging a position — yet they come from
+different vendors than equities and in different shapes. Through AgentKey your
+agent gets a spot rate, a 20-year FX series or a Brent price history with the
+same three calls — `find_tools`, `describe_tool`, `execute_tool` — with
+AlphaVantage behind the scenes for global FX, crypto and commodities, Tushare
+for China FX, futures and Shanghai Gold, and Finnhub for symbol reference.
+
+## What you can ask
+
+- *"What is the EUR/USD rate right now?"*
+- *"Monthly USD/JPY since 2000."*
+- *"Daily Brent and WTI prices for the past year, side by side."*
+- *"How has the Henry Hub natural gas price moved this quarter?"*
+- *"Copper and aluminum prices over the last five years."*
+- *"Wheat, corn, sugar and coffee — which has risen most this year?"*
+- *"Gold and silver spot, and the Shanghai Gold Exchange's daily prices."*
+- *"沪金现货和黄金期货主力合约最近一个月的走势"*
+
+## What's covered
+
+**Exchange rates**
+- Realtime exchange rate for any pair of currencies, physical or digital
+- Daily (20+ years), weekly and monthly series for a forex currency pair
+- Daily FX bars and overseas FX instrument reference data on the China route
+- Lists of supported forex exchanges and symbols
+
+**Crypto series**
+- Daily, weekly and monthly series for a digital currency on a given market
+- Lists of supported crypto exchanges and symbols
+- For on-chain, token and exchange data see the
+  [Crypto](/capabilities/crypto) category
+
+**Energy**
+- West Texas Intermediate (WTI) and Brent crude oil prices
+- Henry Hub natural gas spot prices
+
+**Metals**
+- Gold spot price and gold price history; silver spot price and history
+- Global copper and aluminum prices
+- Shanghai Gold Exchange spot contracts and their daily prices
+
+**Agriculture and softs**
+- Global wheat, corn, cotton, sugar and coffee prices
+- The global price index of all commodities
+
+**China futures and options**
+- Futures contracts, daily / weekly / monthly / minute bars, position
+  rankings, main- and continuous-contract mapping, settlement parameters,
+  limit prices and margin rates, warehouse receipts; options contracts and
+  daily bars — see [China A-shares](/capabilities/finance/china-a-share-and-hk-stock-data-for-ai-agents)
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="monthly USD/JPY exchange rate since 2000")
+find_tools(q="最近一年布伦特原油价格")
+find_tools(prefix="finance/alphavantage")    # FX, crypto and commodity series
+find_tools(prefix="finance/tushare")         # China FX, futures, Shanghai Gold
+find_tools(prefix="finance/finnhub")         # forex and crypto symbol lists
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Name the pair or the commodity and the interval you want. Always
+`describe_tool` before executing — currency-code and interval parameters and
+per-call costs differ between providers.
+
+<Note>
+  **Building with code?** There is no dedicated Scenario Method for FX or
+  commodities yet; the capability is available through the catalog today. See
+  the [Scenario Methods overview](/api-reference/scenario/overview) for the
+  fixed-contract surface that does exist.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Is the exchange rate live?">
+    The currency exchange rate tool returns a realtime rate for the pair you
+    name, including crypto pairs. The FX, crypto and commodity time series are
+    periodic — daily, weekly or monthly — and `describe_tool` lists the
+    intervals each one supports.
+  </Accordion>
+  <Accordion title="How much FX history is there?">
+    Daily FX series reach back 20+ years on the AlphaVantage route. For the
+    commodity series and the China routes, `describe_tool` documents the
+    range and any row limits per call.
+  </Accordion>
+  <Accordion title="Where do crypto prices live — here or under Crypto?">
+    Here you get exchange-style OHLC series for a digital currency on a named
+    market, alongside FX. Token metadata, on-chain holders, wallets and
+    derivatives live under the Crypto category.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,118 @@
+---
+title: "Stock quotes and price history for AI agents"
+sidebarTitle: "Quotes & candles"
+description: "Quotes, OHLCV candles from intraday to monthly, ticker search, trending tickers, option chains, market status and technical indicators for AI agents."
+---
+
+Price data is the first thing a finance agent needs and one of the most
+fragmented: every vendor has its own symbols, intervals and limits, and the
+exchange feeds themselves are priced for institutions. Through AgentKey your
+agent pulls quotes, candles, option chains and market status the same way it
+pulls everything else — `find_tools`, `describe_tool`, `execute_tool` — with
+yfinance, Finnhub and AlphaVantage behind the scenes for global markets and
+Tushare for China and Hong Kong.
+
+## What you can ask
+
+- *"What is NVDA trading at right now, and how far is it from its 52-week high?"*
+- *"Give me two years of daily OHLCV for AAPL so I can backtest a moving-average crossover."*
+- *"Weekly candles for Microsoft since 2005, adjusted for dividends."*
+- *"Find the ticker for 'Taiwan Semiconductor' and tell me which exchanges it trades on."*
+- *"Which tickers are trending in the US today, and who are the biggest gainers and losers?"*
+- *"Pull the TSLA option chain for next month's expiry with implied volatility."*
+- *"Are the Tokyo and London exchanges open right now?"*
+- *"Compute the 14-day RSI and Bollinger Bands for MSFT."*
+
+## What's covered
+
+**Quotes**
+- Snapshot quote for one or several symbols: last price, change and percent
+  change, day range, volume, market cap, P/E and 52-week high/low — for
+  stocks, ETFs, indices, FX and crypto
+- Real-time quotes for US stocks
+- Latest price and volume for a single ticker
+- Top gainers, losers and most actively traded tickers in the US market;
+  trending tickers by region
+
+**Candles and time series**
+- OHLCV candles over a date range at daily, weekly, monthly or intraday
+  intervals — stocks, ETFs, indices, FX and crypto
+- Raw and adjusted daily, weekly and monthly series (adjusted close, dividends)
+  covering 20+ years of history
+- A-share, Hong Kong and index bars down to one-minute resolution — see
+  [China A-shares](/capabilities/finance/china-a-share-and-hk-stock-data-for-ai-agents)
+
+**Symbols and screening**
+- Ticker search by company name, keyword, ISIN or CUSIP; as-you-type
+  autocomplete
+- Lists of supported stocks per exchange; active or delisted US stocks and ETFs
+  as of a date
+- Screener: rank stocks, ETFs, mutual funds and crypto by market cap, price,
+  percent change, sector or region
+
+**Options**
+- Option chains: calls and puts across strikes and expirations with bid/ask,
+  last price, volume, open interest and implied volatility
+- Realtime and historical US equity options data; realtime put-call ratio
+
+**Market status**
+- Whether the major equity, forex and crypto venues around the world are
+  currently open or closed
+- Holiday calendars for global exchanges
+
+**Technical indicators and analytics**
+- Moving averages (SMA, EMA, WMA, DEMA, TEMA, TRIMA, KAMA, MAMA, T3), MACD,
+  RSI, Stochastics, Bollinger Bands, ADX / DMI, Aroon, ATR, CCI, MFI, OBV,
+  Chaikin A/D, Parabolic SAR, Williams %R and Hilbert Transform cycle studies
+- Analytics computed over a fixed or sliding window for one or more symbols
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="two years of daily OHLCV for AAPL")
+find_tools(q="特斯拉现在的股价")
+find_tools(prefix="finance/yfinance")        # quotes, charts, option chain, screener
+find_tools(prefix="finance/finnhub")         # real-time US quotes, symbol lookup, market status
+find_tools(prefix="finance/alphavantage")    # 20-year series, options, technical indicators
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Name the interval and the market in the request ("weekly", "Hong Kong",
+"options") and the router ranks the right provider first. Always
+`describe_tool` before executing — symbol formats, interval names and per-call
+costs differ between providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`finance.quote`](/api-reference/scenario/methods/finance-quote),
+  [`finance.price.history`](/api-reference/scenario/methods/finance-price-history),
+  [`finance.symbol.search`](/api-reference/scenario/methods/finance-symbol-search).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Are quotes real-time or delayed?">
+    It depends on the route. One provider serves real-time quotes for US
+    stocks; another returns a real-time or delayed snapshot depending on the
+    exchange. `describe_tool` states what each tool returns. Historical candles
+    are the same on every route.
+  </Accordion>
+  <Accordion title="Which symbol format should I use?">
+    Most routes take the exchange-suffixed form, for example `0700.HK` for
+    Tencent in Hong Kong or `600519.SS` for Kweichow Moutai in Shanghai, while
+    plain `AAPL` works for US listings. One provider lists its symbols as
+    exchange ticker plus exchange code. When unsure, resolve the name with the
+    ticker search first and pass the symbol it returns.
+  </Accordion>
+  <Accordion title="How much history is available?">
+    Daily, weekly and monthly series reach back 20+ years on the time-series
+    routes. Intraday bars cover shorter windows; `describe_tool` documents the
+    range each interval supports.
+  </Accordion>
+</AccordionGroup>

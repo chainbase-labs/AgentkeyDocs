@@ -1,0 +1,88 @@
+---
+title: "Air quality data for AI agents"
+sidebarTitle: "Air quality"
+description: "Real-time AQI, pollutant concentrations and health advice at 1 km resolution, hourly and three-day forecasts, and monitoring-station readings from QWeather."
+---
+
+Air quality decides whether to run outside, open a window or move an event
+indoors, and the right number depends on where you stand — the index used in
+Beijing is not the one used in Bangkok. Through AgentKey your agent reads
+QWeather air-quality data with the same three calls — `find_tools`,
+`describe_tool`, `execute_tool` — for current conditions, hourly and daily
+forecasts, and the raw readings of individual monitoring stations.
+
+## What you can ask
+
+- *"What's the air quality in Beijing right now, and what's the main pollutant?"*
+- *"Will PM2.5 in Delhi be worse this afternoon?"*
+- *"上海未来三天空气质量预报怎么样？"*
+- *"Is it safe to run outdoors in Bangkok tomorrow morning?"*
+- *"Give me the hourly AQI for the next 24 hours at this coordinate."*
+- *"Which monitoring station is nearest to this point, and what does it read?"*
+- *"Compare today's air quality in Seoul using the local standard and a common index."*
+
+## What's covered
+
+**Current air quality**
+- Real-time air quality for a latitude and longitude at 1 km resolution
+- The AQI, its level, colour and primary pollutant under the local standard
+  of the country or region, plus QWeather's universal AQI for comparison
+  across borders
+- Pollutant concentrations and per-pollutant sub-indices
+- Health advice, and the monitoring stations the reading is associated with
+
+**Forecasts**
+- Hourly air quality for the next 24 hours: AQI, concentrations, sub-indices
+  and health advice
+- Daily air quality for the next three days: AQI, concentrations and health
+  advice
+
+**Monitoring stations**
+- Pollutant concentrations as measured at a specific station, by station id
+- Station readings are observational and can be delayed or missing because
+  of maintenance, removal or local regulation
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="air quality in Beijing right now with main pollutant")
+find_tools(q="上海未来三天空气质量")
+find_tools(prefix="weather/qweather")      # browse all weather tools
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { latitude: 39.9, longitude: 116.4, ...params })
+```
+
+Air-quality tools take a latitude and longitude; use
+[location lookup](/capabilities/weather/weather-location-lookup-for-ai-agents) to turn a place name
+into coordinates, and take station ids from the current-air-quality response.
+Always `describe_tool` before executing.
+
+<Note>
+  **Building with code?** Air quality is available through the catalog tools
+  above; there is no fixed-contract
+  [Scenario Method](/api-reference/scenario/overview) for it yet. The daily
+  weather forecast and place lookup do have methods — see
+  [Forecasts](/capabilities/weather/weather-forecasts-for-ai-agents).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which AQI standard is used?">
+    Both. Each reading reports the index defined by the local authority of
+    the country or region, and QWeather's universal AQI so that two cities can
+    be compared on one scale.
+  </Accordion>
+  <Accordion title="Which countries are covered?">
+    The local-standard AQI is available for the countries and regions
+    QWeather supports; the universal index and pollutant concentrations are
+    returned for any coordinate it has data for. Health advice and names can
+    be localized through the `lang` parameter.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Fetched at request time. Current readings are near-real-time; the hourly
+    and daily forecasts reflect the latest run available when you call.
+  </Accordion>
+</AccordionGroup>

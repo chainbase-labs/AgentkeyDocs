@@ -1,0 +1,76 @@
+---
+title: "Xiaohongshu Shop product data for AI agents"
+sidebarTitle: "Xiaohongshu Shop"
+description: "Search Xiaohongshu (RedNote) Shop products by keyword with multi-page pagination through AgentKey; product detail and reviews come as Scenario Methods."
+---
+
+Xiaohongshu (RedNote) is where Chinese consumers discover products through
+other people's notes, and its shop sits right next to that discovery. The
+catalog is app-first and has no public API. Through AgentKey your agent
+searches Xiaohongshu Shop the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — and can carry the results
+into a deeper look on another marketplace.
+
+## What you can ask
+
+- *"小红书商城搜 '防晒霜'，列出前 20 个商品和价格。"*
+- *"Search Xiaohongshu Shop for 'linen dress' and keep paging until you have 60 results."*
+- *"Compare the first page of Xiaohongshu Shop results for 'ceramic mug' with the same search on Taobao."*
+
+## What's covered
+
+**Search**
+- Keyword search of Xiaohongshu Shop products with page and search-ID
+  pagination — the first page returns a search ID that later pages require
+
+Not covered in the catalog today: product detail by ID, reviews and shop
+pages for Xiaohongshu Shop. Product detail and reviews are available as
+Scenario Methods (see below). For a product you find here, open the matching
+listing on [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents) or
+[JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents) to read details and reviews through the
+catalog.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="小红书商城搜防晒霜")
+find_tools(q="search Xiaohongshu Shop for linen dresses")
+find_tools(prefix="ecommerce/xiaohongshu-ec")  # browse everything for Xiaohongshu Shop
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Prices come back in yuan, as the listing shows them, not converted. Aliases
+resolve (小红书, Xiaohongshu and RedNote all land here). Always
+`describe_tool` before executing: it shows how to pass the search ID for pages
+after the first, and the per-call cost.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover, and the method set is broader than the catalog above:
+  [`ecommerce.xiaohongshu_shop.product.search`](/api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-search),
+  [`ecommerce.xiaohongshu_shop.product.get`](/api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-get),
+  [`ecommerce.xiaohongshu_shop.product.reviews`](/api-reference/scenario/methods/ecommerce-xiaohongshu_shop-product-reviews).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Xiaohongshu account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can I open a product or read its reviews?">
+    Not through the catalog tools today, which cover search. The Scenario
+    Methods listed above add product detail and reviews behind a fixed
+    contract.
+  </Accordion>
+  <Accordion title="How fresh are the results?">
+    Every call goes to the platform at request time; nothing is served from a
+    stale archive. Results are what Xiaohongshu Shop returns for that keyword
+    at that moment, in yuan.
+  </Accordion>
+</AccordionGroup>

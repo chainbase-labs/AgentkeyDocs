@@ -1,0 +1,94 @@
+---
+title: "Earnings, estimates and analyst data for AI agents"
+sidebarTitle: "Earnings & estimates"
+description: "Earnings history and surprises, earnings and IPO calendars, analyst EPS and revenue estimates, recommendation trends and call transcripts for AI agents."
+---
+
+Earnings season is where an agent has to be both fast and precise: when does
+the company report, what is the consensus, how did it beat or miss last time,
+and what did management say on the call. That data sits behind paid terminals
+and scattered vendor APIs. Through AgentKey your agent gets it with
+`find_tools`, `describe_tool`, `execute_tool`, with AlphaVantage and Finnhub
+behind the scenes and yfinance's earnings module as a quick fallback.
+
+## What you can ask
+
+- *"When does Nvidia report next, and what EPS and revenue are analysts expecting?"*
+- *"Show me Apple's quarterly EPS surprises for the last five years."*
+- *"Which large caps report earnings next week?"*
+- *"What is the buy / hold / sell split on Tesla, and how has it shifted over six months?"*
+- *"Pull the transcript of Microsoft's latest earnings call and summarize the guidance."*
+- *"What IPOs are scheduled over the next three months?"*
+- *"Give me the consensus EPS estimate for Amazon for this year and next."*
+
+## What's covered
+
+**Earnings history**
+- Annual and quarterly reported EPS for a company
+- Quarterly earnings surprises — actual versus estimate — going back to 2000
+- The earnings module of the company profile for a quick read
+
+**Calendars**
+- Historical and upcoming earnings release dates with EPS and revenue
+  estimates
+- Earnings expected in the next 3, 6 or 12 months
+- Recent and upcoming IPOs; IPOs expected in the next 3 months
+- FDA advisory committee meeting dates for event-driven research
+
+**Estimates and recommendations**
+- Analyst EPS and revenue estimates for a company
+- Latest analyst recommendation trends — buy, hold and sell counts over time
+
+**Transcripts**
+- Full earnings call transcripts for a company and quarter
+
+**China**
+- Earnings forecasts (业绩预告), express reports (业绩快报) and disclosure-date
+  schedules for A-share companies — see
+  [China A-shares](/capabilities/finance/china-a-share-and-hk-stock-data-for-ai-agents)
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="next earnings date for NVDA with consensus EPS and revenue")
+find_tools(q="特斯拉的分析师评级变化")
+find_tools(prefix="finance/alphavantage")    # earnings history, estimates, transcripts, calendars
+find_tools(prefix="finance/finnhub")         # surprises, earnings calendar, recommendations, IPOs
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work. Always `describe_tool` before
+executing — date windows, quarter parameters and per-call costs differ between
+providers.
+
+<Note>
+  **Building with code?** The same capability is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`finance.earnings`](/api-reference/scenario/methods/finance-earnings),
+  [`finance.estimates`](/api-reference/scenario/methods/finance-estimates).
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How far back does earnings history go?">
+    Quarterly earnings surprises reach back to 2000 on their route; the
+    annual and quarterly EPS history covers the company's reporting history as
+    the vendor holds it. `describe_tool` documents any limit on rows per call.
+  </Accordion>
+  <Accordion title="Are the estimates a consensus?">
+    Yes — the estimate tools return analyst consensus figures, and the
+    recommendation trend tool returns the buy / hold / sell split for
+    successive periods, so you can see how sentiment has shifted.
+  </Accordion>
+  <Accordion title="Can I get the IPO prospectus too?">
+    The calendars here tell you which IPOs are recent or upcoming. For the
+    S-1 / 424B4 prospectus itself — shares offered, price range, use of
+    proceeds, underwriters, risk factors — use the registration filings under
+    [SEC filings & ownership](/capabilities/finance/sec-filings-and-ownership-data-for-ai-agents).
+  </Accordion>
+</AccordionGroup>

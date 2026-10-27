@@ -1,0 +1,126 @@
+---
+title: "Trending and hot lists across platforms"
+sidebarTitle: "Trending & hot lists"
+description: "Cross-platform hot rankings plus the hot-search and trending lists of Douyin, Weibo, X, TikTok, Bilibili, Zhihu, Kuaishou, Xiaohongshu and WeChat."
+---
+
+"What is trending right now?" is the most common question an agent gets about
+social media, and the answer lives in a dozen different hot lists, each on a
+platform that does not want to be read. Through AgentKey your agent reads all
+of them the same way — `find_tools`, `describe_tool`, `execute_tool` — and can
+start from a single cross-platform ranking before drilling into one network.
+
+## What you can ask
+
+- *"What is trending across Chinese social platforms right now?"*
+- *"今天全网热搜前十是什么？"*
+- *"Has this keyword appeared on any hot list in the past two weeks, and where?"*
+- *"Compare today's Weibo and Douyin hot searches — which stories are on both?"*
+- *"What is trending on X in Japan and on TikTok today?"*
+- *"Which Xiaohongshu notes went viral overnight?"*
+- *"Which WeChat articles passed 100K reads yesterday?"*
+- *"Show me the Zhihu hot list and the Bilibili popular feed."*
+
+## What's covered
+
+**Across platforms**
+- The hot ranking of any one platform through a single uniform tool
+- An aggregated cross-platform TOP10
+- Keyword search across platforms' hot lists over a date range of up to 30
+  days — where and when a topic surfaced
+
+**Douyin**
+- Hot search list and current hot topics; rising, city and challenge hot lists
+- Video, topic, search, music and brand hot lists; hot words and trend words
+- Daily hot works ranking; daily and 7-day like-surge rankings
+
+**Weibo**
+- Hot search ranking — the top ten or the full fifty; brief and categories
+- Hot ranking timeline; entertainment, life and social rankings
+
+**X (Twitter)**
+- Trending topics, by country
+
+**TikTok**
+- Daily trending search words; trending hashtag list and detail
+- Top-content list; music chart; daily live rank
+
+**Bilibili**
+- Hot search; popular feed; comprehensive popular-video information
+- Huahuo creator and video rankings by category and industry
+
+**Zhihu**
+- Hot list; hot recommend feed; video list
+
+**Kuaishou**
+- Hot list with categories and board detail; hot-search person board
+- Brand, live, shopping and music rankings
+
+**Xiaohongshu**
+- Hot search; daily and 7-day hot-notes rankings; dark-horse viral notes
+- Hot account recommendations; creator inspiration feeds; Pugongying Content
+  Square leaderboards
+
+**WeChat**
+- Original viral article ranking; 100K+ reads article ranking
+- Reading-growth and overall strength rankings of Official Accounts
+- WeChat Index for a keyword
+
+**Reddit and Threads**
+- Reddit popular feed and trending searches; Threads top content for a keyword
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what is trending across Chinese social platforms right now")
+find_tools(q="今天全网热搜前十")
+find_tools(prefix="social/hotspot")        # the cross-platform rankings
+find_tools(q="hot search ranking", prefix="social/weibo")   # scoped to one platform
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Both English and Chinese phrasing work (热搜, 热榜, trending and hot list all
+route here). Always `describe_tool` before executing — some rankings are live,
+some are published once a day, and the parameters differ.
+
+<Note>
+  **Building with code?** Per-platform trending is available as fixed-contract
+  [Scenario Methods](/api-reference/scenario/overview) with automatic provider
+  failover:
+  [`social.x.trending`](/api-reference/scenario/methods/social-x-trending),
+  [`social.reddit.trending`](/api-reference/scenario/methods/social-reddit-trending),
+  [`social.tiktok.trending`](/api-reference/scenario/methods/social-tiktok-trending),
+  [`social.douyin.trending`](/api-reference/scenario/methods/social-douyin-trending),
+  [`social.kuaishou.trending`](/api-reference/scenario/methods/social-kuaishou-trending),
+  [`social.bilibili.trending`](/api-reference/scenario/methods/social-bilibili-trending),
+  [`social.weibo.trending`](/api-reference/scenario/methods/social-weibo-trending),
+  [`social.zhihu.trending`](/api-reference/scenario/methods/social-zhihu-trending).
+  The cross-platform rankings and WeChat Index are available through the
+  catalog tools above.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How fresh is a hot list?">
+    Live lists — Weibo hot search, Douyin hot search, X trends, Zhihu hot
+    list, Bilibili popular — are read from the platform at request time. The
+    daily rankings (Douyin hot works and like-surge, Xiaohongshu hot notes,
+    WeChat viral articles) describe the previous day and are refreshed once a
+    day.
+  </Accordion>
+  <Accordion title="Can I look back in time?">
+    Partly. The cross-platform keyword search covers a date range of up to 30
+    days, Weibo has a hot ranking timeline, and several daily rankings accept
+    a date. Live lists have no history; capture them on a schedule if you need
+    one.
+  </Accordion>
+  <Accordion title="Can I pick a country or city?">
+    X trends take a country, Douyin has a city hot list, and TikTok's search
+    accepts a region. Other lists return what the platform serves for its
+    default region.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,119 @@
+---
+title: "Product research workflows for AI agents"
+sidebarTitle: "Product research"
+description: "Chain keyword search, product details, SKUs, reviews and best-seller rankings across Amazon, Shopee, Taobao, JD.com and more into one product research loop."
+---
+
+Each marketplace page in this category describes one platform. Real product
+research rarely stays on one: search where the customers are, open the
+promising listings, read what buyers say, check what already sells, then
+compare across sites. This page shows how an agent chains those steps through
+AgentKey — `find_tools`, `describe_tool`, `execute_tool` at each hop — and
+which marketplace supports which step.
+
+## The research loop
+
+<Steps>
+  <Step title="Search by keyword">
+    Start where your customers are. Every platform here supports keyword
+    search;
+    [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) also accepts an ASIN, and
+    [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) can return category facets for a
+    keyword before you drill in. Use sort and price filters to keep the set small.
+  </Step>
+  <Step title="Shortlist">
+    Keep the item IDs (or ASINs) worth a closer look, plus the brand and
+    model: IDs do not travel between marketplaces, names do.
+  </Step>
+  <Step title="Open details and SKUs">
+    Pull the product detail for each shortlisted ID. Where variants matter,
+    Shopee exposes the SKU matrix and observed SKU models and
+    [Douyin Shop](/capabilities/ecommerce/douyin-shop-product-data-for-ai-agents) the SKU information;
+    [JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents) has a price-only lookup for when the
+    full listing is more than you need.
+  </Step>
+  <Step title="Read the reviews">
+    Amazon returns the top reviews; Shopee adds review tags and the rating
+    split per SKU model; [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents)
+    pairs reviews with buyer questions; JD.com and Douyin Shop return paginated
+    comments, and [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) product
+    reviews. Use a rating filter where one exists to go straight to complaints.
+  </Step>
+  <Step title="Check what is already selling">
+    Amazon's Best Sellers for a category path and its products-by-category
+    listing show the incumbents; TikTok Shop's hot-selling list does the same
+    for its Southeast Asian, Japanese and Mexican regions. Shop product lists on
+    Shopee, Taobao, JD.com, Douyin Shop and TikTok Shop show what a specific
+    competitor carries.
+  </Step>
+  <Step title="Compare across platforms">
+    Repeat search and detail on the other marketplaces with the brand and
+    model, then line the listings up — converting currencies first.
+  </Step>
+</Steps>
+
+## Which marketplace supports which step
+
+| Marketplace | Search | Details | SKUs | Reviews | Shop listings | Rankings |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Keyword or ASIN, per country | Yes | — | Top reviews | — | Best Sellers, products by category |
+| [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) | Keyword and category facets, per site | Yes, plus snapshot | Matrix, models, installments | Reviews, tags, split per model; shop reviews | Shop profile, categories, items | — |
+| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Keyword with category, brand, price, ship-to | Yes | — | — | — | — |
+| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Keyword, per region | Yes | — | Product reviews | Seller product list | Hot-selling list, products by category |
+| [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents) | Keyword, price range, Tmall-only | Yes | — | Reviews and buyer questions | Seller product list | — |
+| [JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents) | Keyword | Yes, plus price-only lookup | — | Comments | Shop product list | — |
+| [Douyin Shop](/capabilities/ecommerce/douyin-shop-product-data-for-ai-agents) | Keyword | Yes | SKU info | Comments | Shop product list | — |
+| [1688](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | Keyword (wholesale) | Yes | — | — | — | — |
+| [Xianyu](/capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents) | Keyword, sort by price, recency, seller credit | Yes | — | — | — | — |
+| [Xiaohongshu Shop](/capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents) | Keyword | — | — | — | — | — |
+
+The table reflects the catalog tools. Some platforms have Scenario Methods
+that go further — each platform page lists them.
+
+## Worked examples
+
+*"Find me something to sell: what is moving in kitchen gadgets on Amazon US,
+what do buyers complain about, and can I source it wholesale?"*
+Amazon Best Sellers for the category path → product detail for the top ASINs
+→ top reviews for each → search [1688](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) with the
+product's generic name → open the most promising wholesale listings.
+
+*"Is this Shopee Taiwan item cheaper than the same product on Taobao?"*
+Shopee item detail and SKU matrix → Taobao search with the brand and model,
+Tmall-only if you want official stores → Taobao detail for the best matches →
+convert New Taiwan dollars and yuan to one currency, then compare per SKU.
+
+*"Audit this JD.com shop."*
+JD shop product list by shop ID → current price for each item → comments for
+the items you care about → a table of price, rating signal and recurring
+complaints.
+
+## Comparing one product across Amazon, Shopee and Taobao
+
+The three biggest comparison targets behave differently; expect it:
+
+- **Identify the product by name, not by ID.** An ASIN means nothing on Shopee
+  or Taobao. Search each platform with the brand and model, then confirm the
+  match from the detail page.
+- **Pick the region first.** Amazon takes a country marketplace, Shopee a site,
+  Taobao none. The same product on two Amazon marketplaces is two listings
+  with two prices.
+- **Normalize the currency yourself.** Prices come back as each platform shows
+  them — the marketplace's currency on Amazon, the site's on Shopee, yuan on
+  Taobao. AgentKey does not convert.
+- **Variants are not aligned.** Shopee's SKU matrix, Taobao's item page and
+  Amazon's listing can split one product into different options; compare at
+  the option level when price per unit matters.
+- **Review and ranking signals differ in shape.** Amazon gives top reviews and
+  Best Sellers; Shopee gives reviews with tags and a per-model split; Taobao
+  gives reviews plus buyer questions, and a seller's list sorted by sales is
+  its closest thing to a ranking. Summarize each in its own terms first.
+
+## Building it in code
+
+Every step above maps to a [Scenario Method](/api-reference/scenario/overview)
+with a fixed contract and automatic provider failover — `product.search`,
+`product.get`, `product.reviews`, `product.rank`, `shop.products` — each
+scoped to one platform and returning a normalized Product or Review page, so a
+pipeline can send one request shape to Amazon, Shopee and Taobao and merge the
+results without per-platform parsing. Each platform page lists its methods.
