@@ -1,0 +1,88 @@
+---
+title: "Shopify store data for AI agents"
+sidebarTitle: "Shopify"
+description: "Profile any public Shopify store by domain, list and filter its products with every variant's SKU, price and stock, and search its catalog through AgentKey."
+---
+
+A large share of direct-to-consumer brands sell on Shopify, each from its own
+domain, so there is no single marketplace to search: every store is its own
+catalog. Through AgentKey your agent reads any public Shopify store by its
+domain — `allbirds.com`, `kith.com` — the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — without the store owner's
+Admin API access.
+
+## What you can ask
+
+- *"Is this brand's website a Shopify store? What currency and country does it sell from, and where does it ship?"*
+- *"List every product this store published in the last 30 days, with prices."*
+- *"Which products on kith.com are on sale right now and still in stock?"*
+- *"Show every variant of this product with its SKU, price and stock."*
+- *"Search this store for 'wool runners' and compare the matches."*
+- *"How many products and collections does this store publish, and which social accounts does it link to?"*
+- *"Filter this store's catalog to one vendor and product type."*
+- *"这个 Shopify 店铺最近上新了哪些商品？"*
+
+## What's covered
+
+**Store profile**
+- Name, description, currency, country and city, the countries it ships to,
+  published product and collection counts, and social links
+- A domain that is not a public Shopify store comes back as not found — a
+  quick check of whether a site runs on Shopify
+
+**Product catalog**
+- A store's products, page by page — title, vendor, type, tags, price range,
+  sale price, stock, images, options, and every variant's SKU, price and stock
+- Filters for vendor, product type, tag, title, SKU, price range, on sale, in
+  stock and recently published
+
+**Product details**
+- One product by its handle or product page URL, with the full variant list
+
+**Store search**
+- The store's own search for a keyword, returning its top matches with title,
+  vendor, type, tags, price range, sale price, stock and images
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="products this Shopify store published in the last 30 days")
+find_tools(q="这个 Shopify 店铺最近上新了哪些商品")
+find_tools(prefix="ecommerce/shopify")      # browse everything for Shopify
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Address a store by its domain or URL. Prices come back in the store's own
+currency, not converted. Catalog filters are applied to each page the store
+returns, so a filtered page can be short — or empty — while more pages remain;
+keep paging until the response says there are no more. Always `describe_tool`
+before executing: it shows every filter and the per-call cost.
+
+<Note>
+  **Building with code?** Shopify stores are available through the catalog
+  tools above only; there are no fixed-contract Scenario Methods for them yet.
+  See the [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need the store's permission or a Shopify API key?">
+    No. The tools read what a store's public storefront publishes, and AgentKey
+    holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it see orders, revenue or customers?">
+    No. Only the public storefront is covered — the store profile, products,
+    variants and stock status. Every tool is read-only.
+  </Accordion>
+  <Accordion title="Which stores work?">
+    Any public Shopify store, addressed by its domain or URL — a store on its
+    own domain is addressed by that domain. A domain that is not a public
+    Shopify store comes back as not found.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,95 @@
+---
+title: "Google Play data for AI agents"
+sidebarTitle: "Google Play"
+description: "Search Google Play by country, read an app's listing with installs and developer details, and filter its reviews by rating, keyword or language through AgentKey."
+---
+
+Google Play is where Android apps are found, and its listings show something
+the App Store does not: an install count. Apps are identified by package name
+rather than a numeric ID, and reviews can be narrowed by star rating, keyword,
+language, app version and device type before your agent reads a single one.
+Through AgentKey your agent reads Google Play search results, listings and
+reviews the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — choosing the store country where it matters.
+
+## What you can ask
+
+- *"Pull the latest one-star Google Play reviews for this app that mention 'crash' or 'login'."*
+- *"How many installs does this Android app have, and who is the developer?"*
+- *"Search Google Play in Germany for password managers and list their ratings, installs and prices."*
+- *"Get this app's Google Play listing — developer contact details, ratings count, description and screenshots."*
+- *"Show me Google Play reviews of this app from tablet users, newest first."*
+- *"What are Spanish-language reviewers saying about this app's latest version?"*
+- *"Pull Google Play reviews of this app from the last 30 days, sorted by rating."*
+- *"这款 App 在 Google Play 上最近的差评都在说什么？"*
+
+## What's covered
+
+**Search**
+- Apps by keyword in any store country, with a limit on how many results come
+  back
+- Package name, title, developer, rating, installs, price and category for
+  each result
+
+**App listings**
+- One app by package name in any store country — title, developer and
+  developer contact details, rating, ratings count, installs, price,
+  description, screenshots and more
+- Price and currency follow the store country you pick
+
+**Reviews**
+- Reviews by package name or store URL — rating, review text, date and
+  helpfulness votes
+- Filtered by star rating, keywords, languages, app version, device type
+  (mobile, tablet or Chromebook), an end date, or the last N days
+- Sorted by relevance, newest or rating
+- A `limit` on how many reviews come back; set it to fetch only as many as
+  you need
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="one-star Google Play reviews for this app that mention crashes")
+find_tools(q="这款 App 在 Google Play 上最近的差评")
+find_tools(prefix="ecommerce/google-play")  # browse everything for Google Play
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Google Play sits in the E-commerce branch of the catalog. Search results carry
+each app's package name, which the listing and review tools take, so search →
+listing → reviews needs no manual parsing; the review tool also accepts the
+store URL. Search and listings take a store country. Set a `limit` to fetch
+only as many reviews as you need. Always `describe_tool` before executing: it
+shows the country codes, the review filters and sort values, and the per-call
+cost.
+
+<Note>
+  **Building with code?** Google Play is available through the catalog tools
+  above only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Google Play Console account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it reply to, flag or post reviews?">
+    No. Every tool is read-only — search, listings and reviews. Nothing is
+    posted, answered or reported.
+  </Accordion>
+  <Accordion title="How do I find an app's package name?">
+    It is the `id` in the app's Google Play URL
+    (`play.google.com/store/apps/details?id=com.example.app`), and the search
+    tool returns it for every result; the review tool also accepts the store
+    URL as is. The same app on iOS is covered by the
+    [App Store](/capabilities/ecommerce/apple-app-store-data-for-ai-agents)
+    tools, which take Apple's numeric app ID instead.
+  </Accordion>
+</AccordionGroup>
