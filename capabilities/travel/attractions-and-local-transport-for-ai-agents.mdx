@@ -1,16 +1,17 @@
 ---
 title: "Attractions and local transport for AI agents"
 sidebarTitle: "Attractions & transport"
-description: "Booking.com attractions and tours with reviews and availability, taxi quotes between two places, plus currencies, exchange rates, languages and geocoding."
+description: "Booking.com attractions and tours, Tripadvisor places and reviews, taxi quotes between two places, plus currencies, exchange rates, languages and geocoding."
 ---
 
 Once the flight and the hotel are settled, the rest of the trip is what to do
 and how to get there — tours and tickets, their reviews and free dates, a taxi
 from the airport — plus the small facts every travel agent needs: which
 currencies and languages exist, today's exchange rate, the coordinates of an
-address. Through AgentKey your agent gets all of this from Booking.com with
-the same three calls — `find_tools`, `describe_tool`, `execute_tool`. Every
-operation is a lookup; nothing is booked.
+address. Through AgentKey your agent gets all of this from Booking.com, with
+Tripadvisor for hotels, restaurants and attractions and what reviewers say
+about them, through the same three calls — `find_tools`, `describe_tool`,
+`execute_tool`. Every operation is a lookup; nothing is booked.
 
 ## What you can ask
 
@@ -22,6 +23,7 @@ operation is a lookup; nothing is booked.
 - *"How much is a taxi from Heathrow to King's Cross at nine on Friday morning?"*
 - *"罗马有哪些热门景点和一日游？"*
 - *"Convert this price to Japanese yen at today's rate."*
+- *"What are the best-rated restaurants in Barcelona on Tripadvisor, and what do recent reviews say?"*
 
 ## What's covered
 
@@ -35,6 +37,13 @@ operation is a lookup; nothing is booked.
   review counts
 - Availability of a product on a date, and its availability calendar
 - Popular attractions near a hotel
+
+**Places and reviews on Tripadvisor**
+- Search hotels, restaurants and attractions in a destination — ratings,
+  review counts, contact details and pricing — with each type switchable on
+  or off
+- The latest reviews of a hotel, restaurant or attraction by its page URL —
+  rating, text, date and trip details — filtered by language, rating and date
 
 **Taxis**
 - Place search for pick-up and drop-off points, returning place ids
@@ -55,18 +64,21 @@ Pass the request in plain language and let the router pick the tool:
 find_tools(q="top-rated things to do in Barcelona this weekend")
 find_tools(q="罗马热门景点和一日游")
 find_tools(prefix="travel/booking")        # browse all Booking.com tools
+find_tools(prefix="travel/tripadvisor")    # Tripadvisor places and reviews
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
 The tools chain: attraction location search gives an id for the search and a
 slug for details, availability and reviews; taxi place search gives the place
-ids the taxi search takes. Always `describe_tool` before executing — the
-filter values for attractions come back inside the search response.
+ids the taxi search takes; Tripadvisor search takes a destination name, and
+its reviews tool takes the place's Tripadvisor page URL. Always `describe_tool`
+before executing — the filter values for attractions come back inside the
+search response.
 
 <Note>
-  **Building with code?** Attractions, taxis and the reference lookups are
-  available through the catalog tools above; there is no fixed-contract
+  **Building with code?** Attractions, Tripadvisor places and reviews, taxis
+  and the reference lookups are available through the catalog tools above; there is no fixed-contract
   [Scenario Method](/api-reference/scenario/overview) for them yet. Hotel and
   flight search do have methods — see [Hotels](/capabilities/travel/hotel-search-for-ai-agents)
   and [Flights](/capabilities/travel/flight-search-for-ai-agents).
