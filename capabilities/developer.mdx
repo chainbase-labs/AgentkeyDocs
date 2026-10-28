@@ -1,0 +1,52 @@
+---
+title: "Developer"
+sidebarTitle: "Overview"
+description: "GitHub repositories, issues and pull requests, developer profiles, contribution activity and trending projects."
+---
+
+The **Developer** category lets an agent research open-source software and the
+people who build it: open a repository's metadata and README, list its
+contributors, forks, issues and pull requests, search issues and pull requests
+across GitHub, profile a developer's repositories and contribution history, and
+see what is trending — from **AnyAPI**.
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="GitHub" href="/capabilities/developer/github-data-for-ai-agents">
+    Repositories, issues and pull requests, developers and trending.
+  </Card>
+</CardGroup>
+
+## Providers
+
+| Provider | Coverage |
+| --- | --- |
+| **AnyAPI** | GitHub repositories: metadata (stars, forks, language, topics, license, timestamps), README, contributors ranked by commits, forks, issues and pull requests with state, sort and update-date filters, the comment thread on an issue or pull request. Search: issues and pull requests across GitHub with GitHub's own search qualifiers. Developers: profile, public repositories, followers and following, pull requests, monthly contribution activity, the yearly contribution graph. Trending: repositories and developers, daily, weekly or monthly, optionally for one language |
+
+Tools are named `AnyAPI/github_<operation>` and take a repository URL, an issue
+or pull request URL, or a GitHub username, so most tasks need no id lookup
+first. The per-call cost is shown by `describe_tool`.
+
+<Note>
+  **Building with code?** The Developer category is available through the
+  catalog tools only; there are no fixed-contract Scenario Methods for it yet.
+  See the [Scenario Methods overview](/api-reference/scenario/overview) for the
+  categories that have them.
+</Note>
+
+## Browse the catalog
+
+```text
+find_tools(prefix="developer")
+find_tools(q="trending Rust repositories on GitHub this week")
+describe_tool("AnyAPI/github_trending_repositories")
+execute_tool("AnyAPI/github_trending_repositories", { ...params })   # copy describe_tool's execute_as
+```
+
+<Tip>
+  To read the code that accompanies a research paper, alphaXiv's
+  `read_files_from_github_repository` in the [Academic](/capabilities/academic)
+  category opens files in the paper's repository. To turn any other web page
+  into clean text, use [Scrape](/capabilities/scrape).
+</Tip>
