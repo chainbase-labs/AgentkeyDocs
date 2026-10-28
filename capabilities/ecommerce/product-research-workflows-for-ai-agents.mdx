@@ -19,7 +19,8 @@ which marketplace supports which step.
     search;
     [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) also accepts an ASIN, and
     [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) can return category facets for a
-    keyword before you drill in. Use sort and price filters to keep the set small.
+    keyword before you drill in, and Google Shopping returns offers from many
+    stores in one call. Use sort and price filters to keep the set small.
   </Step>
   <Step title="Shortlist">
     Keep the item IDs (or ASINs) worth a closer look, plus the brand and
@@ -37,14 +38,23 @@ which marketplace supports which step.
     split per SKU model; [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents)
     pairs reviews with buyer questions; JD.com and Douyin Shop return paginated
     comments, and [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) product
-    reviews. Use a rating filter where one exists to go straight to complaints.
+    reviews. [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents)
+    adds buyer reviews with a star distribution, and
+    [Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents),
+    [Target](/capabilities/ecommerce/target-product-data-for-ai-agents) and
+    [Best Buy](/capabilities/ecommerce/best-buy-product-data-for-ai-agents)
+    return pages of customer reviews. Use a rating filter where one exists to
+    go straight to complaints.
   </Step>
   <Step title="Check what is already selling">
     Amazon's Best Sellers for a category path and its products-by-category
     listing show the incumbents; TikTok Shop's hot-selling list does the same
-    for its Southeast Asian, Japanese and Mexican regions. Shop product lists on
-    Shopee, Taobao, JD.com, Douyin Shop and TikTok Shop show what a specific
-    competitor carries.
+    for its Southeast Asian, Japanese and Mexican regions, and
+    [eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents) sold listings show what actually sold
+    and at what price. Shop product lists on Shopee, Taobao, JD.com, Douyin
+    Shop, TikTok Shop, [Etsy](/capabilities/ecommerce/etsy-product-data-for-ai-agents) and any
+    [Shopify store](/capabilities/ecommerce/shopify-store-data-for-ai-agents), plus Amazon seller
+    storefronts, show what a specific competitor carries.
   </Step>
   <Step title="Compare across platforms">
     Repeat search and detail on the other marketplaces with the brand and
@@ -56,19 +66,48 @@ which marketplace supports which step.
 
 | Marketplace | Search | Details | SKUs | Reviews | Shop listings | Rankings |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Keyword or ASIN, per country | Yes | — | Top reviews | — | Best Sellers, products by category |
+| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Keyword or ASIN, per country | Yes, plus batch by ASIN and every seller's offer | Variants | Top reviews; filtered review pages | Seller profile and storefront | Best Sellers, products by category, today's deals |
 | [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) | Keyword and category facets, per site | Yes, plus snapshot | Matrix, models, installments | Reviews, tags, split per model; shop reviews | Shop profile, categories, items | — |
-| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Keyword with category, brand, price, ship-to | Yes | — | — | — | — |
-| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Keyword, per region | Yes | — | Product reviews | Seller product list | Hot-selling list, products by category |
+| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Keyword with category, brand, price, ship-to | Yes | Variants with stock | Buyer reviews, star distribution | — | — |
+| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Keyword, per region; search suggestions | Yes | — | Product reviews | Store and seller product lists; creator showcases | Hot-selling list, products by category |
+| [eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents) | Keyword with condition, format and price | Yes, with auction state | — | — | — | Sold listings |
+| [Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents) | Keyword with sort, price and facets | Yes | — | Customer reviews | — | Best-seller sort |
+| [Target](/capabilities/ecommerce/target-product-data-for-ai-agents) | Keyword with sort and price | Yes | — | Customer reviews | — | Best-seller sort |
+| [Best Buy](/capabilities/ecommerce/best-buy-product-data-for-ai-agents) | Keyword with sort and price | Yes | — | Customer reviews | — | Best-seller sort |
+| [Sam's Club](/capabilities/ecommerce/sams-club-product-data-for-ai-agents) | Keyword with sort and price | Yes, with member price and stock | — | — | — | — |
+| [IKEA](/capabilities/ecommerce/ikea-product-data-for-ai-agents) | Keyword (US store) | — | — | — | — | — |
+| [ASOS](/capabilities/ecommerce/asos-product-data-for-ai-agents) | Keyword with sort and price, per country store | Yes | Stock per size | — | — | — |
+| [Etsy](/capabilities/ecommerce/etsy-product-data-for-ai-agents) | Keyword, sort and price | Yes | Variations | — | Shop profile and listings | — |
+| [Shopify stores](/capabilities/ecommerce/shopify-store-data-for-ai-agents) | One store's own search | Yes | Every variant's SKU, price and stock | — | Store profile and full catalog | — |
 | [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents) | Keyword, price range, Tmall-only | Yes | — | Reviews and buyer questions | Seller product list | — |
 | [JD.com](/capabilities/ecommerce/jd-product-data-for-ai-agents) | Keyword | Yes, plus price-only lookup | — | Comments | Shop product list | — |
 | [Douyin Shop](/capabilities/ecommerce/douyin-shop-product-data-for-ai-agents) | Keyword | Yes | SKU info | Comments | Shop product list | — |
 | [1688](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | Keyword (wholesale) | Yes | — | — | — | — |
+| [Alibaba.com](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | Keyword (international wholesale) | — | — | — | — | — |
 | [Xianyu](/capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents) | Keyword, sort by price, recency, seller credit | Yes | — | — | — | — |
 | [Xiaohongshu Shop](/capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents) | Keyword | — | — | — | — | — |
 
 The table reflects the catalog tools. Some platforms have Scenario Methods
 that go further — each platform page lists them.
+
+## Prices, deals and services across stores
+
+Three more sources help at the edges of the loop:
+
+- **Google Shopping** — `find_tools(prefix="ecommerce/google-shopping")`. One
+  keyword search returns product offers from many stores — title, price,
+  store, rating and link — localized by country and language, filtered by
+  condition and sorted by price or rating. A quick first pass on who sells a
+  product and for how much.
+- **Slickdeals** — `find_tools(prefix="ecommerce/slickdeals")`. Deal search by
+  keyword with price, minimum-discount and hide-expired filters, sorted by
+  relevance, newest, popularity or price — title, price, list price, store,
+  community score and comment count — and a single deal's coupon code, views,
+  comments and description. Shows which discounts shoppers actually vote up.
+- **Fiverr** — `find_tools(prefix="ecommerce/fiverr")`. Gig listings from a
+  Fiverr search or category URL — titles, sellers, ratings and pricing — for
+  sizing up freelance services such as product photography or store setup the
+  same way you size up products.
 
 ## Worked examples
 
@@ -82,6 +121,11 @@ product's generic name → open the most promising wholesale listings.
 Shopee item detail and SKU matrix → Taobao search with the brand and model,
 Tmall-only if you want official stores → Taobao detail for the best matches →
 convert New Taiwan dollars and yuan to one currency, then compare per SKU.
+
+*"What is a fair price for a used Sony A7 III?"*
+[eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents) sold listings for the model, used only
+→ active Buy It Now listings for comparison → Google Shopping offers for the
+new price → Slickdeals for recent discounts on it.
 
 *"Audit this JD.com shop."*
 JD shop product list by shop ID → current price for each item → comments for
@@ -111,9 +155,13 @@ The three biggest comparison targets behave differently; expect it:
 
 ## Building it in code
 
-Every step above maps to a [Scenario Method](/api-reference/scenario/overview)
-with a fixed contract and automatic provider failover — `product.search`,
+On the platforms that have them, every step above maps to a
+[Scenario Method](/api-reference/scenario/overview) with a fixed contract and
+automatic provider failover — `product.search`,
 `product.get`, `product.reviews`, `product.rank`, `shop.products` — each
 scoped to one platform and returning a normalized Product or Review page, so a
 pipeline can send one request shape to Amazon, Shopee and Taobao and merge the
 results without per-platform parsing. Each platform page lists its methods.
+eBay, Etsy, Shopify stores, the US retailers, ASOS, the app stores and review
+sites, Alibaba.com, Google Shopping, Slickdeals and Fiverr are available
+through the catalog tools only for now.

@@ -1,0 +1,96 @@
+---
+title: "Target product data for AI agents"
+sidebarTitle: "Target"
+description: "Search Target by keyword with sort and price filters, read a product page's price, brand, description and images, and pull customer reviews through AgentKey."
+---
+
+Target's assortment is curated rather than exhaustive, and a large share of
+it is Target's own brands — home, apparel and grocery lines that exist
+nowhere else — which makes target.com a reference for style-led shopping
+research as much as for price checks. There is no public product API, and
+the storefront blocks automated browsing. Through AgentKey your agent reads
+public Target listings the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — search, product pages and customer reviews.
+
+## What you can ask
+
+- *"Search Target for a 4-cup coffee maker under 40 dollars, best sellers first."*
+- *"Find throw pillows on Target, highest rated first, and list the brands."*
+- *"What's new in kids' sneakers on Target? Title, price and brand."*
+- *"Open this Target product page — price, brand, rating, description and images."*
+- *"Is this Target listing one of Target's own brands or a national brand?"*
+- *"Pull the most helpful one-star reviews for this Target product."*
+- *"What do the newest reviews of this Target crib say about assembly?"*
+- *"Compare the price of AirPods Pro at Target, Walmart and Best Buy right now."*
+- *"Target 上这款咖啡机最近的评价怎么样？"*
+
+## What's covered
+
+**Search**
+- Keyword search with page controls and a price range
+- Sort by best match, best sellers, price, rating or newest
+- Title, price, rating and brand for each result
+
+**Product details**
+- One product by its page URL — title, price, brand, rating, description and
+  images
+
+**Reviews**
+- Customer reviews for a product by URL, a page of ten at a time — rating,
+  title, text, date, reviewer and verified-purchase badge
+- Newest first (the default), most helpful, or highest or lowest rating
+
+**Store and currency**
+- Coverage is target.com, Target's US site, priced in US dollars
+
+To check a Target price against other retailers, pair this page with
+[Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents) and
+[Best Buy](/capabilities/ecommerce/best-buy-product-data-for-ai-agents), whose
+tools work the same way; for furniture,
+[IKEA](/capabilities/ecommerce/ikea-product-data-for-ai-agents) search is the
+natural third stop.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="newest reviews of this Target coffee maker")
+find_tools(q="Target 上这款咖啡机的评价")
+find_tools(prefix="ecommerce/target")       # browse everything for Target
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Product and review tools take the product page URL, and search results carry
+it, so search → product → reviews needs no manual parsing. Prices come back as
+Target shows them, in US dollars, not converted. Always `describe_tool` before
+executing: it shows the accepted sort values, the page limits, and the
+per-call cost.
+
+<Note>
+  **Building with code?** Target is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Target account or Target Circle membership?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it place an order or check my nearest store's shelf?">
+    No. Every tool is read-only — search, product details and reviews — and
+    what comes back is what target.com shows online, not the stock of a
+    particular store near you.
+  </Accordion>
+  <Accordion title="Can it tell Target's own brands from national brands?">
+    Search results and product details carry the brand Target shows on the
+    listing, whether that is a national brand or one of Target's own labels.
+    From the brand field alone your agent can filter a result set to own-brand
+    items, or set an own-brand price next to the national brand's.
+  </Accordion>
+</AccordionGroup>

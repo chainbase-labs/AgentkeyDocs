@@ -1,0 +1,82 @@
+---
+title: "Etsy product data for AI agents"
+sidebarTitle: "Etsy"
+description: "Search Etsy listings, read a listing's price, variations, stock and materials, and look up an Etsy shop's sales, rating and active listings through AgentKey."
+---
+
+Etsy is the marketplace for handmade, vintage and print-on-demand goods, and
+much of what sells there is defined by the shop behind it — its sales, its
+reviews, its range. Etsy's Open API needs a registered app with an approved
+key. Through AgentKey your agent reads public Etsy listings and shops the same
+way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool`.
+
+## What you can ask
+
+- *"Search Etsy for personalized dog collars under 30 dollars, newest first."*
+- *"What are the top Etsy results for 'habit tracker 2027', and which of them are ads?"*
+- *"Open this Etsy listing: price, variations, materials and where it ships from."*
+- *"How many sales and reviews does this Etsy shop have, and what is its rating?"*
+- *"List everything this shop currently sells, with prices."*
+- *"Which listings in these results are discounted from their original price?"*
+- *"Etsy 上搜手工银饰，按价格从低到高。"*
+
+## What's covered
+
+**Search**
+- Keyword search — the same results an Etsy search or /market page shows —
+  sorted by relevance, newest or price, with a price range and page controls
+- Title, price, original price, image, shop, rating and an ad flag for each
+  listing
+
+**Listings**
+- One listing by id: price, images, description, rating and review count,
+  shop, category, variations, stock, ship-from country, favorites and
+  materials
+
+**Shops**
+- A shop by name: location, sales, active listings, rating, review count,
+  followers, description, logo and banner
+- A shop's active listings, a page at a time, with title, price, original
+  price and image
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="personalized dog collars on Etsy under 30 dollars")
+find_tools(q="Etsy 上搜手工银饰")
+find_tools(prefix="ecommerce/etsy")         # browse everything for Etsy
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+The listing id is the number in a listing URL, and search results carry both
+the id and the shop name, so search → listing → shop chains without manual
+parsing. Always `describe_tool` before executing: it shows the sort values,
+the currency of the price filters, and the per-call cost.
+
+<Note>
+  **Building with code?** Etsy is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an Etsy developer or seller account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read a shop's orders or revenue?">
+    No. Only what Etsy shows publicly — listings, the shop page with its sales
+    count and reviews summary. Every tool is read-only.
+  </Accordion>
+  <Accordion title="How fresh are prices and stock?">
+    Every call goes to Etsy at request time; nothing is served from a stale
+    archive. A price is what the listing shows at that moment.
+  </Accordion>
+</AccordionGroup>

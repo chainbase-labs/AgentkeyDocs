@@ -1,0 +1,89 @@
+---
+title: "Apple App Store data for AI agents"
+sidebarTitle: "App Store"
+description: "Search Apple's App Store in any storefront country, read an app's listing with its rating, price and version, and page through its reviews through AgentKey."
+---
+
+Apple's App Store runs a separate storefront for every country, and an app's
+rating, price and reviews differ from one storefront to the next. Apple's own
+APIs need a developer account. Through AgentKey your agent reads App Store
+search results, listings and reviews the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — choosing the storefront where
+it matters.
+
+## What you can ask
+
+- *"Find budget-tracker apps on the UK App Store and compare their ratings and prices."*
+- *"Search the US App Store for meditation apps and list each one's rating and ratings count."*
+- *"What does this app cost on the Japanese App Store, and which version is current there?"*
+- *"Open this app's App Store listing — developer, rating, description and screenshots."*
+- *"What are App Store users in Japan saying about this app?"*
+- *"Pull the latest App Store reviews for this app, page by page, and group them by star rating."*
+- *"Does this app rate higher on the App Store or on Google Play?"*
+- *"这款 App 在美区 App Store 的最新评价怎么样？"*
+
+## What's covered
+
+**Search**
+- Apps by keyword in any storefront country (US by default), with a limit on
+  how many results come back
+- App ID, title, developer, rating, ratings count, price and version for each
+  result
+
+**App listings**
+- One app by app ID in any storefront country — title, developer, rating,
+  price, version, description, screenshots and more
+- Price and currency follow the storefront you pick, so the same app ID
+  returns the local price in each country
+
+**Reviews**
+- Reviews by app ID and storefront country — rating, title and review text —
+  page by page with a cursor
+- A `limit` on how many reviews come back; set it to fetch only as many as
+  you need
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="latest App Store reviews for this app in Japan")
+find_tools(q="这款 App 在美区 App Store 的最新评价")
+find_tools(prefix="ecommerce/app-store")    # browse everything for the App Store
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+The App Store sits in the E-commerce branch of the catalog. Search results
+carry each app's ID, which the listing and review tools take, so search →
+listing → reviews needs no manual parsing. Every tool takes a storefront
+country. Set a `limit` to fetch only as many reviews as you need. Always
+`describe_tool` before executing: it shows the country codes, the cursor for
+the next page of reviews, and the per-call cost.
+
+<Note>
+  **Building with code?** The App Store is available through the catalog tools
+  above only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an Apple developer account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it reply to, flag or post reviews?">
+    No. Every tool is read-only — search, listings and reviews. Nothing is
+    posted, answered or reported.
+  </Accordion>
+  <Accordion title="Can I read another country's storefront?">
+    Yes. Every App Store tool takes a storefront country, so search results,
+    listings and reviews come back as users in that market see them, with the
+    price in that storefront's currency. The same app on Android is covered by
+    the [Google Play](/capabilities/ecommerce/google-play-data-for-ai-agents)
+    tools, which take a package name instead of an app ID.
+  </Accordion>
+</AccordionGroup>

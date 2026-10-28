@@ -1,14 +1,16 @@
 ---
 title: "Hotel search for AI agents"
 sidebarTitle: "Hotels"
-description: "Booking.com hotel search: destinations, availability and prices for your dates, rooms, photos, facilities, policies, review scores and guest Q&A."
+description: "Booking.com, Google Hotels and Airbnb search for your dates: availability and prices, rooms, facilities, policies, review scores, guest Q&A and rentals."
 ---
 
 Finding a hotel is a conversation — a city, dates, who is travelling, a
 budget, then the questions a guest actually asks: what are the rooms like, is
 breakfast included, what do recent guests say, can children stay. Through
-AgentKey your agent runs that whole conversation against Booking.com data with
-the same three calls — `find_tools`, `describe_tool`, `execute_tool`. Every
+AgentKey your agent runs that whole conversation against Booking.com data —
+with Google Hotels to compare what each booking site charges and Airbnb for
+holiday rentals — using the same three calls: `find_tools`, `describe_tool`,
+`execute_tool`. Every
 operation is a lookup: your agent searches, prices and reads, and never places
 a reservation.
 
@@ -22,6 +24,8 @@ a reservation.
 - *"东京新宿附近，12 月 24 到 26 日，两大一小，有哪些酒店？"*
 - *"Does this hotel take cards, or is payment at the property?"*
 - *"Is there any night between 1 and 30 March with a room free at this hotel?"*
+- *"On Google Hotels, what does each booking site charge for this hotel for 3 to 5 April?"*
+- *"Find an Airbnb in Lisbon for four adults with at least two bedrooms that allows pets."*
 
 ## What's covered
 
@@ -55,6 +59,18 @@ a reservation.
   paging; the filter metadata for reviews
 - Questions guests have asked the property, with the answers
 
+**Price comparison on Google Hotels**
+- Hotel search by destination or landmark for your dates, adults and each
+  child's age — Google property ID, nightly price, rating, review count,
+  coordinates, star class and photos — in a chosen currency
+- One hotel by property ID — address, phone, website, rating, nightly price,
+  the price from each booking site, amenities and check-in times
+
+**Holiday rentals**
+- Airbnb listing search by location and dates for adults, children, infants
+  and pets, with a price range and minimum beds, bedrooms and bathrooms, in a
+  chosen currency — name, total-stay price label, rating and host
+
 ## How to use it
 
 Pass the request in plain language and let the router pick the tool:
@@ -63,14 +79,17 @@ Pass the request in plain language and let the router pick the tool:
 find_tools(q="hotels in Lisbon for two adults, 12 to 15 November")
 find_tools(q="东京新宿附近 12 月 24 到 26 日的酒店")
 find_tools(prefix="travel/booking")        # browse all Booking.com tools
+find_tools(prefix="travel/google-hotels")  # also travel/airbnb
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
 The tools chain: destination search gives a destination id, the hotel search
 gives hotel ids, and the detail, room, policy and review tools take a hotel
-id. Always `describe_tool` before executing — it shows which id each tool
-expects and the date format it wants.
+id. Google Hotels search returns the property ID its detail tool takes, and
+the Google Hotels and Airbnb searches take a place name directly. Always
+`describe_tool` before executing — it shows which id each tool expects and the
+date format it wants.
 
 <Note>
   **Building with code?** The same capability is available as fixed-contract
@@ -79,7 +98,8 @@ expects and the date format it wants.
   searches hotels around a coordinate for dates and guests and returns a
   normalized hotel page, and
   [`travel.location.search`](/api-reference/scenario/methods/travel-location-search)
-  finds the destination first.
+  finds the destination first. Google Hotels and Airbnb are available through
+  the catalog tools above only.
 </Note>
 
 ## FAQ
@@ -95,6 +115,11 @@ expects and the date format it wants.
     lookups (see
     [Attractions and local transport](/capabilities/travel/attractions-and-local-transport-for-ai-agents)).
     Distances and temperatures can be metric or imperial.
+  </Accordion>
+  <Accordion title="Can it compare prices across booking sites?">
+    Yes. A Google Hotels detail lookup returns the nightly price each booking
+    site offers for the hotel and dates you give, alongside the hotel's own
+    details.
   </Accordion>
   <Accordion title="How current are prices and availability?">
     Fetched at request time for the dates and party you give. Rates and

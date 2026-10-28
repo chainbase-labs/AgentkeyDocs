@@ -1,0 +1,90 @@
+---
+title: "Trustpilot reviews for AI agents"
+sidebarTitle: "Trustpilot"
+description: "Read Trustpilot reviews for a company by brand name or URL, filtered by reviewer country, language, star rating, date and verified status through AgentKey."
+---
+
+Trustpilot is where consumers rate the companies and brands they buy from,
+and a brand's Trustpilot page is often the first thing a shopper checks
+before trusting an unfamiliar store. Each review carries a star rating and
+the reviewer's country and language, and verified reviews can be read on
+their own. Through AgentKey your agent reads Trustpilot reviews the same way
+it reads everything else — `find_tools`, `describe_tool`, `execute_tool` —
+narrowing to the countries, languages and ratings that matter.
+
+## What you can ask
+
+- *"Summarize recent Trustpilot reviews of nike.com from US reviewers, verified reviews only."*
+- *"What are the most common complaints in one-star Trustpilot reviews of this brand this year?"*
+- *"Pull the latest German-language Trustpilot reviews of this company."*
+- *"Open this Trustpilot review page and give me the most relevant reviews from UK reviewers."*
+- *"How have Trustpilot reviews of this retailer changed since January?"*
+- *"Compare what French and Italian reviewers say about this airline on Trustpilot."*
+- *"Give me verified five-star Trustpilot reviews of this brand, most recent first."*
+- *"这家品牌在 Trustpilot 上最近的差评都在说什么？"*
+
+## What's covered
+
+**Identifiers**
+- Reviews for a company by its brand name or by the URL of its Trustpilot
+  review page
+
+**Filters**
+- Reviewer countries, languages and star rating
+- A start date, to read only reviews posted since then
+- Verified reviews only
+
+**Ordering and limit**
+- Trustpilot's automatic ordering by default, or relevancy or most recent
+- A `limit` on how many reviews come back; set it to fetch only as many as
+  you need
+
+**What comes back**
+- Star rating, review text, date and reviewer details for each review
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="recent verified Trustpilot reviews of nike.com from US reviewers")
+find_tools(q="这家品牌在 Trustpilot 上最近的差评")
+find_tools(prefix="ecommerce/trustpilot")   # browse everything for Trustpilot
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Trustpilot sits in the E-commerce branch of the catalog. The review tool takes
+either a brand name or the review-page URL, so a link copied from Trustpilot
+works as is. Set a `limit` to fetch only as many reviews as you need. Always
+`describe_tool` before executing: it shows the country and language codes, the
+accepted ordering values, the date format for the start date, and the
+per-call cost.
+
+<Note>
+  **Building with code?** Trustpilot is available through the catalog tools
+  above only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Trustpilot business account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it reply to, flag or post reviews?">
+    No. The tool is read-only — reviews come out, nothing goes in. Nothing is
+    posted, answered or reported.
+  </Accordion>
+  <Accordion title="Can it search for companies or read a company profile?">
+    Not today. Trustpilot coverage is the review tool only — there is no
+    company search or company profile tool — so start from a brand name or a
+    review-page URL you already have. Software products are reviewed on
+    [G2](/capabilities/ecommerce/g2-reviews-for-ai-agents) and
+    [Capterra](/capabilities/ecommerce/capterra-reviews-for-ai-agents), each
+    with its own page.
+  </Accordion>
+</AccordionGroup>

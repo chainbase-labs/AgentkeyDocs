@@ -1,7 +1,7 @@
 ---
 title: "More social platforms"
 sidebarTitle: "More platforms"
-description: "Facebook, Telegram, Lemon8, IMDb, Toutiao, Xigua, Pipixia, Douban, QQ Huxuan, Youku, Yiche, Autohome and Dongchedi data for AI agents through AgentKey."
+description: "Facebook, Telegram, Bluesky, Hacker News, Substack, Pinterest, IMDb and other global networks, plus Toutiao, Douban and more Chinese sites, for AI agents."
 ---
 
 Beyond the platforms with their own pages, the Social category covers a long
@@ -16,16 +16,34 @@ them has fixed-contract Scenario Methods yet.
 
 Browse with `find_tools(prefix="social/facebook")`.
 
-- Public post search by keyword, with an optional inclusive date range
-- A profile's public posts, after resolving the profile ID from its path
+- Public post search by keyword, with an optional inclusive date range or a
+  location filter
+- A single post by URL with its engagement counts; the spoken transcript of a
+  video post
+- A profile's public posts, after resolving the profile ID from its path; a
+  page's reels and recent photos
 - Comments on a post and the replies under a comment
+- Page profile — likes, followers, category, about — and its public contact
+  details (email, phone, website, address); page lookup by name; the
+  followers of a page or profile
+- Recent posts in a public group
+- Events — keyword search, the events in a city or hosted by a page, and full
+  event details with schedule, venue, hosts and attendance
+- Marketplace — listing search near a location with price, condition,
+  delivery, recency and availability filters; a single listing's details;
+  place names resolved to Marketplace locations
+- Meta Ad Library — ad search by keyword, the ads a company is running,
+  advertiser search, and a single ad with its creative variants, call to
+  action, platforms and run dates, plus the transcript of a video ad
 
 ### Telegram
 
 Browse with `find_tools(prefix="social/telegram")`.
 
-- Channel info, single or in batch; similar channels
-- A channel's posts, paginated; search for posts inside a channel
+- Channel info, single or in batch; similar channels; a channel's exact
+  subscriber count and how many photos, videos, files and links it has posted
+- A channel's posts, paginated, with views and reactions; search for posts
+  inside a channel
 - A single post and its comments (discussion)
 
 ### Lemon8
@@ -48,6 +66,65 @@ Browse with `find_tools(prefix="social/imdb")`.
   trivia, recommendations of similar titles
 - Top 250 movie and TV charts; news by category; Prime Video streaming picks
 - Language and country preferences on every call
+
+### Bluesky
+
+Browse with `find_tools(prefix="social/bluesky")`.
+
+- Profile by handle — display name, bio, follower and post counts
+- An account's recent posts; a single post by URL — text, author handle and
+  like, reply and repost counts
+
+### Truth Social
+
+Browse with `find_tools(prefix="social/truth-social")`.
+
+- Profile by handle — display name, bio, follower, following and post counts
+- An account's recent posts, paginated; a single post by URL — text, likes,
+  comments, shares and timestamp
+
+### Hacker News
+
+Browse with `find_tools(prefix="social/hacker-news")`.
+
+- Keyword search — matching stories with title, link, author, points and
+  comment count, optionally narrowed to stories or comments
+- A story by ID and the comments under it
+- User profile by username — karma, bio and account details
+
+### Substack
+
+Browse with `find_tools(prefix="social/substack")`.
+
+- A publication's recent posts by its URL or custom domain, or a single post
+  by URL
+- Title, subtitle, publish date, paywall status, word count, reactions,
+  comments and restacks, author profile and publication details
+- The full article body as text, HTML and Markdown, and optionally the public
+  comment threads
+- Filters for post type (newsletter, podcast, thread), a date range, free
+  posts only, and minimum reactions, comments or word count
+
+### Pinterest
+
+Browse with `find_tools(prefix="social/pinterest")`.
+
+- Keyword search returning pins, video pins, boards or profiles — titles,
+  images and links — page by page
+
+### Snapchat
+
+Browse with `find_tools(prefix="social/snapchat")`.
+
+- Public profile by username or profile URL — display name, bio, subscriber
+  count and recent public content
+
+### Linktree
+
+Browse with `find_tools(prefix="social/linktree")`.
+
+- A public Linktree page by URL — title, bio, picture, contact email, linked
+  social accounts, and every link with its destination
 
 ## China
 
@@ -129,6 +206,7 @@ Browse with `find_tools(prefix="social/dongchedi")`.
 
 ```text
 find_tools(q="recent posts in this Telegram channel")
+find_tools(q="what Hacker News is saying about this launch")
 find_tools(q="豆瓣上这部电影的短评")
 find_tools(prefix="social/imdb")           # browse one platform
 describe_tool("<returned Provider/Operation>")

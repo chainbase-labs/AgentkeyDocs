@@ -1,0 +1,117 @@
+---
+title: "GitHub data for AI agents"
+sidebarTitle: "GitHub"
+description: "GitHub repositories, READMEs, contributors, issues and pull requests, issue search, developer profiles and activity, and trending repos for AI agents."
+---
+
+GitHub is where open-source software is built in public: who maintains a
+project, how active it is, what users keep reporting and who is rising are all
+there, spread across repository pages, issue threads, profiles and the Trending
+page. GitHub's own API asks for a token and rations requests per hour, and
+Trending has no official API at all. Through AgentKey your agent reads public
+GitHub data the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — starting from a repository URL or a
+username.
+
+## What you can ask
+
+- *"What is this repository — stars, language, license, and when was it last updated?"*
+- *"Read the README of this repo and summarize what it does and how to install it."*
+- *"Who are the top contributors to llama.cpp, and where do they work?"*
+- *"List the open issues on this repository updated since 1 October, most commented first."*
+- *"Find merged pull requests labelled 'bug' in openai/whisper this year."*
+- *"Which forks of this project have the most stars?"*
+- *"Show this developer's profile, their repositories and the pull requests they opened in the last three months."*
+- *"GitHub 本周最火的 Python 项目有哪些？"*
+
+## What's covered
+
+**Repositories**
+- Metadata by repository URL — stars, forks, primary language, topics,
+  license and timestamps
+- The README of the default branch, as the Markdown the maintainers wrote
+- Contributors ordered by commit count, with each one's login and profile link
+- Forks sorted by newest, oldest or most starred, with each fork's owner,
+  description, stars, language and last push
+
+**Issues and pull requests**
+- A repository's issues and pull requests, filtered by state (open, closed or
+  all) and update date and sorted by creation, last update or comment count —
+  with author, state, labels, counts and body
+- The comments on one issue or pull request, oldest first, with each
+  commenter's relationship to the repository and the reactions
+- Search across GitHub with GitHub's own qualifiers — `repo:`, `is:pr`,
+  `is:issue`, `author:`, `label:`, `created:` and the rest — sorted by best
+  match, comments, reactions, creation or last update
+
+**Developers**
+- Public profile by username — name, bio, company, location, followers and
+  repository counts
+- A developer's public repositories — name, description, language, stars and
+  forks — sorted by creation, last update, last push or name
+- Followers and the accounts a developer follows, page by page
+- The pull requests a developer has opened, within an optional date range
+- Contribution activity for a year — monthly summaries of commits, pull
+  requests and issues with repository links — and the contribution graph with
+  per-day counts
+
+**Trending**
+- Trending repositories — rank, stars, stars gained, language and
+  description — for today, this week or this month, optionally for one
+  language
+- Trending developers with their most popular repository, by language and
+  time range
+
+A typical task chains these: start from Trending or a search, open the
+repository and its README, list its contributors, then profile the ones that
+matter.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="top contributors to this GitHub repository")
+find_tools(q="GitHub 本周最火的 Python 项目")
+find_tools(prefix="developer/github")      # browse everything for GitHub
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Repository tools take a URL such as `https://github.com/owner/repo`, the
+comment tool takes an issue or pull request URL, and developer tools take a
+username — no numeric ids. List tools page by number or by cursor; keep the
+page size the same while walking pages. Always `describe_tool` before
+executing — it shows each tool's filters, sort options and per-call cost.
+
+<Note>
+  **Building with code?** GitHub is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a GitHub token?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it read private repositories or act on GitHub?">
+    No. Only public repositories, issues, pull requests and profiles are
+    available, and every tool is read-only — no issues opened, comments posted
+    or stars given.
+  </Accordion>
+  <Accordion title="Can it read source files?">
+    The README is covered; other files are not. For a research paper's code
+    repository, alphaXiv's `read_files_from_github_repository` in
+    [Academic](/capabilities/academic) opens files directly, and
+    [Scrape](/capabilities/scrape) can fetch any other public file URL as text.
+  </Accordion>
+  <Accordion title="How fresh is the data?">
+    Every call goes to GitHub at request time; nothing is served from a stale
+    archive. Trending reflects what GitHub's Trending page shows at that
+    moment.
+  </Accordion>
+</AccordionGroup>
