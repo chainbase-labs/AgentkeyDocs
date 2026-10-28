@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "AgentKey",
-  "description": "One key that connects your AI agent to web search, scraping, social media, e-commerce, crypto, finance, business, jobs, travel, weather and academic data — one subscription, zero setup.",
+  "description": "One key that connects your AI agent to web search, scraping, social media, e-commerce, crypto, finance, business, jobs, travel, weather, academic and developer data — one subscription, zero setup.",
   "colors": {
     "primary": "#5B5BD6",
     "light": "#8B8BF0",
@@ -136,7 +136,16 @@
                       "capabilities/ecommerce/amazon-product-data-for-ai-agents",
                       "capabilities/ecommerce/shopee-product-data-for-ai-agents",
                       "capabilities/ecommerce/aliexpress-product-data-for-ai-agents",
-                      "capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents"
+                      "capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents",
+                      "capabilities/ecommerce/ebay-product-data-for-ai-agents",
+                      "capabilities/ecommerce/walmart-product-data-for-ai-agents",
+                      "capabilities/ecommerce/target-product-data-for-ai-agents",
+                      "capabilities/ecommerce/best-buy-product-data-for-ai-agents",
+                      "capabilities/ecommerce/sams-club-product-data-for-ai-agents",
+                      "capabilities/ecommerce/ikea-product-data-for-ai-agents",
+                      "capabilities/ecommerce/asos-product-data-for-ai-agents",
+                      "capabilities/ecommerce/etsy-product-data-for-ai-agents",
+                      "capabilities/ecommerce/shopify-store-data-for-ai-agents"
                     ]
                   },
                   {
@@ -148,6 +157,16 @@
                       "capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents",
                       "capabilities/ecommerce/douyin-shop-product-data-for-ai-agents",
                       "capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents"
+                    ]
+                  },
+                  {
+                    "group": "App stores & reviews",
+                    "pages": [
+                      "capabilities/ecommerce/apple-app-store-data-for-ai-agents",
+                      "capabilities/ecommerce/google-play-data-for-ai-agents",
+                      "capabilities/ecommerce/trustpilot-reviews-for-ai-agents",
+                      "capabilities/ecommerce/g2-reviews-for-ai-agents",
+                      "capabilities/ecommerce/capterra-reviews-for-ai-agents"
                     ]
                   },
                   "capabilities/ecommerce/product-research-workflows-for-ai-agents"
@@ -225,6 +244,13 @@
                   "capabilities/academic",
                   "capabilities/academic/academic-paper-search-for-ai-agents",
                   "capabilities/academic/researcher-and-institution-data-for-ai-agents"
+                ]
+              },
+              {
+                "group": "Developer",
+                "pages": [
+                  "capabilities/developer",
+                  "capabilities/developer/github-data-for-ai-agents"
                 ]
               }
             ]
