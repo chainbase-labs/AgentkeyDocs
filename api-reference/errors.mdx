@@ -10,7 +10,7 @@ Errors from the catalog tools come back as the tool result, as JSON with
 
 | Symptom | `error_type` / shape | Cause | Resolution |
 | --- | --- | --- | --- |
-| `401` | `unauthorized` | Missing, revoked or misconfigured master key | Re-create the `ak_...` key in the [console](https://console.agentkey.app) and re-run setup — see [Authentication](/authentication) |
+| `401` | `unauthorized` | Missing, revoked or misconfigured master key | Re-create the `ak_...` key on the console's [API Keys](https://console.agentkey.app/api-keys) page and re-run setup — see [Authentication](/authentication) |
 | `402` | `insufficient_credits` with `action` (`upgrade` or `topup_or_upgrade`) and a console URL | Monthly allowance and extra credits used up | Top up or upgrade in the console — see [Subscription & Billing](/concepts/subscription). No upstream call was made |
 | Unknown tool, with suggestions | fuzzy-match suggestions in the result | Typo or guessed name | Use a suggestion, or re-run [`find_tools`](/api-reference/find-tools). Don't retry blindly |
 | Missing / invalid params | `400` from the provider or a validation message | Skipped the describe step | Always [`describe_tool`](/api-reference/describe-tool) first and copy `execute_as` |
