@@ -63,12 +63,12 @@ machine-generated. Discover names with `find_tools`; don't hard-code them.
 ## Browsing instead of searching
 
 `find_tools(prefix="…")` walks the tree one level at a time. With no arguments
-it returns the eleven top-level categories: `search`, `scrape`, `social`,
-`crypto`, `finance`, `ecommerce`, `business`, `weather`, `travel`, `jobs`,
-`academic`. The second level is a platform for social and e-commerce
-(`social/twitter`, `ecommerce/taobao`), a capability for crypto
-(`crypto/market`) and the provider elsewhere (`search/serper`). Pass both `q`
-and `prefix` to search inside one subtree.
+it returns the top-level categories: `search`, `scrape`, `social`, `crypto`,
+`finance`, `ecommerce`, `business`, `weather`, `travel`, `jobs`, `academic`,
+`developer`. The second level is a platform for social, e-commerce and
+developer (`social/twitter`, `ecommerce/taobao`, `developer/github`), a
+capability for crypto (`crypto/market`) and the provider elsewhere
+(`search/serper`). Pass both `q` and `prefix` to search inside one subtree.
 
 <Warning>
   `list_tools` is deprecated. It did the same tree walk and still answers, but

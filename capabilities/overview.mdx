@@ -3,8 +3,8 @@ title: "Capabilities Overview"
 description: "Everything your agent can reach through AgentKey."
 ---
 
-AgentKey's catalog holds thousands of tools from dozens of providers, grouped into eleven
-categories. Each tool is named `Provider/Operation` and is reached through the
+AgentKey's catalog holds thousands of tools from dozens of providers, grouped by
+category. Each tool is named `Provider/Operation` and is reached through the
 same [discover → describe → execute](/concepts/discover-describe-execute) flow.
 
 <CardGroup cols={2}>
@@ -27,19 +27,23 @@ same [discover → describe → execute](/concepts/discover-describe-execute) fl
     Companies, people, funding rounds and investors.
   </Card>
   <Card title="E-commerce" icon="shopping-cart" href="/capabilities/ecommerce">
-    Product search, details, reviews and rankings on the major marketplaces.
+    Product search, details, reviews and rankings on the major marketplaces,
+    retailers, app stores and review sites.
   </Card>
   <Card title="Weather" icon="cloud-sun" href="/capabilities/weather">
     Current conditions, forecasts, air quality, alerts and typhoon tracks.
   </Card>
   <Card title="Travel" icon="plane" href="/capabilities/travel">
-    Hotels, flights, car rentals, attractions and taxis.
+    Hotels, holiday rentals, flights, car rentals, attractions and taxis.
   </Card>
   <Card title="Jobs" icon="briefcase" href="/capabilities/jobs">
     Job search, posting details and salary estimates.
   </Card>
   <Card title="Academic" icon="graduation-cap" href="/capabilities/academic">
     Papers, researchers, institutions, venues and patents.
+  </Card>
+  <Card title="Developer" icon="code" href="/capabilities/developer">
+    GitHub repositories, issues and pull requests, developers and trending.
   </Card>
   <Card title="Account" icon="wallet" href="/api-reference/account">
     Credits and upstream health via `agentkey_account` — always free.
@@ -61,6 +65,7 @@ same [discover → describe → execute](/concepts/discover-describe-execute) fl
 | Travel | `find_tools(prefix="travel")` |
 | Jobs | `find_tools(prefix="jobs")` |
 | Academic | `find_tools(prefix="academic")` |
+| Developer | `find_tools(prefix="developer")`, or `find_tools(prefix="developer/github")` |
 | Account | `execute_tool("agentkey_account")` — free |
 
 Browsing by prefix is for orientation. When you know what you want, pass the

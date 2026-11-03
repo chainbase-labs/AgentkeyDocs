@@ -3,6 +3,8 @@ title: "Quickstart"
 description: "Install AgentKey, connect your key, and make your first tool call in minutes."
 ---
 
+import CreateApiKey from "/snippets/create-api-key.mdx";
+
 This guide takes you from nothing to your agent's first live tool call.
 
 ## 1. Install AgentKey
@@ -57,18 +59,13 @@ Pick whichever fits how you work — each takes about a minute.
   [Supported Agents](/connect/supported-agents) for the full list.
 </Note>
 
-## 2. Get your key and pick a plan
+## 2. Sign in, pick a plan, get a key
 
 <Steps>
-  <Step title="Create a key">
-    Sign in to the [console](https://console.agentkey.app) and create a master key
-    (`ak_...`). Treat it like a password — it authenticates every request and
-    is tied to your subscription.
-
-    <Warning>
-      Never commit your key to source control or paste it into a chat. Store it as
-      instructed by the setup flow.
-    </Warning>
+  <Step title="Sign in">
+    The installer (and the npx path) opens a browser tab to sign in to
+    AgentKey — that is the authentication, with no key to copy. See
+    [Authentication](/authentication).
   </Step>
   <Step title="Pick a plan">
     AgentKey is **subscription-based**. Choose a plan from the console — each plan
@@ -76,11 +73,18 @@ Pick whichever fits how you work — each takes about a minute.
     credits or upgrade when you need more. No per-provider signups. Plans and
     prices are on the [pricing page](https://agentkey.app/pricing.html).
   </Step>
-  <Step title="Sign in">
-    The installer (and the npx path) opens a browser tab to sign in to
-    AgentKey — that is the authentication. Only clients that cannot do MCP OAuth
-    need an API key pasted into their config. See
-    [Authentication](/authentication).
+  <Step title="Get an API key (only if you need one)">
+    Calling the [REST API](/api-reference/scenario/quickstart) from code, or
+    using an MCP client that can't sign in with OAuth? Those take a master key
+    (`ak_...`):
+
+    <CreateApiKey />
+
+    <Warning>
+      Treat the key like a password: it authenticates every request and spends
+      your credits. Never commit it to source control or paste it into a chat —
+      keep it in an environment variable or a secret manager.
+    </Warning>
   </Step>
 </Steps>
 

@@ -1,7 +1,7 @@
 ---
 title: "AliExpress product data for AI agents"
 sidebarTitle: "AliExpress"
-description: "Search AliExpress by category, brand, price and ship-to in your currency and locale, and read item details from the US or global site through AgentKey."
+description: "Search AliExpress by category, brand, price and ship-to in your currency, read item details with variants and stock, and pull buyer reviews through AgentKey."
 ---
 
 AliExpress is the cross-border storefront of the Alibaba group, and what a
@@ -19,26 +19,38 @@ IP address.
 - *"Show AliExpress results for 'mechanical keyboard' from the Keychron brand, priced in euros."*
 - *"Open this AliExpress item on the US site and summarize the listing."*
 - *"Compare AliExpress search prices for 'USB-C hub' in USD and in EUR."*
+- *"What do buyers in Germany say about this AliExpress product? Show the star distribution."*
+- *"Which variants of this item are in stock, and how long is delivery to France?"*
 
 ## What's covered
 
 **Search**
-- Keyword query with page and sort controls
+- Keyword query with page and sort controls, including best sellers (most
+  orders) first
 - Narrow by category, brand, seller location, product attribute and price
   range
 
 **Product details**
 - A listing overview by item ID from the US site or the global site — for
   catalog review, comparison or downstream analysis
+- A full product record by ID for a ship-to country and currency — price,
+  original price, rating, review count, images, options, variants with stock,
+  specifications, store, ship-from country and delivery estimate
+
+**Reviews**
+- Buyer reviews by product ID, a page at a time — rating, text, buyer country,
+  date, the variant bought and photos — with the product's total reviews,
+  average rating and star distribution
 
 **Region, currency & language**
 - Search accepts a region (the ship-to country), a currency and a locale, so
   prices and titles come back the way a shopper in that market would see them
-- Product details choose between the US site and the global site only; they
-  take no currency or locale
+- One product-detail route chooses between the US site and the global site;
+  the other takes a ship-to country and a currency, which change the price,
+  stock and delivery estimate
 
-Not covered today: reviews, store pages and rankings for AliExpress. If you
-need review signal for a cross-border product, pair this page with
+Not covered today: store pages and rankings for AliExpress. To compare a
+cross-border product against other marketplaces, pair this page with
 [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) or
 [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents).
 
@@ -65,6 +77,7 @@ accepted values, the search filters, and the per-call cost.
   failover:
   [`ecommerce.aliexpress.product.search`](/api-reference/scenario/methods/ecommerce-aliexpress-product-search),
   [`ecommerce.aliexpress.product.get`](/api-reference/scenario/methods/ecommerce-aliexpress-product-get).
+  Buyer reviews are available through the catalog tools above.
 </Note>
 
 ## FAQ
@@ -75,9 +88,10 @@ accepted values, the search filters, and the per-call cost.
     subscription.
   </Accordion>
   <Accordion title="Which countries and currencies can I query?">
-    Search takes region, currency and locale parameters; product details take
-    a site, US or global. Run `describe_tool` to see the accepted codes rather
-    than assuming a destination is supported.
+    Search takes region (ship-to), currency and locale parameters; one product
+    route takes a site, US or global, and the other a ship-to country and
+    currency. Run `describe_tool` to see the accepted codes rather than
+    assuming a destination is supported.
   </Accordion>
   <Accordion title="How fresh are prices and availability?">
     Every call goes to AliExpress at request time; nothing is served from a

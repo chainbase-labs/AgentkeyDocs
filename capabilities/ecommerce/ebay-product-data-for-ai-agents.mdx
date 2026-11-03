@@ -1,0 +1,93 @@
+---
+title: "eBay product data for AI agents"
+sidebarTitle: "eBay"
+description: "Search eBay active listings by condition and format, read a listing's offer and live auction state, and pull recently sold listings for price comps."
+---
+
+eBay is where used, refurbished, collectible and hard-to-find goods change
+hands, and its sold listings are the closest thing to a market price for
+second-hand goods. eBay's own APIs need a registered developer application,
+and completed-sale data is restricted to approved partners. Through AgentKey
+your agent reads public eBay listings the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — including what items actually
+sold for.
+
+## What you can ask
+
+- *"Search eBay for a used Nintendo Switch OLED under 250 dollars, Buy It Now only, cheapest first."*
+- *"Which auctions for vintage Levi's 501 end soonest?"*
+- *"Open this eBay listing — price, shipping, condition, seller feedback, and how many people are watching."*
+- *"How many bids does this auction have, and when does it end?"*
+- *"What did used iPhone 13 Pro phones actually sell for on eBay last month?"*
+- *"Give me price comps for this camera lens from recent sales, new versus used."*
+- *"Did sellers accept Best Offers on recent sales of this model?"*
+- *"eBay 上二手 Switch 最近的成交价是多少？"*
+
+## What's covered
+
+**Search**
+- Active listings by keyword, filtered by price range, item condition (new,
+  open box, refurbished, used, for parts) and listing format (auction or Buy
+  It Now)
+- Sort by best match, ending soonest, newly listed or price
+- Title, price, condition, shipping and seller for each result
+
+**Listing details**
+- One listing by URL — price, condition, shipping, item location, seller
+  feedback, quantity and watchers
+- Live auction state: bid count and end time
+- The eBay site comes from the listing URL, so an ebay.co.uk or ebay.de link
+  returns that site's listing in its currency
+
+**Sold listings**
+- Recently sold listings for a keyword — sold price, sale date, condition,
+  seller and item details — filtered by price range, condition, category,
+  sold-date window and listing format, sorted by most recently ended or price,
+  page by page
+- A lighter variant built for quick price comps: sold price, sale date,
+  condition, format, bids and whether a Best Offer was accepted, without
+  seller details
+- Sold-listing coverage is the US site (ebay.com) today
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what used iPhone 13 Pro phones sold for on eBay last month")
+find_tools(q="eBay 上二手 Switch 的成交价")
+find_tools(prefix="ecommerce/ebay")         # browse everything for eBay
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Search and sold-listing results carry each item's id and URL, so search →
+listing detail needs no manual parsing. Prices come back as eBay shows them,
+not converted. Always `describe_tool` before executing: it shows the accepted
+condition, format and sort values, the date format for the sold-date window,
+and the per-call cost.
+
+<Note>
+  **Building with code?** eBay is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an eBay developer or seller account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it bid, buy or message a seller?">
+    No. Every tool is read-only — search, listing details and sold listings. No
+    bid, purchase, offer or message is ever sent.
+  </Accordion>
+  <Accordion title="How fresh are prices and auction states?">
+    Every call goes to eBay at request time; nothing is served from a stale
+    archive. Auction bid counts and prices move until the listing ends, so
+    re-check a live auction before acting on it.
+  </Accordion>
+</AccordionGroup>

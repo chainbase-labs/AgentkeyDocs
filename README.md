@@ -2,7 +2,7 @@
 
 Documentation for [AgentKey](https://agentkey.app) — one key that connects your
 AI agent to web search, scraping, social media, e-commerce, crypto/on-chain,
-finance, business, jobs, travel, weather and academic data. Built with
+finance, business, jobs, travel, weather, academic and developer data. Built with
 [Mintlify](https://mintlify.com).
 
 ## Develop locally
@@ -34,8 +34,8 @@ quickstart.mdx                  # 0 → first tool call
 authentication.mdx              # master key usage (MCP and REST)
 connect/                        # installation (one-line / npx / prompt / desktop), supported agents
 concepts/                       # unified key, two ways to call, discover→describe→execute, billing, failover
-capabilities/                   # the 11 categories: search, scrape, social, ecommerce, crypto, finance,
-                                #   business, jobs, travel, weather, academic
+capabilities/                   # the categories: search, scrape, social, ecommerce, crypto, finance,
+                                #   business, jobs, travel, weather, academic, developer
 api-reference/
   introduction.mdx              # the two surfaces
   scenario/*.mdx                # Scenario Methods guides: overview, quickstart, requests, responses,

@@ -20,6 +20,8 @@ does not stop the task.
 - *"Get this channel's description and subscriber count from its handle."*
 - *"Show me videos related to this one."*
 - *"What has this channel posted on its Community tab lately?"*
+- *"Which sponsors does this video promote, and what are their websites?"*
+- *"What business email does this creator list for sponsorship inquiries?"*
 
 ## What's covered
 
@@ -29,6 +31,9 @@ does not stop the task.
 - Video detail by ID; related videos
 - Stream information and a signed stream URL for playback
 - Search suggestions for expanding a query
+- Hashtag search; currently trending Shorts
+- Suspected sponsors and paid promotions in a video — sponsor names, websites
+  and confidence
 
 **Comments**
 - Top-level comments with sorting and locale options, paginated
@@ -39,11 +44,19 @@ does not stop the task.
   plain text
 - Spoken-text transcript extraction, with an asynchronous job mode for videos
   that take longer to process
+- A timed transcript that says whether the words are creator-written captions
+  or machine speech recognition
 
 **Channels**
 - Channel information and description; channel ID from a URL or handle, and the
   channel URL back from an ID
-- A channel's videos, Shorts and Community posts
+- A channel's videos, Shorts and Community posts, and a single Community post
+  by URL
+- A channel's live and past live streams, its playlists, and every video in a
+  playlist
+- The links on a channel's About page; the business inquiry email behind the
+  channel's "View email address" button, and any email written in its public
+  description
 - Channel search
 
 ## How to use it

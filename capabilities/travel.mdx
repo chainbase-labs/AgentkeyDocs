@@ -1,20 +1,21 @@
 ---
 title: "Travel"
 sidebarTitle: "Overview"
-description: "Hotels, flights, car rentals, attractions and taxis — search and quote."
+description: "Hotels, holiday rentals, flights, car rentals, attractions, restaurants and taxis — search, quote and read reviews."
 ---
 
 The **Travel** category lets an agent plan a trip: find destinations and
-airports, search hotels and rooms, compare flight offers including multi-stop
-routes, price car rentals and taxis, and look up attractions. All operations are
-read-only lookups — searching, pricing and detail pages; none places a
-reservation.
+airports, search hotels, rooms and holiday rentals, compare what each booking
+site charges, compare flight offers including multi-stop routes, price car
+rentals and taxis, and look up attractions and restaurants with their reviews.
+All operations are read-only lookups — searching, pricing and detail pages;
+none places a reservation.
 
 ## Explore
 
 <CardGroup cols={2}>
   <Card title="Hotels" href="/capabilities/travel/hotel-search-for-ai-agents">
-    Destination search, availability, rooms, reviews and policies.
+    Booking.com, Google Hotels and Airbnb: availability, rooms, prices, reviews and policies.
   </Card>
   <Card title="Flights" href="/capabilities/travel/flight-search-for-ai-agents">
     Airport search, itineraries, prices and seat maps.
@@ -23,7 +24,7 @@ reservation.
     Pick-up locations, rentals, vehicles and suppliers.
   </Card>
   <Card title="Attractions and transport" href="/capabilities/travel/attractions-and-local-transport-for-ai-agents">
-    Attractions, taxis, currencies and geocoding.
+    Attractions, Tripadvisor places and reviews, taxis, currencies and geocoding.
   </Card>
 </CardGroup>
 
@@ -32,8 +33,12 @@ reservation.
 | Provider | Coverage |
 | --- | --- |
 | **booking** | Hotels: destination search, hotel search by destination or coordinates, filters and sort options, hotel details, description, facilities, photos, policies, payment features, children policies, room list and availability, availability calendar, review scores, reviews and tips, Q&A, nearby cities. Flights: airport search, flight search (one route or multi-stop), flight details, minimum price, seat map. Car rentals: location search, rental search, vehicle details, supplier details, ratings and reviews, booking summary. Attractions: location search, attraction search, details, reviews, popular nearby. Taxis: location search and taxi search. Utilities: currencies, exchange rates, languages, address to lat / long |
+| **AnyAPI** | Airbnb: listing search by location and dates with price, bed, bedroom, bathroom and guest filters. Google Hotels: hotel search by destination and dates, hotel details with the price from each booking site, amenities and check-in times. Tripadvisor: hotel, restaurant and attraction search, the latest reviews of a place. Booking.com: stay search by destination, dates and occupancy, as a second route alongside **booking** |
 
-The per-call cost is shown by `describe_tool`.
+AnyAPI tools are named `AnyAPI/<platform>_<operation>` (for example
+`AnyAPI/airbnb_search`) and sit under `travel/airbnb`, `travel/google-hotels`,
+`travel/tripadvisor` and, with the booking tools, `travel/booking`. The
+per-call cost is shown by `describe_tool`.
 
 <Note>
   **Building with code?** Developers and enterprise integrations can call this

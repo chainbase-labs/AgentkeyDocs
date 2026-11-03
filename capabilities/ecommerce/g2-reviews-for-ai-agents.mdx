@@ -1,0 +1,87 @@
+---
+title: "G2 reviews for AI agents"
+sidebarTitle: "G2"
+description: "Read G2 reviews for a software product by slug or URL, with what reviewers like and dislike and their market segment, sorted by date or rating through AgentKey."
+---
+
+G2 is where business software gets bought: buyers compare tools by what
+current users like and dislike, which problems the product solved for them
+and which market segment those users come from. Through AgentKey your agent
+reads G2 reviews for any product the same way it reads everything else —
+`find_tools`, `describe_tool`, `execute_tool` — sorted the way the question
+needs.
+
+## What you can ask
+
+- *"What do G2 reviewers like and dislike about HubSpot Marketing Hub?"*
+- *"Pull the lowest-rated G2 reviews of this product and list the recurring complaints."*
+- *"What problems do enterprise customers say this tool solved for them, according to G2?"*
+- *"Give me the most helpful G2 reviews of Notion."*
+- *"How do mid-market and small-business reviewers on G2 rate this product differently?"*
+- *"Open this G2 product URL and summarize the newest reviews."*
+- *"Compare the latest G2 and Capterra reviews of Slack."*
+- *"G2 上用户对 HubSpot 的评价主要在说什么？"*
+
+## What's covered
+
+**Identifiers**
+- Reviews for a product by its G2 slug or by the URL of its G2 product page
+
+**Ordering and limit**
+- Most recent by default, or most helpful, highest rated, lowest rated, or
+  G2's own default order
+- A `limit` on how many reviews come back; set it to fetch only as many as
+  you need
+
+**What comes back**
+- Star rating and G2's rating rubric for each review
+- What the reviewer likes and dislikes, and the problems the product solved
+  for them
+- The reviewer's market segment
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="what G2 reviewers like and dislike about HubSpot Marketing Hub")
+find_tools(q="G2 上用户对 HubSpot 的评价")
+find_tools(prefix="ecommerce/g2")           # browse everything for G2
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+G2 sits in the E-commerce branch of the catalog. The review tool takes the
+product's G2 slug or its G2 URL, so a link copied from G2 works as is. Set a
+`limit` to fetch only as many reviews as you need. Always `describe_tool`
+before executing: it shows the accepted sort values and the per-call cost.
+
+<Note>
+  **Building with code?** G2 is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a G2 vendor account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it reply to, flag or post reviews?">
+    No. The tool is read-only — reviews come out, nothing goes in. Nothing is
+    posted, answered or reported.
+  </Accordion>
+  <Accordion title="How do I find a product's G2 slug?">
+    It is the product name as it appears in the product's g2.com URL — for
+    example `hubspot-marketing-hub` in
+    `g2.com/products/hubspot-marketing-hub/reviews` — and the tool also
+    accepts that URL as is. There is no product search on G2, so start from a
+    slug or URL you already have. Reviews of the same product on
+    [Capterra](/capabilities/ecommerce/capterra-reviews-for-ai-agents) are read
+    by its Capterra URL, and consumer brands are on
+    [Trustpilot](/capabilities/ecommerce/trustpilot-reviews-for-ai-agents).
+  </Accordion>
+</AccordionGroup>

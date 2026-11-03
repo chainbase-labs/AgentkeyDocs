@@ -1,0 +1,84 @@
+---
+title: "Capterra reviews for AI agents"
+sidebarTitle: "Capterra"
+description: "Read Capterra reviews for a software product by URL, with sub-ratings, pros and cons, and the reviewer's job title, company size and industry, through AgentKey."
+---
+
+Capterra is where small and mid-sized businesses pick software, and its
+reviews are built for exactly that decision: an overall score with
+sub-ratings, a pros and cons pair, and the reviewer's job title, company size
+and industry, so a buyer can weigh reviews from companies like their own.
+Through AgentKey your agent reads Capterra reviews for any product the same
+way it reads everything else — `find_tools`, `describe_tool`, `execute_tool`
+— sorted the way the question needs.
+
+## What you can ask
+
+- *"Compare Capterra pros and cons for Slack by reviewer company size."*
+- *"What do Capterra reviewers in healthcare say about this practice-management tool?"*
+- *"Pull the most complete Capterra reviews of this product and summarize the cons."*
+- *"How does this CRM score on Capterra's sub-ratings, and where does it fall short?"*
+- *"Show me the lowest-rated Capterra reviews of this product from companies with fewer than 50 employees."*
+- *"Open this Capterra product URL and give me the newest reviews with each reviewer's job title."*
+- *"Which pros come up most often in the highest-rated Capterra reviews of this tool?"*
+- *"Capterra 上中小企业对这款 CRM 的评价怎么样？"*
+
+## What's covered
+
+**Identifiers**
+- Reviews for a product by the URL of its Capterra product page
+
+**Ordering and limit**
+- Most recent by default, or the most complete reviews first, highest rated
+  or lowest rated
+- A `limit` on how many reviews come back; set it to fetch only as many as
+  you need
+
+**What comes back**
+- Overall rating and Capterra's sub-ratings for each review
+- Pros and cons as the reviewer wrote them
+- The reviewer's job title, company size and industry
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="Capterra pros and cons for Slack by reviewer company size")
+find_tools(q="Capterra 上中小企业对这款 CRM 的评价")
+find_tools(prefix="ecommerce/capterra")     # browse everything for Capterra
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Capterra sits in the E-commerce branch of the catalog. The review tool takes
+the product's Capterra URL, so a link copied from Capterra works as is. Set a
+`limit` to fetch only as many reviews as you need. Always `describe_tool`
+before executing: it shows the accepted sort values and the per-call cost.
+
+<Note>
+  **Building with code?** Capterra is available through the catalog tools
+  above only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Capterra vendor account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it reply to, flag or post reviews?">
+    No. The tool is read-only — reviews come out, nothing goes in. Nothing is
+    posted, answered or reported.
+  </Accordion>
+  <Accordion title="What isn't covered?">
+    Product search and product profiles: there is no Capterra search tool, so
+    start from the product's Capterra URL. Reviews of the same product on
+    [G2](/capabilities/ecommerce/g2-reviews-for-ai-agents) are read by its G2
+    slug or URL, and consumer brands are reviewed on
+    [Trustpilot](/capabilities/ecommerce/trustpilot-reviews-for-ai-agents).
+  </Accordion>
+</AccordionGroup>

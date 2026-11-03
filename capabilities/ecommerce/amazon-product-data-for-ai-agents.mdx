@@ -1,7 +1,7 @@
 ---
 title: "Amazon product data for AI agents"
 sidebarTitle: "Amazon"
-description: "Search Amazon by keyword or ASIN, read product details and top reviews, and pull Best Sellers and category listings per country marketplace through AgentKey."
+description: "Search Amazon by keyword or ASIN, read product details, reviews and every seller's offer, profile sellers, and pull Best Sellers and deals per marketplace."
 ---
 
 Amazon is the reference catalog for most product research, and one of the
@@ -21,29 +21,51 @@ same way it reads everything else — `find_tools`, `describe_tool`,
 - *"Is the same ASIN cheaper on amazon.com or amazon.co.uk right now?"*
 - *"Are there any deals on standing desks on Amazon today?"*
 - *"Search Amazon for used copies of this camera body."*
+- *"Who else sells this ASIN, and who holds the Buy Box?"*
+- *"What is this seller's feedback rating, and what else does their storefront carry?"*
 
 ## What's covered
 
 **Search**
 - Keyword or ASIN search inside a chosen country marketplace
 - Sort order, item condition, Prime-only and deals filters, page controls
+- Search straight from an Amazon search or category page URL
 
 **Product details**
 - Listing details for a known ASIN in a selected marketplace — for catalog
   review, side-by-side comparison or downstream analysis
+- Full details from a product URL — variants, attributes, images, ratings and
+  review count — and a batch of ASINs looked up in one call
 
 **Reviews**
 - The top reviews of a product by ASIN — the prominent customer feedback,
   ready for sentiment or quality analysis
+- A larger page of reviews by ASIN or URL — rating, title, text, date and
+  verified-purchase badge — filtered by star rating, keyword, date range and
+  verified purchases, sorted most helpful or most recent
+
+**Offers and sellers**
+- Every offer on a product — the Buy Box first, then the other sellers — with
+  price, condition, seller name and ID, seller rating, Prime, delivery
+  estimate and fulfillment
+- A seller's profile by seller ID — star rating, positive-feedback share,
+  feedback counts for 30 days, 90 days, 12 months and lifetime, and the
+  registered business name and address
+- A seller's storefront, page by page — ASIN, title, price, list price,
+  rating, review count, and coupon, sponsored, Prime, best-seller and Amazon's
+  Choice flags
 
 **Rankings & categories**
 - Best Sellers for a category path, paginated, in the marketplace you choose
 - Products under a numeric category node with configurable sorting — browse
   an assortment or collect a whole category's listings
+- Today's deals for a marketplace — deal price, list price, discount, deal
+  type and badge
 
 **Marketplaces**
-- Every operation takes a country, so the same ASIN, keyword or category can
-  be checked across Amazon's regional sites one call at a time
+- Operations take a country or marketplace (or read it from the URL you
+  pass), so the same ASIN, keyword or category can be checked across Amazon's
+  regional sites one call at a time
 
 ## How to use it
 
@@ -69,6 +91,8 @@ and its accepted values, the sort and filter options, and the per-call cost.
   [`ecommerce.amazon.product.get`](/api-reference/scenario/methods/ecommerce-amazon-product-get),
   [`ecommerce.amazon.product.reviews`](/api-reference/scenario/methods/ecommerce-amazon-product-reviews),
   [`ecommerce.amazon.product.rank`](/api-reference/scenario/methods/ecommerce-amazon-product-rank).
+  Offers, sellers, storefronts and deals are available through the catalog
+  tools above.
 </Note>
 
 ## FAQ
@@ -79,9 +103,10 @@ and its accepted values, the sort and filter options, and the per-call cost.
     subscription.
   </Accordion>
   <Accordion title="Which Amazon marketplaces can I query?">
-    Every operation takes a country parameter that selects the regional site.
-    Run `describe_tool` on the operation to see the accepted values rather than
-    assuming a country is supported.
+    Most operations take a country or marketplace parameter that selects the
+    regional site; tools that take a product, search or category URL read it
+    from the URL. Run `describe_tool` on the operation to see the accepted
+    values rather than assuming a country is supported.
   </Accordion>
   <Accordion title="How fresh are prices, rankings and reviews?">
     Every call goes to Amazon at request time; nothing is served from a stale

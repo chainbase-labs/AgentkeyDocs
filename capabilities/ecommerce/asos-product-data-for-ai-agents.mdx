@@ -1,0 +1,97 @@
+---
+title: "ASOS product data for AI agents"
+sidebarTitle: "ASOS"
+description: "Search ASOS in any of its country stores with sort and price filters, and read a product's price, brand, colour, images and per-size stock by URL through AgentKey."
+---
+
+ASOS is an online fashion retailer that sells through separate country
+stores — the UK, the US, Australia, Germany and the rest — each priced in its
+own currency, and fashion research turns on something most retail tools leave
+out: whether a given size is still in stock. asos.com has no public product
+API and blocks automated browsing. Through AgentKey your agent reads public
+ASOS listings the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — choosing the country store on every search
+and reading per-size stock from the product page.
+
+## What you can ask
+
+- *"Search ASOS Germany for white sneakers, cheapest first, and show which sizes are in stock for the top result."*
+- *"Find Nike hoodies on ASOS UK under 50 pounds, newest first."*
+- *"Search ASOS Australia for linen trousers between 40 and 80 dollars."*
+- *"Open this ASOS product page — price, brand, colour, and which sizes are left."*
+- *"Is a medium of this ASOS jacket in stock, and what colour is the listing?"*
+- *"Is this dress cheaper on ASOS US or ASOS UK right now?"*
+- *"List the brands behind the first page of ASOS results for 'leather belt'."*
+- *"ASOS 英国站这条裙子哪些尺码还有货？"*
+
+## What's covered
+
+**Search**
+- Keyword search in one country store at a time, with page controls and a
+  price range in that store's currency
+- Sort by best match, newest or price
+- Title, price, brand and colour for each result
+
+**Product details**
+- One product by its page URL — title, price, brand, colour, description,
+  images and per-size stock
+- The store, and so the currency, is read from the URL, so a US-store link
+  returns US pricing and stock
+
+**Stores and currencies**
+- The UK store is the default; search takes the store as a country parameter
+  and covers the UK, the US, Australia, Germany, France, Italy, Spain, the
+  Netherlands, Sweden, Denmark and Poland
+- Each store is priced in its own currency, and prices come back as that
+  store shows them
+
+Not covered today: customer reviews. For what a piece resells for
+second-hand, [eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents)
+sold listings are the closest comp; for the wider pattern, see
+[product research workflows](/capabilities/ecommerce/product-research-workflows-for-ai-agents).
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="white sneakers on ASOS Germany, cheapest first")
+find_tools(q="ASOS 英国站这条裙子的尺码库存")
+find_tools(prefix="ecommerce/asos")         # browse everything for ASOS
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Search takes the store as a country parameter and defaults to the UK; product
+details read the store from the URL, and search results carry that URL, so
+search → product → size check needs no manual parsing. Prices come back in
+the store's currency, not converted. Always `describe_tool` before executing:
+it shows the accepted country codes and sort values, the page limits, and the
+per-call cost.
+
+<Note>
+  **Building with code?** ASOS is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an ASOS account?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it add to bag, place an order or reserve a size?">
+    No. Every tool is read-only — search and product details — and per-size
+    stock is what the store shows online at request time. Sizes sell out, so
+    re-check before acting on it.
+  </Accordion>
+  <Accordion title="Which country store does a search use?">
+    The UK store unless you pass a country, which selects the US, Australia,
+    Germany, France, Italy, Spain, the Netherlands, Sweden, Denmark or Poland
+    instead. Product details take no store parameter: the store comes from the
+    URL, so a link copied from the US store returns US pricing and stock.
+  </Accordion>
+</AccordionGroup>

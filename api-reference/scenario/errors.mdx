@@ -13,7 +13,7 @@ Errors come back as the [error envelope](/api-reference/scenario/responses#error
 | HTTP | `error_type` | When | What to do |
 | --- | --- | --- | --- |
 | `400` | `validation` | Unknown field, wrong type or enum value, `cursor` reused with different parameters, a provider repeated in `routing.order` / `routing.only`, an unsupported `routing.strategy`, or "no provider accepts this combination of inputs". | Fix the request. Not charged. |
-| `401` | `unauthorized` | Missing or invalid `Authorization: Bearer ak_...`. | Check the key in the [console](https://console.agentkey.app). |
+| `401` | `unauthorized` | Missing or invalid `Authorization: Bearer ak_...`. | Check the key, or create a new one, on the console's [API Keys](https://console.agentkey.app/api-keys) page. |
 | `402` | `insufficient_credits` | Your allowance and extra credits are used up. The body also carries `action` (`upgrade` or `topup_or_upgrade`) and the console URL. | Top up or upgrade. No upstream call was made. |
 | `404` | `not_found` | Unknown method name — or the object does not exist upstream (deleted post, bad ID, private account). | Check the name against `GET /v2/ops`; for objects, the input was valid but there is nothing there. Not charged, no failover. |
 | `413` | `validation` | Request body larger than 1 MB. | Shrink the body. |

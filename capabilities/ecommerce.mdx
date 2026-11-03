@@ -1,20 +1,24 @@
 ---
 title: "E-commerce"
 sidebarTitle: "Overview"
-description: "Product search, details, reviews, SKUs, shop listings and rankings across the major marketplaces."
+description: "Product search, details, reviews, SKUs, shop listings and rankings across the major marketplaces, retailers, app stores and review sites."
 ---
 
 The **E-commerce** category lets agents read marketplaces the way a shopper
 does: search listings by keyword, open a product page, read its reviews and SKU
-options, list what a shop sells, and pull best-seller rankings —
-across global and Chinese platforms.
+options, list what a shop sells, pull best-seller rankings and check what items
+actually sold for — across global and Chinese marketplaces, retailers, app
+stores and review sites.
 
 ## Platforms
 
 Catalog tools in this category come from **JustOneAPI**, named
-`JustOneAPI/getApi<Platform><Operation>V<n>`; several platforms expose more
-than one version of the same operation. Global marketplaces are listed first,
-then the Chinese ones; each has its own page, and
+`JustOneAPI/getApi<Platform><Operation>V<n>` — several platforms expose more
+than one version of the same operation — and from **AnyAPI**, named
+`AnyAPI/<platform>_<operation>` (for example `AnyAPI/ebay_search`); where both
+serve a platform, `find_tools` returns both routes. Global marketplaces are
+listed first, then the Chinese ones, then app stores and review sites; each
+has its own page, and
 [Product research workflows](/capabilities/ecommerce/product-research-workflows-for-ai-agents) shows
 how to chain them.
 
@@ -22,10 +26,21 @@ how to chain them.
 
 | Platform | Operations |
 | --- | --- |
-| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Product search, product details, top reviews, best sellers, products by category |
+| [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) | Product search, product details and batch lookup by ASIN, reviews, best sellers, products by category, today's deals; every seller's offer, seller profiles and storefronts |
 | [Shopee](/capabilities/ecommerce/shopee-product-data-for-ai-agents) | Item search and search facets; item details, display snapshot, SKU matrix and models, installments; item reviews, review tags and model distribution; shop profile, details, categories, item list and reviews |
-| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Product search, product details |
-| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Product search, product details; reviews, seller product lists and hot sellers from TikHub, filed under TikTok |
+| [AliExpress](/capabilities/ecommerce/aliexpress-product-data-for-ai-agents) | Product search, product details with variants and stock, buyer reviews |
+| [TikTok Shop](/capabilities/ecommerce/tiktok-shop-product-data-for-ai-agents) | Product search and search suggestions, product details, reviews, store product lists, the category tree, creator shop performance and showcases; hot sellers and more from TikHub, filed under TikTok |
+| [eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents) | Active-listing search with condition and format filters, listing details with auction state, recently sold listings |
+| [Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents) | Product search with sort, price and facet filters, product details, customer reviews |
+| [Target](/capabilities/ecommerce/target-product-data-for-ai-agents) | Product search with sort and price filters, product details, customer reviews |
+| [Best Buy](/capabilities/ecommerce/best-buy-product-data-for-ai-agents) | Product search with sort and price filters, product details with model and UPC, customer reviews |
+| [Sam's Club](/capabilities/ecommerce/sams-club-product-data-for-ai-agents) | Product search and product details, with member price and stock |
+| [IKEA](/capabilities/ecommerce/ikea-product-data-for-ai-agents) | Product search on the US store |
+| [ASOS](/capabilities/ecommerce/asos-product-data-for-ai-agents) | Product search per country store, product details with per-size stock |
+| [Etsy](/capabilities/ecommerce/etsy-product-data-for-ai-agents) | Listing search, listing details, shop profiles and shop listings |
+| [Shopify stores](/capabilities/ecommerce/shopify-store-data-for-ai-agents) | Store profile, full product catalog with every variant's SKU, price and stock, product details, store search — any public store by domain |
+| [Alibaba.com](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | International wholesale search — price range, minimum order and supplier |
+| Also covered | Google Shopping offers, Slickdeals deals, Fiverr gigs — see [Product research workflows](/capabilities/ecommerce/product-research-workflows-for-ai-agents) |
 
 ### China marketplaces
 
@@ -37,6 +52,16 @@ how to chain them.
 | [1688](/capabilities/ecommerce/1688-wholesale-product-data-for-ai-agents) | Product search, product details |
 | [Xianyu](/capabilities/ecommerce/xianyu-second-hand-listings-for-ai-agents) | Product search, product details |
 | [Xiaohongshu E-commerce](/capabilities/ecommerce/xiaohongshu-shop-product-data-for-ai-agents) | Product search |
+
+### App stores & reviews
+
+| Platform | Operations |
+| --- | --- |
+| [App Store](/capabilities/ecommerce/apple-app-store-data-for-ai-agents) | App search, app listings and app reviews, per storefront country |
+| [Google Play](/capabilities/ecommerce/google-play-data-for-ai-agents) | App search and app listings per store country; reviews filtered by rating, keywords, language, version, device and date |
+| [Trustpilot](/capabilities/ecommerce/trustpilot-reviews-for-ai-agents) | Company reviews by brand name or review page, filtered by reviewer country, language, rating, date and verified status |
+| [G2](/capabilities/ecommerce/g2-reviews-for-ai-agents) | Software reviews by product — likes, dislikes, problems solved and market segment |
+| [Capterra](/capabilities/ecommerce/capterra-reviews-for-ai-agents) | Software reviews by product — sub-ratings, pros and cons, reviewer role, company size and industry |
 
 The per-call cost is shown by `describe_tool`. Prices come back in the
 platform's own currency, and several marketplaces take a `country` or site

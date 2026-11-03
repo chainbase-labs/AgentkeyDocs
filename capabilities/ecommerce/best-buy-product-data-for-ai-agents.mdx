@@ -1,0 +1,100 @@
+---
+title: "Best Buy product data for AI agents"
+sidebarTitle: "Best Buy"
+description: "Search Best Buy with sort and price filters, read a product's price, brand, model number, UPC and images, and pull customer reviews through AgentKey."
+---
+
+Best Buy is the US reference for consumer electronics, and its product pages
+carry the two identifiers that matter most for matching a TV, laptop or
+appliance across retailers: the manufacturer's model number and the UPC. The
+storefront blocks automated browsing, and Best Buy's developer API is limited
+to approved partners. Through AgentKey your agent reads public Best Buy
+listings the same way it reads everything else — `find_tools`,
+`describe_tool`, `execute_tool` — search, product pages and customer reviews.
+
+## What you can ask
+
+- *"Search Best Buy for a 65-inch OLED TV under 1,500 dollars, highest rated first."*
+- *"Which 4K monitors on Best Buy are newest? Give me title, brand and price."*
+- *"Get the model number, UPC and description of this Best Buy TV."*
+- *"Open this Best Buy laptop page and pull the price, brand, rating and images."*
+- *"What are the most helpful reviews for this Best Buy soundbar? Summarize the complaints."*
+- *"Show me the oldest reviews of this washer — did early buyers hit the same problem?"*
+- *"Take this Best Buy TV's model number and check the price at Walmart and Target."*
+- *"Best Buy 上这款显示器的差评主要说什么？"*
+
+## What's covered
+
+**Search**
+- Keyword search with page controls and a price range
+- Sort by best match, best sellers, price, rating or newest
+- Title, price, rating and brand for each result
+
+**Product details**
+- One product by its page URL — title, price, brand, model number, UPC,
+  rating, description and images
+- The URL must carry the product's SKU, which the URLs search returns do
+
+**Reviews**
+- Customer reviews for a product by URL, a page of ten at a time — rating,
+  title, text, date, reviewer and verified-purchase badge
+- Newest first (the default), oldest first, by relevance, most helpful, or
+  highest or lowest rating
+
+**Store and currency**
+- Coverage is bestbuy.com, Best Buy's US site, priced in US dollars
+
+The model number and UPC are the handle for cross-retailer matching: search
+[Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents) and
+[Target](/capabilities/ecommerce/target-product-data-for-ai-agents) for the
+model number to find the same item there,
+[Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents) for its
+marketplace price, and
+[eBay](/capabilities/ecommerce/ebay-product-data-for-ai-agents) sold listings
+for what a used unit resells for.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="model number and UPC of this Best Buy TV")
+find_tools(q="Best Buy 上这款显示器的差评")
+find_tools(prefix="ecommerce/best-buy")     # browse everything for Best Buy
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Product and review tools take the product page URL, and search results carry
+it — use the URL a search returns, since Best Buy's must carry the SKU. Prices
+come back as Best Buy shows them, in US dollars, not converted. Always
+`describe_tool` before executing: it shows the accepted sort values, the URL
+form product details expects, the page limits, and the per-call cost.
+
+<Note>
+  **Building with code?** Best Buy is available through the catalog tools
+  above only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need a Best Buy account or developer key?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it buy, reserve for pickup, or check a store's shelf?">
+    No. Every tool is read-only — search, product details and reviews — and
+    what comes back is what bestbuy.com shows online, not the stock of a
+    particular store near you.
+  </Accordion>
+  <Accordion title="Why does product details need a specific URL?">
+    Best Buy identifies a product by its SKU, and the product-details tool
+    reads the SKU from the URL. The URL a search returns carries it; if you
+    paste a link from elsewhere, keep the whole URL rather than trimming it,
+    and if a lookup still fails, search for the product and use the URL that
+    comes back.
+  </Accordion>
+</AccordionGroup>

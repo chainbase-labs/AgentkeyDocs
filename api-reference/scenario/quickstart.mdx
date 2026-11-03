@@ -3,11 +3,23 @@ title: "Quickstart"
 description: "Read the catalog, describe a method, and make your first call — three curl commands."
 ---
 
-You need an AgentKey master key (`ak_...`) from the
-[console](https://console.agentkey.app). Only the third step uses it; the catalog
-and describe are public.
+import CreateApiKey from "/snippets/create-api-key.mdx";
+
+All you need is `curl` and an AgentKey API key (`ak_...`). The first step gets
+you the key; only the calls use it — the catalog and describe are public.
 
 <Steps>
+  <Step title="Get an API key">
+    <CreateApiKey />
+
+    Put the key in an environment variable — every call below reads it from
+    there:
+
+    ```bash
+    export AGENTKEY_API_KEY="ak_..."
+    ```
+  </Step>
+
   <Step title="Find a method in the catalog">
     List the methods for one platform. Filter with `domain`, `platform` and
     `action`, or omit them for everything.

@@ -3,6 +3,8 @@ title: "API Reference"
 description: "Two surfaces, one key: Scenario Methods over REST, and the tool catalog over MCP."
 ---
 
+import CreateApiKey from "/snippets/create-api-key.mdx";
+
 AgentKey exposes the same providers through two surfaces. Both authenticate with
 your master key and draw from the same credit balance.
 
@@ -26,11 +28,24 @@ compares them.
 | | Scenario Methods | Tool catalog |
 | --- | --- | --- |
 | Endpoint | `https://api.agentkey.app/v2/ops/{method}` | MCP server at `https://api.agentkey.app/v1/mcp` (Streamable HTTP) |
-| Auth | `Authorization: Bearer ak_...` on `POST` calls; catalog, describe and OpenAPI are public | Configured once by the [installer](/connect/install) or your MCP client; the same `ak_...` key |
+| Auth | `Authorization: Bearer ak_...` on `POST` calls — [create a key in the console](https://console.agentkey.app/api-keys). Catalog, describe and OpenAPI are public | OAuth sign-in, set up once by the [installer](/connect/install); clients without OAuth send the same `ak_...` key as a bearer header |
 | Format | JSON request body, JSON envelope response | MCP tool calls; results are JSON |
 | Contract | [OpenAPI 3.1](https://api.agentkey.app/v2/openapi.yaml) | Each tool's schema from `describe_tool` |
 
-See [Authentication](/authentication) for how keys are created and stored.
+## Get an API key
+
+REST calls need a key. Create one in the console:
+
+<CreateApiKey />
+
+Keep it out of your code — the examples in this reference read it from an
+environment variable:
+
+```bash
+export AGENTKEY_API_KEY="ak_..."
+```
+
+See [Authentication](/authentication) for storing, separating and rotating keys.
 
 ## Conventions
 

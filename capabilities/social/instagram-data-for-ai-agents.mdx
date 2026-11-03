@@ -21,14 +21,20 @@ providers behind the scenes, so one route failing does not stop the task.
 - *"Show me this creator's current stories and highlight reels."*
 - *"Which posts use this audio track?"*
 - *"Translate the top comments on this post into English."*
+- *"Transcribe what is said in this Reel, with timestamps."*
+- *"Does this creator publish a business email or phone number?"*
 
 ## What's covered
 
 **Posts and Reels**
 - Post detail by shortcode, media ID or URL; oEmbed info
 - Likes on a post; a user's posts, Reels, reposts and tagged posts
-- Reels search by keyword or hashtag; a recommended Reels feed
+- Reels search by keyword or hashtag; a recommended Reels feed and trending
+  Reels; a web-index Reels search with a recency window
 - Translation of a caption or a comment, or a batch of comments at once
+- The spoken transcript of a post or Reel, with speaker labels and word-level
+  timestamps
+- A post's video on a hosted MP4 link that plays without an Instagram session
 
 **Comments**
 - Top-level comments with popular or newest sorting, paginated
@@ -36,15 +42,22 @@ providers behind the scenes, so one route failing does not stop the task.
 
 **Users**
 - Profile by username or user ID, "about" info, former usernames
-- Followers and following lists
+- Followers and following lists, and a name search inside either list
 - Similar and related profiles; username → user ID
+- The contact email and phone number a creator or business publishes on its
+  profile, including the address behind the profile's Email button
+- Profile search by a bio or caption keyword, optionally with each account's
+  country, join month and published contact details
 
 **Stories and highlights**
 - A user's current stories, their highlight reels and the stories inside each
   highlight
 
 **Hashtags, locations and music**
-- Posts under a hashtag; hashtag search
+- Posts under a hashtag — Instagram's own top-ranked posts or the newest
+  first, for monitoring; hashtag search
+- A hashtag's total post count; a web-index hashtag search with date and
+  media-type filters
 - Location info, posts at a location, nearby content; locations by city or by
   coordinates, cities by country
 - Music search and the posts using a given audio

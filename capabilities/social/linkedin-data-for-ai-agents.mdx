@@ -1,7 +1,7 @@
 ---
 title: "LinkedIn data for AI agents"
 sidebarTitle: "LinkedIn"
-description: "LinkedIn profiles and member activity, post and article detail, comments, company pages and posts, job search and job detail through AgentKey — no partner API."
+description: "LinkedIn profiles, people and lead search, posts, comments and reactions, company pages and employees, jobs, groups and the Ad Library through AgentKey."
 ---
 
 LinkedIn is the record of who works where and what professionals are saying,
@@ -22,6 +22,9 @@ the task.
 - *"Give me the full description of this job posting."*
 - *"Which posts has this founder commented on or reacted to lately?"*
 - *"Compare the posting cadence of these three company pages this quarter."*
+- *"Find product managers in Berlin who work at fintech companies."*
+- *"What ads is this company running on LinkedIn right now?"*
+- *"Which LinkedIn groups discuss supply-chain software, and what are members posting?"*
 
 ## What's covered
 
@@ -32,19 +35,43 @@ the task.
   they commented on, the posts they reacted to
 - Offset and continuation-token pagination, so a long history can be walked
   page by page
+- People search by keyword with location and job-title filters, returning
+  full profile records or a lighter list; Sales Navigator lead search with its
+  lead filters (location, job title, current and past company, school,
+  seniority, function, company size and more)
+- Search for freelancers and service providers by the service they offer
+- A deliverability-checked work email for a profile, and a people search that
+  returns one for each match
 
 **Posts**
-- Detail for a post or a long-form article
+- Detail for a post or a long-form article, including newsletter issues with
+  their full body text
 - Comments sorted by relevance or by most recent, page by page, optionally
-  narrowed to one share of the post
+  narrowed to one share of the post; the replies under a comment
+- Who reacted to a post or a comment — name, profile URL, job title and
+  reaction type
+- Keyword search over public posts; the spoken transcript of a video post
 
 **Companies**
-- Company profile — the public page's description and details
+- Company profile — the public page's description and details, including
+  follower count, founded year, office locations and funding data
 - The posts published on a company page
+- Company search by keyword and location; a company's employees, filterable
+  by job title
 
 **Jobs**
-- Job search
+- Job search by title and location, as full records — description, salary
+  when disclosed, applicant count, seniority, company details and benefits —
+  or as a lighter index
 - Job detail for a single posting, as shown on the job page
+
+**Groups**
+- Group search by keyword; a group's details — description, rules, member
+  count, visibility and admins — and its posts, newest first
+
+**Ad Library**
+- Ad search by company or keyword; a single ad's advertiser, headline,
+  creative text, format, call to action, targeting, run dates and impressions
 
 A typical task chains these: resolve the person from a profile URL, pull their
 activity, then fetch the comments on the posts that matter — or search jobs,
@@ -70,8 +97,8 @@ per-call costs differ between providers.
   failover:
   [`social.linkedin.post.get`](/api-reference/scenario/methods/social-linkedin-post-get),
   [`social.linkedin.user.get`](/api-reference/scenario/methods/social-linkedin-user-get).
-  Member activity, company pages and jobs are available through the catalog
-  tools above.
+  Member activity, people search, company pages, jobs, groups and the Ad
+  Library are available through the catalog tools above.
 </Note>
 
 ## FAQ

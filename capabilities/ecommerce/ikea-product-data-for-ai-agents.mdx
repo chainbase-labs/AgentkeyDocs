@@ -1,0 +1,84 @@
+---
+title: "IKEA product data for AI agents"
+sidebarTitle: "IKEA"
+description: "Search IKEA's US store by keyword and get each product's title, price, rating and image for furniture and home research through AgentKey."
+---
+
+IKEA is the flat-pack furniture reference, and its catalogue is the kind an
+agent searches rather than browses: a product family name or a plain
+description — bookshelf, standing desk, bedside table — turns into a list of
+items with a price and a rating on each. ikea.com has no public product API
+and blocks automated browsing. Through AgentKey your agent searches IKEA's US
+store the same way it reads everything else — `find_tools`, `describe_tool`,
+`execute_tool`. Search is the only IKEA tool today.
+
+## What you can ask
+
+- *"Find bookshelves at IKEA US with their prices and ratings."*
+- *"Search IKEA for standing desks and tell me the cheapest one that comes back."*
+- *"Which KALLAX units show up on IKEA US, and how are they rated?"*
+- *"Show me the first two pages of IKEA results for 'bedside table', with images."*
+- *"Pull IKEA's price for a BILLY bookcase so I can compare it with this Target bookshelf."*
+- *"宜家美国站的书架有哪些，价格多少？"*
+
+## What's covered
+
+**Search**
+- Keyword search of IKEA's US store, page by page
+- Title, price, rating and image for each result
+- No sort order or price filter today — results come back in IKEA's own
+  order, so sort and filter them on the agent side
+
+**Store and currency**
+- Coverage is ikea.com's US store, priced in US dollars
+
+Not covered today: product details by URL — description, dimensions, variants
+or stock — and customer reviews; the rating on each search result is the only
+review signal. For a furniture price check that needs a product page, pair
+this page with
+[Target](/capabilities/ecommerce/target-product-data-for-ai-agents) or
+[Walmart](/capabilities/ecommerce/walmart-product-data-for-ai-agents), and
+see [product research workflows](/capabilities/ecommerce/product-research-workflows-for-ai-agents)
+for how the retailer tools chain together.
+
+## How to use it
+
+Pass the request in plain language and let the router pick the tool:
+
+```text
+find_tools(q="bookshelves at IKEA US with prices and ratings")
+find_tools(q="宜家美国站的书架价格")
+find_tools(prefix="ecommerce/ikea")         # browse everything for IKEA
+describe_tool("<returned Provider/Operation>")
+execute_tool("<Provider/Operation>", { ...params })
+```
+
+Search takes a keyword and a page number, nothing else. Prices come back as
+IKEA shows them, in US dollars, not converted. Always `describe_tool` before
+executing: it shows the page limits and the per-call cost.
+
+<Note>
+  **Building with code?** IKEA is available through the catalog tools above
+  only; there are no fixed-contract Scenario Methods for it yet. See the
+  [Scenario Methods overview](/api-reference/scenario/overview) for the
+  platforms that have them.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an IKEA account or IKEA Family membership?">
+    No. AgentKey holds the upstream access; your agent only needs your AgentKey
+    subscription.
+  </Accordion>
+  <Accordion title="Can it check my local store's stock or place an order?">
+    No. The tool is read-only, and search results carry no stock at all —
+    title, price, rating and image are what ikea.com's US store shows online.
+  </Accordion>
+  <Accordion title="Can it open an IKEA product page or read reviews?">
+    Not today. Search is the only IKEA tool: it returns a title, price, rating
+    and image per result, and the rating is the only review signal. A
+    product's description, dimensions, variants, stock and review text are not
+    available through AgentKey yet.
+  </Accordion>
+</AccordionGroup>

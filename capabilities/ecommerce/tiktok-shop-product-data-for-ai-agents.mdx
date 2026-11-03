@@ -1,7 +1,7 @@
 ---
 title: "TikTok Shop product data for AI agents"
 sidebarTitle: "TikTok Shop"
-description: "Search TikTok Shop by region, read product details and reviews, list a seller's products and pull hot-selling lists through AgentKey, no seller account needed."
+description: "Search TikTok Shop by region, read product details and reviews, list a store's products, profile creators' shop performance and pull hot-selling lists."
 ---
 
 TikTok Shop is where short video turns into checkout, and its product pages
@@ -19,6 +19,8 @@ products the same way it reads everything else — `find_tools`,
 - *"Is this product on TikTok Shop in both the US and the UK, and at what price in each?"*
 - *"Summarize the reviews for this TikTok Shop product."*
 - *"What is selling well on TikTok Shop Malaysia right now?"*
+- *"How much GMV does this creator drive on TikTok Shop, and which brands has she worked with?"*
+- *"Which long-tail searches do shoppers type around 'ashwagandha gummies'?"*
 
 ## What's covered
 
@@ -31,16 +33,28 @@ products the same way it reads everything else — `find_tools`,
 - The public product detail for a product ID in a selected region — inspect a
   known product after search or catalog discovery
 
-**Reviews, sellers and hot sellers**
-- Product reviews; a seller's product list; products by category, with the
-  category tree
+**Reviews, stores and hot sellers**
+- Product reviews — rating, text, reviewer, country and verified-purchase flag
+- Every product of a store by its URL, sorted top or newest, with shop-level
+  stats; a seller's product list
+- Products by category, with the category tree
 - A hot-selling product list for the Southeast Asian, Japanese and Mexican
   regions (not the US, the UK or Brazil); it carries no rank, so treat it as a
   set rather than an ordered ranking
 - Product and shop IDs resolved from a share link
 
-These come from TikHub and sit under TikTok in the catalog, not under TikTok
-Shop, so scope a search with `prefix="social/tiktok"` to reach them.
+**Creators and search demand**
+- A creator's shop performance by handle — GMV range, promoted product count,
+  brand collaborations, follower age, gender and location, category GMV split,
+  and video versus live engagement — for the US market
+- The products a creator showcases, with price, rating and sales
+- Search suggestions — the long-tail queries shoppers type around a keyword
+
+Reviews, store product lists and the category tree are available under TikTok
+Shop in the catalog and, from TikHub, under TikTok. The hot-selling list,
+products by category and share-link resolution come from TikHub only and sit
+under TikTok, not under TikTok Shop, so scope a search with
+`prefix="social/tiktok"` to reach them.
 
 **Regions**
 - Most operations take a region; look a product up in the region where you
@@ -53,8 +67,8 @@ Pass the request in plain language and let the router pick the tool:
 ```text
 find_tools(q="LED strip lights on TikTok Shop US with prices")
 find_tools(q="TikTok Shop 英国站搜瑜伽垫")
-find_tools(prefix="ecommerce/tiktok-shop")  # search and detail
-find_tools(q="TikTok Shop product reviews", prefix="social/tiktok")  # reviews, sellers, hot sellers
+find_tools(prefix="ecommerce/tiktok-shop")  # search, detail, reviews, stores, creators
+find_tools(q="TikTok Shop hot-selling products", prefix="social/tiktok")  # hot sellers, products by category
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
@@ -72,6 +86,8 @@ accepted values, the pagination tokens, and the per-call cost.
   [`ecommerce.tiktok_shop.product.reviews`](/api-reference/scenario/methods/ecommerce-tiktok_shop-product-reviews),
   [`ecommerce.tiktok_shop.product.rank`](/api-reference/scenario/methods/ecommerce-tiktok_shop-product-rank),
   [`ecommerce.tiktok_shop.shop.products`](/api-reference/scenario/methods/ecommerce-tiktok_shop-shop-products).
+  Creator stats, showcases and search suggestions are available through the
+  catalog tools above.
 </Note>
 
 ## FAQ
@@ -87,9 +103,11 @@ accepted values, the pagination tokens, and the per-call cost.
     country is supported.
   </Accordion>
   <Accordion title="Can I read reviews, a shop's listings or best sellers?">
-    Yes. Reviews, a seller's product list and a hot-selling list are catalog
-    tools from TikHub, filed under TikTok rather than TikTok Shop; scope a
-    search with `prefix="social/tiktok"`. The Scenario Methods listed above
-    wrap the same data behind a fixed contract.
+    Yes. Reviews and a store's product list are catalog tools under TikTok Shop
+    (`prefix="ecommerce/tiktok-shop"`), with TikHub versions filed under
+    TikTok; the hot-selling list is a TikHub tool filed under TikTok only, so
+    scope that search with `prefix="social/tiktok"`. The Scenario Methods
+    listed above wrap reviews, rankings and shop products behind a fixed
+    contract.
   </Accordion>
 </AccordionGroup>

@@ -1,7 +1,7 @@
 ---
 title: "1688 wholesale product data for AI agents"
 sidebarTitle: "1688"
-description: "Search 1688 wholesale listings by keyword and read a listing's public detail by item ID — for supplier sourcing and catalog research — through AgentKey."
+description: "Search 1688 wholesale listings and read a listing's detail by item ID, plus Alibaba.com international wholesale search, for supplier sourcing through AgentKey."
 ---
 
 1688 is Alibaba's domestic wholesale marketplace, where factories and
@@ -10,7 +10,8 @@ Sourcing teams live on it, but it is Chinese-language, login-walled and
 hostile to automation. Through AgentKey your agent reads public 1688 listings
 the same way it reads everything else — `find_tools`, `describe_tool`,
 `execute_tool` — and can hand a retail product straight to a wholesale
-search.
+search. For suppliers that sell abroad, the same calls also search
+Alibaba.com, the group's international wholesale site.
 
 ## What you can ask
 
@@ -18,6 +19,7 @@ search.
 - *"Search 1688 for 'silicone phone case' and shortlist suppliers worth contacting."*
 - *"Open this 1688 listing and summarize the offer."*
 - *"Find a 1688 wholesale source for this product I found on Amazon."*
+- *"Search Alibaba.com for bluetooth speaker suppliers and compare their minimum order quantities."*
 
 ## What's covered
 
@@ -29,8 +31,16 @@ search.
 - The public detail of a wholesale listing by item ID — review a known offer
   during sourcing or catalog research
 
+**Alibaba.com (international)**
+- Keyword search of Alibaba.com wholesale listings — title, price range,
+  minimum order and supplier for each
+- Alibaba.com is a different site from 1688: the group's international,
+  English-language B2B marketplace, with its own suppliers, listings and
+  prices, aimed at buyers outside China
+
 Not covered today: supplier company profiles, reviews, order placement and
-anything behind a buyer login. To check how a candidate product sells at
+anything behind a buyer login on either site, and listing details on
+Alibaba.com. To check how a candidate product sells at
 retail, pair this page with [Taobao / Tmall](/capabilities/ecommerce/taobao-and-tmall-product-data-for-ai-agents)
 or [Amazon](/capabilities/ecommerce/amazon-product-data-for-ai-agents).
 
@@ -42,13 +52,15 @@ Pass the request in plain language and let the router pick the tool:
 find_tools(q="1688 上搜不锈钢保温杯的货源")
 find_tools(q="wholesale suppliers for silicone phone cases on 1688")
 find_tools(prefix="ecommerce/1688")         # browse everything for 1688
+find_tools(prefix="ecommerce/alibaba")      # Alibaba.com international search
 describe_tool("<returned Provider/Operation>")
 execute_tool("<Provider/Operation>", { ...params })
 ```
 
-Prices come back in yuan, as the listing shows them, not converted. Always
-`describe_tool` before executing: it shows the exact parameters, the item ID
-the detail lookup expects, and the per-call cost.
+1688 prices come back in yuan, as the listing shows them, not converted;
+Alibaba.com prices come back as that site shows them. Always `describe_tool`
+before executing: it shows the exact parameters, the item ID the detail lookup
+expects, and the per-call cost.
 
 <Note>
   **Building with code?** The same capability is available as fixed-contract
@@ -56,6 +68,7 @@ the detail lookup expects, and the per-call cost.
   failover:
   [`ecommerce.1688.product.search`](/api-reference/scenario/methods/ecommerce-1688-product-search),
   [`ecommerce.1688.product.get`](/api-reference/scenario/methods/ecommerce-1688-product-get).
+  Alibaba.com search is available through the catalog tools above only.
 </Note>
 
 ## FAQ
@@ -64,6 +77,12 @@ the detail lookup expects, and the per-call cost.
   <Accordion title="Do I need a 1688 or Alibaba account?">
     No. AgentKey holds the upstream access; your agent only needs your AgentKey
     subscription.
+  </Accordion>
+  <Accordion title="Is Alibaba.com the same as 1688?">
+    No. Both belong to the Alibaba group, but 1688 is the domestic Chinese
+    wholesale marketplace and Alibaba.com the international one. They have
+    separate catalogs and separate tools: browse `ecommerce/1688` for one and
+    `ecommerce/alibaba` for the other.
   </Accordion>
   <Accordion title="What exactly comes back for a listing?">
     The public detail of the listing as 1688 presents it. Which fields a given
